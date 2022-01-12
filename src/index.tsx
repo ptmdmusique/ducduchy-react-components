@@ -7,7 +7,7 @@ initializeIconList();
 
 export const Thing: FC = ({ children }) => {
   return (
-    <div className="flex items-center justify-center w-5/6 m-auto text-2xl text-center text-skin-success uppercase bg-blue-300 bg-opacity-10 shadow-xl rounded-3xl">
+    <div className="flex items-center justify-center w-5/6 m-auto py-2 text-2xl text-center text-skin-success uppercase bg-skin-top shadow-xl rounded-3xl">
       {children || 'Hello World! (❁´◡`❁)'}
     </div>
   );
