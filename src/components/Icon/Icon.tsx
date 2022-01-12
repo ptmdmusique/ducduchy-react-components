@@ -6,6 +6,7 @@ import {
 import cx from 'classnames';
 import { forwardRef } from 'react';
 import { OmitStrict } from '../../utils/types';
+import React from 'react';
 
 interface IconInfo {
   icon: [string, string];
