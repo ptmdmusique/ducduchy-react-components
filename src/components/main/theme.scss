@@ -1,54 +1,50 @@
 @import './palette.module.scss';
 
-/*
-  * Replace `$search` with `$replace` in `$string`
-  * @author Kitty Giraudel
-  * @param {String} $string - Initial string
-  * @param {String} $search - Substring to replace
-  * @param {String} $replace ('') - New value
-  * @return {String} - Updated string
-*/
-@function str-replace($string, $search, $replace: '') {
-  $index: str-index($string, $search);
-
-  @if $index {
-    @return str-slice($string, 1, $index - 1) + $replace +
-      str-replace(
-        str-slice($string, $index + str-length($search)),
-        $search,
-        $replace
-      );
-  }
-
-  @return $string;
+@mixin theme-light {
+  --text-base: 17, 42, 70;
+  --text-primary: 9, 61, 116;
+  --text-secondary: 43, 108, 176;
+  --text-inverted: 247, 250, 252;
+  --fill: 43, 108, 176;
+  --background: 246, 247, 249;
+  --background-top: 255, 255, 255;
+  --background-overflow-menu: 255, 255, 255;
+  --background-active: 227, 242, 253;
+  --danger: 169, 30, 41;
+  --success: 0, 128, 0;
+  --warning: 138, 111, 20;
+  --info: 0, 82, 163;
+  --default: 0, 0, 0;
+  --exquisite: 131, 6, 193;
+  --disabled: 235, 235, 235;
 }
 
-@function get-color-value($color) {
-  @return unquote(str-replace(str-replace($color, 'rgb(', ''), ')', ''));
-}
-
-@mixin extract-color-map($map) {
-  @each $key, $value in $map {
-    @debug unquote('#{$key}: #{get-color-value($value)}');
-    /*
-    .test--#{key} {
-      background-color: #{get-color-value($value)};
-    }
-    #{$key}: get-color-value($value);
-    // --calcite-alert-dismiss-progress-background: #{rgba(3, 3, 3, 0.8)};
-    // @debug get-color-value($value);
-    */
-  }
+@mixin theme-dark {
+  --text-base: 238, 237, 237;
+  --text-primary: 83, 178, 255;
+  --text-secondary: 39, 154, 248;
+  --text-inverted: 33, 33, 33;
+  --fill: 83, 178, 255;
+  --background: 18, 24, 27;
+  --background-top: 42, 46, 53;
+  --background-overflow-menu: 46, 46, 46;
+  --background-active: 58, 65, 73;
+  --danger: 253, 88, 88;
+  --success: 127, 255, 127;
+  --warning: 255, 183, 51;
+  --info: 51, 164, 255;
+  --default: 232, 230, 227;
+  --exquisite: 211, 131, 251;
+  --disabled: 115, 117, 132;
 }
 
 .theme-light {
-  @include extract-color-map($theme-light);
+  @include theme-light();
 }
 .theme-dark {
-  @include extract-color-map($theme-dark);
+  @include theme-dark();
 }
 
 body {
-  @include extract-color-map($theme-light);
-  --test: #aaa;
+  @include theme-light();
 }
