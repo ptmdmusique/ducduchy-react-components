@@ -27,10 +27,12 @@
     }
   },
   "prettier": {
+    "tabWidth": 2,
+    "useTabs": false,
+    "trailingComma": "all",
     "printWidth": 80,
     "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
+    "singleQuote": false
   },
   "jest": {
     "testEnvironment": "jsdom"
