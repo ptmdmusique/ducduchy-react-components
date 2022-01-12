@@ -1,0 +1,7 @@
+{
+  "javascript.preferences.quoteStyle": "double",
+  "typescript.preferences.quoteStyle": "double",
+  "prettier.singleQuote": false,
+  "scss.validate": false, // For the sake of tailwind @directive
+  "stylelint.enable": true
+}

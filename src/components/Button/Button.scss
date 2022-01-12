@@ -1,5 +1,187 @@
-.test {
-  @apply text-skin-danger;
-  @apply bg-sky-400;
-  @apply text-lg;
+.btn-state {
+  &:disabled {
+    @apply filter grayscale opacity-80;
+    @apply cursor-not-allowed;
+  }
+  &:hover:not(:disabled):not(:focus) {
+    @apply filter brightness-105;
+  }
+  &:hover:active,
+  &:focus {
+    @apply outline outline-skin-secondary outline-2 outline-offset-2;
+    @apply outline-none;
+  }
+}
+
+.btn {
+  @extend .btn-state;
+  @apply flex justify-center items-center;
+  @apply border border-transparent;
+  @apply font-semibold;
+  @apply duration-200;
+  @apply rounded-full;
+  @apply py-2 px-8;
+
+  > .btn-icon--with-children {
+    @apply mr-1;
+  }
+  &--with-background {
+    @apply bg-skin-top;
+  }
+  &--rounded {
+    @apply rounded-full;
+    @apply p-2;
+    @apply h-12 w-12;
+  }
+  &--fill {
+    @extend .btn;
+    @apply text-skin-inverted;
+    @apply bg-skin-fill;
+    &.btn--success {
+      @apply bg-skin-success;
+    }
+    &.btn--danger {
+      @apply bg-skin-danger;
+    }
+    &.btn--warning {
+      @apply bg-skin-warning;
+    }
+    &.btn--info {
+      @apply bg-skin-info;
+    }
+    &:disabled {
+      @apply bg-skin-disabled;
+      @apply text-skin-base;
+    }
+    &:hover:not(:active) {
+      @apply shadow-lg;
+    }
+    &:focus {
+      @apply outline outline-skin-secondary outline-2 outline-offset-2;
+    }
+    &:active {
+      @apply outline-offset-4;
+    }
+  }
+
+  &--outline {
+    @extend .btn;
+    @apply border-skin-secondary;
+    @apply text-skin-secondary;
+    &.btn--success {
+      @apply border-skin-success;
+      @apply text-skin-success;
+    }
+    &.btn--danger {
+      @apply border-skin-danger;
+      @apply text-skin-danger;
+    }
+    &.btn--warning {
+      @apply border-skin-warning;
+      @apply text-skin-warning;
+    }
+    &.btn--info {
+      @apply border-skin-info;
+      @apply text-skin-info;
+    }
+    &:hover:not(:disabled),
+    &:focus {
+      @apply bg-skin-secondary bg-opacity-5;
+    }
+    &:active {
+      @apply bg-skin-secondary bg-opacity-10;
+    }
+    &.btn--success {
+      &:hover:not(:disabled),
+      &:focus {
+        @apply bg-skin-success bg-opacity-5;
+      }
+      &:active {
+        @apply bg-skin-success bg-opacity-10;
+      }
+    }
+    &.btn--danger {
+      &:hover:not(:disabled),
+      &:focus {
+        @apply bg-skin-danger bg-opacity-5;
+      }
+      &:active {
+        @apply bg-skin-danger bg-opacity-10;
+      }
+    }
+    &.btn--warning {
+      &:hover:not(:disabled),
+      &:focus {
+        @apply bg-skin-warning bg-opacity-5;
+      }
+      &:active {
+        @apply bg-skin-warning bg-opacity-10;
+      }
+    }
+    &.btn--info {
+      &:hover:not(:disabled),
+      &:focus {
+        @apply bg-skin-info bg-opacity-5;
+      }
+      &:active {
+        @apply bg-skin-info bg-opacity-10;
+      }
+    }
+  }
+  &--plain {
+    @extend .btn;
+    @apply text-skin-base text-opacity-90;
+    @apply py-2 px-6;
+    &:hover:not(:disabled),
+    &:focus {
+      @apply bg-skin-base bg-opacity-5;
+    }
+    &:focus {
+      @apply outline-none;
+    }
+    &:active {
+      @apply bg-skin-base bg-opacity-10;
+    }
+    &.btn--success {
+      @apply text-skin-success;
+      &:hover:not(:disabled),
+      &:focus {
+        @apply bg-skin-success bg-opacity-5;
+      }
+      &:active {
+        @apply bg-skin-success bg-opacity-10;
+      }
+    }
+    &.btn--danger {
+      @apply text-skin-danger;
+      &:hover:not(:disabled),
+      &:focus {
+        @apply bg-skin-danger bg-opacity-5;
+      }
+      &:active {
+        @apply bg-skin-danger bg-opacity-10;
+      }
+    }
+
+    &.btn--warning {
+      @apply text-skin-warning;
+      &:hover:not(:disabled),
+      &:focus {
+        @apply bg-skin-warning bg-opacity-5;
+      }
+      &:active {
+        @apply bg-skin-warning bg-opacity-10;
+      }
+    }
+    &.btn--info {
+      @apply text-skin-info;
+      &:hover:not(:disabled),
+      &:focus {
+        @apply bg-skin-info bg-opacity-5;
+      }
+      &:active {
+        @apply bg-skin-info bg-opacity-10;
+      }
+    }
+  }
 }

@@ -1,14 +1,25 @@
 import { Meta, Story } from '@storybook/react';
 import React from 'react';
-import { Button } from '.';
+import { Button, ButtonProps } from '.';
 
-const meta: Meta = {
+const meta: Meta<ButtonProps> = {
   title: 'Button',
   component: Button,
   argTypes: {
     children: {
+      defaultValue: "I'm a button (*/ω＼*)",
       control: {
         type: 'text',
+      },
+    },
+    icon: {
+      options: [
+        ['fas', 'hand-peace'],
+        ['fas', 'dog'],
+        ['fas', 'cat'],
+      ],
+      control: {
+        type: 'select',
       },
     },
   },

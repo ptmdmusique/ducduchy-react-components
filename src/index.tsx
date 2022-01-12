@@ -1,21 +1,14 @@
-import React, { FC, HTMLAttributes, ReactChild } from 'react';
+import React, { FC } from 'react';
 import './components/main/index.scss';
 import './components/main/theme.scss';
+import { initializeIconList } from './utils/iconInit';
 
-export interface Props extends HTMLAttributes<HTMLDivElement> {
-  /** custom content, defaults to 'the snozzberries taste like snozzberries' */
-  children?: ReactChild;
-}
+initializeIconList();
 
-// Please do not use types off of a default export module or else Storybook Docs will suffer.
-// see: https://github.com/storybookjs/storybook/issues/9556
-/**
- * A custom Thing component. Neat!
- */
-export const Thing: FC<Props> = ({ children }) => {
+export const Thing: FC = ({ children }) => {
   return (
-    <div className="flex items-center justify-center w-5/6 m-auto text-2xl text-center text-pink-700 uppercase bg-blue-300 shadow-xl rounded-3xl">
-      {children || `the snozzberries taste like snozzberries`}
+    <div className="flex items-center justify-center w-5/6 m-auto text-2xl text-center text-skin-success uppercase bg-blue-300 bg-opacity-10 shadow-xl rounded-3xl">
+      {children || 'Hello World! (❁´◡`❁)'}
     </div>
   );
 };
