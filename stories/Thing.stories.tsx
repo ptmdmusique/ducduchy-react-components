@@ -1,14 +1,14 @@
-import { Meta, Story } from '@storybook/react';
-import React from 'react';
-import { Thing } from '../src/index';
+import { Meta, Story } from "@storybook/react";
+import React from "react";
+import { Thing } from "../src/index";
 
 const meta: Meta = {
-  title: 'Welcome',
+  title: "Welcome",
   component: Thing,
   argTypes: {
     children: {
       control: {
-        type: 'text',
+        type: "text",
       },
     },
   },
@@ -26,4 +26,3 @@ const Template: Story = (args) => <Thing {...args} />;
 export const Default = Template.bind({});
 
 Default.args = {};
-
