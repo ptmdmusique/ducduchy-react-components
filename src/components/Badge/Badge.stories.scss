@@ -1,0 +1,16 @@
+.canvas-container {
+  @apply text-skin-base;
+
+  > .title {
+    @apply flex;
+
+    > .title-text {
+      @apply text-2xl font-semibold text-skin-success;
+      @apply mr-2;
+    }
+  }
+}
+
+.standalone-badge-canvas-container {
+  @apply w-16;
+}

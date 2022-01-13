@@ -1,12 +1,7 @@
 import { Meta, Story } from "@storybook/react";
 import React from "react";
 import { Button, ButtonProps } from ".";
-
-const icons = {
-  "✌": ["fas", "hand-peace"],
-  "🐶": ["fas", "dog"],
-  "🐱": ["fas", "cat"],
-} as const;
+import { storyIconOption } from "../resources/story-icon";
 
 const meta: Meta<ButtonProps> = {
   title: "Button",
@@ -18,20 +13,7 @@ const meta: Meta<ButtonProps> = {
         type: "text",
       },
     },
-    icon: {
-      options: Object.keys(icons),
-      mapping: icons,
-      control: {
-        type: "select",
-        labels: Object.entries(icons).reduce(
-          (accum, [key, icon]) => ({
-            ...accum,
-            [key]: `${key} ${icon[1]}`,
-          }),
-          {},
-        ),
-      },
-    },
+    icon: { ...storyIconOption },
   },
   parameters: {
     controls: { expanded: true },
