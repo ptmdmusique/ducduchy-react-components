@@ -5,7 +5,7 @@ import { storyIconOption, storyIcons } from "../resources/story-icon";
 import "./Badge.stories.scss";
 
 const meta: Meta<BadgeProps> = {
-  title: "Badge",
+  title: "Components/Badge",
   component: Badge,
   argTypes: {
     text: {

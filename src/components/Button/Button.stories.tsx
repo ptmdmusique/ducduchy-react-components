@@ -4,7 +4,7 @@ import { Button, ButtonProps } from ".";
 import { storyIconOption } from "../resources/story-icon";
 
 const meta: Meta<ButtonProps> = {
-  title: "Button",
+  title: "Components/Button",
   component: Button,
   argTypes: {
     children: {
