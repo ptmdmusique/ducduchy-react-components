@@ -1,6 +1,7 @@
 import { Transition } from "@headlessui/react";
 import { FC, Fragment } from "react";
 import { headlessTransitionData } from "../resources/animation";
+import React from "react";
 
 type TransitionProp = FC<{
   show: boolean;

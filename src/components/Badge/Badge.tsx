@@ -1,4 +1,5 @@
 import cx from "classnames";
+import React from "react";
 import Icon from "../Icon/Icon";
 import { StatusType } from "../resources/common.data";
 import "./Badge.scss";
