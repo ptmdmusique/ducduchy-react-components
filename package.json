@@ -87,7 +87,6 @@
     "rollup-plugin-sass": "^1.2.10",
     "rollup-plugin-scss": "^3.0.0",
     "sass": "^1.47.0",
-    "sass-loader": "^10.2.0",
     "size-limit": "^7.0.5",
     "storybook-addon-themes": "^6.1.0",
     "stylelint-config-recommended": "^6.0.0",
