@@ -11,6 +11,8 @@ jobs:
         os: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
+      - run: npm install -g npm
+
       - name: Checkout repo
         uses: actions/checkout@v2
 

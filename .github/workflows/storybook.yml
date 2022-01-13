@@ -6,6 +6,8 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
+      - run: npm install -g npm
+
       - name: Checkout 🛎️
         uses: actions/checkout@latest
 

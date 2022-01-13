@@ -6,6 +6,7 @@ jobs:
     env:
       CI_JOB_NUMBER: 1
     steps:
+      - run: npm install -g npm
       - uses: actions/checkout@v2
       - uses: andresz1/size-limit-action@v1
         with:
