@@ -9,7 +9,7 @@ jobs:
       - run: npm install -g npm
 
       - name: Checkout 🛎️
-        uses: actions/checkout@latest
+        uses: actions/checkout@v2.5.1
 
       - name: Install and Build 🔧
         run: | # Install npm packages and build the Storybook files
@@ -17,7 +17,7 @@ jobs:
           npm run build-storybook
 
       - name: Deploy 🚀
-        uses: JamesIves/github-pages-deploy-action@latest
+        uses: JamesIves/github-pages-deploy-action@v4.2.2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: main # The branch the action should deploy to.
