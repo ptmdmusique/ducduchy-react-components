@@ -7,6 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: npm install -g npm
+      - run: npm clean-install
 
       - name: Checkout 🛎️
         uses: actions/checkout@v2.4.0
