@@ -13,7 +13,7 @@
   "scripts": {
     "analyze": "size-limit --why",
     "build": "dts build",
-    "build-storybook": "build-storybook",
+    "build-storybook": "build-storybook -o docs-build",
     "lint": "dts lint",
     "prepare": "dts build",
     "size": "size-limit",
