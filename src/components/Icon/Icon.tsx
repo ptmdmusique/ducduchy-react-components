@@ -1,12 +1,12 @@
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import {
   FontAwesomeIcon,
   FontAwesomeIconProps,
-} from '@fortawesome/react-fontawesome';
-import cx from 'classnames';
-import { forwardRef } from 'react';
-import { OmitStrict } from '../../utils/types';
-import React from 'react';
+} from "@fortawesome/react-fontawesome";
+import cx from "classnames";
+import { forwardRef } from "react";
+import { OmitStrict } from "../../utils/types";
+import React from "react";
 
 interface IconInfo {
   icon: [string, string];
@@ -15,9 +15,9 @@ interface IconInfo {
 
 export const Icon = forwardRef<
   HTMLDivElement,
-  Partial<OmitStrict<FontAwesomeIconProps, 'icon' | 'cx'>> & IconInfo
+  Partial<OmitStrict<FontAwesomeIconProps, "icon" | "cx">> & IconInfo
 >(({ icon, className, ...faProps }, ref) => (
-  <div ref={ref} className={cx('icon', className)}>
+  <div ref={ref} className={cx("icon", className)}>
     <FontAwesomeIcon {...faProps} icon={icon as IconProp} />
   </div>
 ));
