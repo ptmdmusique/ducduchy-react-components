@@ -26,3 +26,4 @@ const Template: Story = (args) => <Thing {...args} />;
 export const Default = Template.bind({});
 
 Default.args = {};
+
