@@ -33,7 +33,7 @@ export interface RadioGroupProps<
   onChange?: (data: Data, index: number) => void;
   disabled?: boolean;
 
-  renderOptionLabel?: () => ReactNode;
+  radioGroupLabel?: ReactNode;
   renderOption?: GetFunction<Data>;
   getLabel?: GetFunction<Data>;
   getDescription?: GetFunction<Data>;
@@ -50,7 +50,7 @@ export function RadioGroup<Data, Value extends ValueType, Form>({
   itemClassNameGetter,
   dataList,
   getValue,
-  renderOptionLabel,
+  radioGroupLabel,
   defaultSelectedIndex = -1,
   selectedIndex,
   disabled,
@@ -104,6 +104,11 @@ export function RadioGroup<Data, Value extends ValueType, Form>({
     return returnMap;
   }, [dataList, getValue]);
 
+  const value =
+    _selectedIndex > -1 && _selectedIndex < dataList.length
+      ? getValue(dataList[_selectedIndex])
+      : undefined;
+
   const renderContent = (formOnChange?: (...data: any[]) => void) => {
     const onChangeWrapper = (newValue: Value) => {
       const { data, index } = dataMap[newValue] || {};
@@ -124,9 +129,6 @@ export function RadioGroup<Data, Value extends ValueType, Form>({
       </HeadlessRadioGroup.Label>
     );
 
-    const value =
-      _selectedIndex > -1 ? getValue(dataList[_selectedIndex]) : undefined;
-
     return (
       <HeadlessRadioGroup
         disabled={disabled}
@@ -140,9 +142,9 @@ export function RadioGroup<Data, Value extends ValueType, Form>({
           className,
         )}
       >
-        {renderOptionLabel && (
+        {radioGroupLabel && (
           <HeadlessRadioGroup.Label className="radio-main-label">
-            {renderOptionLabel()}
+            {radioGroupLabel}
           </HeadlessRadioGroup.Label>
         )}
 
@@ -210,7 +212,7 @@ export function RadioGroup<Data, Value extends ValueType, Form>({
       rules={rules}
       control={control}
       // @ts-ignore
-      defaultValue={getValue(dataList[_selectedIndex])}
+      defaultValue={value}
       render={({ field: { onChange } }) => renderContent(onChange)}
     />
   );

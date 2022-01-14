@@ -18,3 +18,5 @@ export const storyIconOption = {
     ),
   },
 } as const;
+
+export const storyDisabledOption = { table: { disable: true } };

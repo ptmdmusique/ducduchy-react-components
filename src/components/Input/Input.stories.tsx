@@ -1,7 +1,7 @@
 import { Meta, Story } from "@storybook/react";
 import React from "react";
 import { Input, InputProps } from ".";
-import { storyIconOption } from "../resources/story-icon";
+import { storyIconOption } from "../resources/story-common";
 import "./Input.stories.scss";
 
 const meta: Meta<InputProps> = {

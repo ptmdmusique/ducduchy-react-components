@@ -1,13 +1,21 @@
 import { Meta, Story } from "@storybook/react";
 import React from "react";
 import { Badge, BadgeProps } from ".";
-import { storyIconOption, storyIcons } from "../resources/story-icon";
+import {
+  storyDisabledOption,
+  storyIconOption,
+  storyIcons,
+} from "../resources/story-common";
 import "./Badge.stories.scss";
 
 const meta: Meta<BadgeProps> = {
   title: "Components/Badge",
   component: Badge,
-  argTypes: { icon: { ...storyIconOption } },
+  argTypes: {
+    icon: { ...storyIconOption },
+    className: storyDisabledOption,
+    iconClassName: storyDisabledOption,
+  },
   parameters: {
     controls: { expanded: true },
   },
@@ -31,23 +39,18 @@ const Template: Story<BadgeProps> = (args) => (
     </p>
   </div>
 );
-Template.args = {
-  text: "Math",
-};
+
+export const Default = Template.bind({});
+Default.args = { text: "Math" };
 
 const StandaloneTemplate: Story<BadgeProps> = (args) => (
   <div className="standalone-badge-canvas-container">
     <Badge {...args} />
   </div>
 );
-Template.args = {
-  text: "Math",
-};
 
 // By passing using the Args format for exported stories, you can control the props for a component for reuse in a test
 // https://storybook.js.org/docs/react/workflows/unit-testing
-export const Default = Template.bind({});
 
 export const Standalone = StandaloneTemplate.bind({});
-
-Default.args = {};
+Standalone.args = { text: "A smol badge" };

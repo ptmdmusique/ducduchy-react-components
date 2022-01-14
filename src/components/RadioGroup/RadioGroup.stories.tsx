@@ -1,13 +1,15 @@
 import { Meta, Story } from "@storybook/react";
-import React from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Button } from "..";
+import { storyDisabledOption } from "../resources/story-common";
 import { RadioGroup, RadioGroupProps } from "./RadioGroup";
 
 const radioGroupData = [
-  { data: "Dog", disabled: true },
-  { data: "Cat" },
-  { data: "Mouse" },
-  { data: "Bird" },
+  { data: "🐶 Dog", disabled: true },
+  { data: "🐱 Cat" },
+  { data: "🐭 Mouse" },
+  { data: "🦜 Bird" },
 ];
 
 type Data = typeof radioGroupData[number];
@@ -17,16 +19,16 @@ const meta: Meta<StoryRadioGroupProps> = {
   title: "Components/Form/RadioGroup",
   component: RadioGroup,
   argTypes: {
-    formValidation: { table: { disable: true } },
-    onChange: { table: { disable: true } },
-    renderOptionLabel: { table: { disable: true } },
-    renderOption: { table: { disable: true } },
-    getDescription: { table: { disable: true } },
-    itemClassNameGetter: { table: { disable: true } },
-    itemClassName: { table: { disable: true } },
-    checkOptionDisable: { table: { disable: true } },
-    getValue: { table: { disable: true } },
-    getLabel: { table: { disable: true } },
+    formValidation: storyDisabledOption,
+    onChange: storyDisabledOption,
+    renderOption: storyDisabledOption,
+    getDescription: storyDisabledOption,
+    itemClassNameGetter: storyDisabledOption,
+    itemClassName: storyDisabledOption,
+    checkOptionDisable: storyDisabledOption,
+    getValue: storyDisabledOption,
+    getLabel: storyDisabledOption,
+    className: storyDisabledOption,
   },
   parameters: {
     controls: { expanded: true },
@@ -46,28 +48,48 @@ Default.args = {
   checkOptionDisable: ({ disabled }) => disabled,
 };
 
+export const WithGroupLabel = Template.bind({});
+WithGroupLabel.args = {
+  dataList: radioGroupData,
+  getValue: ({ data }) => data,
+  getLabel: ({ data }) => data.data,
+  checkOptionDisable: ({ disabled }) => disabled,
+  radioGroupLabel: (
+    <div className="text-lg font-semibold text-skin-exquisite">😶‍🌫️ A Fancy Label 😶‍🌫️</div>
+  ),
+};
+
 const TemplateWithForm: Story<StoryRadioGroupProps> = (args) => {
+  const [submittedValue, setSubmittedValue] = useState<{
+    [key: string]: string;
+  } | null>(null);
   const { handleSubmit, control } = useForm();
 
   const onSubmit = handleSubmit((data) => {
-    console.info("data:", data);
+    setSubmittedValue(data);
   });
 
   return (
     <form onSubmit={onSubmit}>
-      <RadioGroup
-        getLabel={({ data }) => data.data}
-        formValidation={{ control, name: "radioGroup" }}
-        {...args}
-      />
+      <RadioGroup formValidation={{ control, name: "radioGroup" }} {...args} />
+
+      <Button type="submit" borderType="outline" className="mt-4">
+        Submit
+      </Button>
+
+      {submittedValue && (
+        <pre className="mt-8">
+          <code>Submitted value {JSON.stringify(submittedValue)}</code>
+        </pre>
+      )}
     </form>
   );
 };
-TemplateWithForm.args = {
+
+export const WithForm = TemplateWithForm.bind({});
+WithForm.args = {
   dataList: radioGroupData,
   getValue: ({ data }) => data,
   getLabel: ({ data }) => data.data,
   checkOptionDisable: ({ disabled }) => disabled,
 };
-
-export const WithForm = TemplateWithForm.bind({});
