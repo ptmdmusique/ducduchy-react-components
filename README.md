@@ -1,6 +1,9 @@
 # Duc Duchy React Components
 
-React components that I frequently used. [Demo](https://ducduchy.github.io/duc-components/)
+## Hello
+
+- React components that I frequently used. [Live Demo](http://ptmdmusique.github.io/ducduchy-react-components)
+- Checkout my [online portfolio](https://duc-duchy.io/)
 
 ## Get started
 
