@@ -4,7 +4,6 @@ import { Badge, BadgeProps } from ".";
 import {
   storyDisabledOption,
   storyIconOption,
-  storyIcons,
 } from "../resources/story-common";
 import "./Badge.stories.scss";
 
