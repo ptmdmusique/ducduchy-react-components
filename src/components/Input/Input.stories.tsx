@@ -2,6 +2,7 @@ import { Meta, Story } from "@storybook/react";
 import React from "react";
 import { Input, InputProps } from ".";
 import { storyIconOption } from "../resources/story-icon";
+import "./Input.stories.scss";
 
 const meta: Meta<InputProps> = {
   title: "Components/Form/Input",
@@ -36,14 +37,14 @@ export const WithCaption = Template.bind({});
 WithCaption.args = {
   label: "What a label",
   placeholder: "John Doe",
-  caption: "Here is a caption",
+  caption: <div className="input-stories-caption">Here is a caption</div>,
 };
 
 export const WithAdornments = Template.bind({});
 WithAdornments.args = {
   label: "What a label",
   placeholder: "John Doe",
-  caption: "Here is a caption",
+  caption: <div className="input-stories-caption">Here is a caption</div>,
   trailingAdornment: ["fas", "dog"],
   leadingAdornment: ["fas", "hand-peace"],
 };
