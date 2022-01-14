@@ -21,7 +21,8 @@
     "start": "dts watch",
     "storybook": "start-storybook -p 6006",
     "test": "dts test --passWithNoTests",
-    "deploy-storybook": "gh-pages -d storybook-static"
+    "deploy-storybook-only": "gh-pages -d storybook-static",
+    "deploy-storybook": "npm run build && gh-pages -d storybook-static"
   },
   "husky": {
     "hooks": {
