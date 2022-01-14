@@ -22,3 +22,4 @@
 2. Icon used in this project are from [Font Awesome](https://fontawesome.com/) (free version). However, you can add Pro version and just use the corresponding prefix as well as icon names after initialization.
 3. Most of the style follows [Material Design 2](https://material.io/) and [Material Design 3](https://m3.material.io/)
 4. Styling uses [Tailwind CSS](https://tailwindcss.com/)
+5. Form validation uses [React Hook Form](https://react-hook-form.com/)

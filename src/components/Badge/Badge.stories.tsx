@@ -7,12 +7,7 @@ import "./Badge.stories.scss";
 const meta: Meta<BadgeProps> = {
   title: "Components/Badge",
   component: Badge,
-  argTypes: {
-    text: {
-      defaultValue: "Math",
-    },
-    icon: { ...storyIconOption },
-  },
+  argTypes: { icon: { ...storyIconOption } },
   parameters: {
     controls: { expanded: true },
   },
@@ -36,12 +31,18 @@ const Template: Story<BadgeProps> = (args) => (
     </p>
   </div>
 );
+Template.args = {
+  text: "Math",
+};
 
 const StandaloneTemplate: Story<BadgeProps> = (args) => (
   <div className="standalone-badge-canvas-container">
     <Badge {...args} />
   </div>
 );
+Template.args = {
+  text: "Math",
+};
 
 // By passing using the Args format for exported stories, you can control the props for a component for reuse in a test
 // https://storybook.js.org/docs/react/workflows/unit-testing

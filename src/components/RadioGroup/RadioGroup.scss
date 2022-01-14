@@ -1,0 +1,92 @@
+.form-radio-group__radio {
+  @apply flex justify-center items-center;
+  @apply border-skin-secondary border-2;
+  @apply filter grayscale;
+  @apply duration-200;
+  @apply rounded-full;
+  @apply w-5 h-5;
+
+  > .inner {
+    @apply bg-skin-secondary;
+    @apply duration-200;
+    @apply rounded-full;
+    @apply w-0 h-0;
+  }
+  &--success {
+    @apply border-skin-success;
+    > .inner {
+      @apply bg-skin-success;
+    }
+  }
+  &--danger {
+    @apply border-skin-danger;
+    > .inner {
+      @apply bg-skin-danger;
+    }
+  }
+  &--warning {
+    @apply border-skin-warning;
+    > .inner {
+      @apply bg-skin-warning;
+    }
+  }
+  &--checked {
+    @apply filter grayscale-0;
+    > .inner {
+      @apply w-3 h-3;
+    }
+  }
+
+  &--disabled {
+    @apply filter grayscale;
+    @apply opacity-90;
+    + .radio-label {
+      @apply filter grayscale;
+      @apply opacity-90;
+    }
+  }
+}
+
+.form-radio-group-container {
+  > .radio-container {
+    @apply cursor-pointer;
+
+    > .radio-label {
+      @apply cursor-pointer;
+    }
+
+    /* TODO: Add hover and active style */
+    &:focus-visible {
+      @apply outline outline-skin-secondary outline-2;
+    }
+
+    &:hover,
+    &:focus:not(.radio--disabled) {
+      > .radio:not(.radio--disabled) {
+        &:not(.radio--checked) > .inner {
+          @apply w-3 h-3;
+        }
+      }
+    }
+
+    &--disabled {
+      @apply cursor-not-allowed;
+
+      > .radio-label {
+        @apply cursor-not-allowed;
+      }
+    }
+  }
+
+  &--default > .radio-container {
+    @apply flex items-center;
+
+    > .radio-label {
+      @apply ml-2;
+
+      &--left {
+        @apply ml-0 mr-2;
+      }
+    }
+  }
+}

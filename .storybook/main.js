@@ -1,19 +1,19 @@
-const path = require('path');
+const path = require("path");
 
 module.exports = {
   core: {
-    builder: 'webpack5',
+    builder: "webpack5",
   },
   stories: [
-    '../stories/**/*.stories.@(ts|tsx|js|jsx)',
-    '../src/**/*.stories.@(ts|tsx|js|jsx)',
+    "../stories/**/*.stories.@(ts|tsx|js|jsx)",
+    "../src/**/*.stories.@(ts|tsx|js|jsx)",
   ],
   addons: [
-    '@storybook/builder-webpack5',
-    '@storybook/addon-links',
-    '@storybook/addon-essentials',
-    '@storybook/preset-scss',
-    'storybook-addon-themes',
+    "@storybook/builder-webpack5",
+    "@storybook/addon-links",
+    "@storybook/addon-essentials",
+    "@storybook/preset-scss",
+    "storybook-addon-themes",
     // {
     //   name: '@storybook/addon-postcss',
     //   options: {
@@ -37,21 +37,21 @@ module.exports = {
       test: /\.(sass|scss)$/,
       use: [
         {
-          loader: 'postcss-loader',
+          loader: "postcss-loader",
           options: {
             postcssOptions: {
-              ident: 'postcss',
+              ident: "postcss",
               plugins: [
-                require('postcss-import'),
-                require('tailwindcss/nesting'),
-                require('tailwindcss'),
-                require('autoprefixer'),
+                require("postcss-import"),
+                require("tailwindcss/nesting"),
+                require("tailwindcss"),
+                require("autoprefixer"),
               ],
             },
           },
         },
       ],
-      include: path.resolve(__dirname, '../'),
+      include: path.resolve(__dirname, "../"),
     });
     return config;
   },

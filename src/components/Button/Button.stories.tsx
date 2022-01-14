@@ -7,12 +7,7 @@ const meta: Meta<ButtonProps> = {
   title: "Components/Button",
   component: Button,
   argTypes: {
-    children: {
-      defaultValue: "I'm a button (*/ω＼*)",
-      control: {
-        type: "text",
-      },
-    },
+    children: { control: { type: "text" } },
     icon: { ...storyIconOption },
   },
   parameters: {
@@ -22,7 +17,9 @@ const meta: Meta<ButtonProps> = {
 
 export default meta;
 
-const Template: Story = (args) => <Button {...args} />;
+const Template: Story = (args) => (
+  <Button {...args} children={args.children ?? "I'm a button (*/ω＼*)"} />
+);
 
 // By passing using the Args format for exported stories, you can control the props for a component for reuse in a test
 // https://storybook.js.org/docs/react/workflows/unit-testing
