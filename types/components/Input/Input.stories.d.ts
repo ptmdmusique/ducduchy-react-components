@@ -1,0 +1,11 @@
+import { Meta, Story } from "@storybook/react";
+import { InputProps } from ".";
+import "./Input.stories.scss";
+declare const meta: Meta<InputProps>;
+export default meta;
+export declare const Default: Story<InputProps>;
+export declare const WithLabel: Story<InputProps>;
+export declare const WithPlaceholder: Story<InputProps>;
+export declare const WithLabelAndPlaceholder: Story<InputProps>;
+export declare const WithCaption: Story<InputProps>;
+export declare const WithAdornments: Story<InputProps>;
