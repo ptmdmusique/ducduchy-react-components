@@ -23,6 +23,7 @@
     > .adornment-wrapper > .adornment-icon {
       @apply absolute left-auto right-3 top-1/2;
       @apply transform -translate-y-1/2;
+      @apply text-skin-base;
       @apply duration-200;
       @apply opacity-50;
       @apply w-6 h-6;
