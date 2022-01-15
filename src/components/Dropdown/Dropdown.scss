@@ -1,0 +1,190 @@
+@import "../assets/styles/form-common.scss";
+
+.form-dropdown {
+  &--disabled {
+    @apply cursor-not-allowed;
+  }
+
+  > .dropdown-container {
+    @extend .form-common-container, .form-bg--filled;
+    @apply relative;
+
+    &::before {
+      @extend .form-border;
+    }
+    > label {
+      @extend .label;
+    }
+    > .form-dropdown {
+      > .form-dropdown__control,
+      > .form-dropdown__menu {
+        @apply bg-transparent;
+        @apply shadow-none;
+        @apply border-none;
+        @apply rounded-md;
+
+        &--is-disabled {
+          @apply filter grayscale-0;
+          @apply cursor-not-allowed;
+        }
+      }
+      > .form-dropdown__control {
+        @apply flex justify-between;
+        @apply cursor-pointer;
+        @apply pl-4 pr-2;
+        min-height: theme("height.14");
+        @screen lg {
+          @apply pr-4;
+        }
+
+        > .form-dropdown__value-container {
+          @apply px-0;
+          > .form-dropdown__placeholder,
+          > .form-dropdown__single-value,
+          > .form-dropdown__multi-value {
+            @apply text-skin-base;
+            @apply duration-100;
+          }
+          > .form-dropdown__placeholder {
+            @apply opacity-50;
+          }
+          > .form-dropdown__multi-value {
+            @apply bg-skin-base bg-opacity-5;
+            @apply rounded-md;
+            @apply px-2;
+
+            > .form-dropdown__multi-value__label {
+              @apply text-skin-base text-base;
+              &:not(:only-child) {
+                @apply mr-2;
+              }
+            }
+          }
+        }
+        > .form-dropdown__indicators > .icon {
+          @apply text-skin-base;
+          @apply duration-100;
+          @apply opacity-50;
+          @apply ml-2;
+        }
+        &--menu-is-open {
+          > .form-dropdown__indicators > .icon {
+            @apply transform rotate-180;
+          }
+        }
+        &--is-focused,
+        &:hover {
+          > .form-dropdown__indicators > .icon {
+            @apply opacity-100;
+          }
+        }
+        &--is-focused {
+          @apply bg-opacity-70;
+          > .form-dropdown__value-container {
+            > .form-dropdown__placeholder {
+              @apply opacity-100;
+            }
+          }
+        }
+      }
+      > .form-dropdown__menu {
+        @apply bg-skin-overflow-menu;
+        @apply duration-100;
+        @apply shadow-md;
+        @apply mt-0;
+        .form-dropdown__option,
+        .form-dropdown__title {
+          @apply text-skin-base;
+          @apply pl-4 pr-2;
+          @screen lg {
+            @apply pr-4;
+          }
+        }
+        .form-dropdown__option {
+          &--is-selected,
+          &--is-focused {
+            @apply bg-skin-active;
+          }
+          &--is-selected {
+            @apply bg-skin-active;
+          }
+          &--is-focused:not(.form-dropdown__option--is-selected) {
+            @apply bg-opacity-50;
+          }
+        }
+      }
+    }
+
+    &:focus-within {
+      &::before {
+        @extend .form-border--active;
+      }
+      & > label {
+        @extend .label--active;
+      }
+    }
+
+    &--fill {
+      @apply rounded-b-none;
+
+      &::before {
+        @apply border-b;
+      }
+      &:focus-within,
+      &.dropdown-container--has-content {
+        > label {
+          @extend .label-float;
+          transform: translateY(-145%) scale(0.75) !important;
+        }
+        &::before {
+          @apply border-b-2;
+        }
+      }
+    }
+
+    &--outline {
+      @extend .form-bg--outline;
+      &::before {
+        @apply rounded-md;
+        @apply border;
+      }
+      &:focus-within,
+      &.dropdown-container--has-content {
+        & > label {
+          @extend .label-float--outline;
+        }
+      }
+      &:focus-within::before {
+        @apply border-2;
+      }
+    }
+
+    &--error {
+      &::before {
+        @extend .form-border--error;
+      }
+      & > label {
+        @extend .label--error;
+      }
+    }
+  }
+
+  & > .caption-container {
+    @apply text-left text-xs;
+    @apply font-semibold;
+    @apply w-full;
+    @apply px-4;
+
+    &::before {
+      @apply inline-block;
+      @apply w-0 h-4;
+      content: "";
+    }
+    &--error {
+      @extend .label--error;
+    }
+    > .icon {
+      @apply mr-1;
+    }
+  }
+}
