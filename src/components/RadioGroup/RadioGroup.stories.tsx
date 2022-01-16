@@ -1,8 +1,8 @@
 import { Meta, Story } from "@storybook/react";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { Button } from "..";
+import React from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import { storyDisabledOption } from "../resources/story-common";
+import { StorybookCommonWithForm } from "../resources/StorybookCommonWithForm";
 import { RadioGroup, RadioGroupProps } from "./RadioGroup";
 
 const radioGroupData = [
@@ -55,34 +55,24 @@ WithGroupLabel.args = {
   getLabel: ({ data }) => data.data,
   checkOptionDisable: ({ disabled }) => disabled,
   radioGroupLabel: (
-    <div className="text-lg font-semibold text-skin-exquisite">😶‍🌫️ A Fancy Label 😶‍🌫️</div>
+    <div className="text-lg font-semibold text-skin-exquisite">
+      😶‍🌫️ A Fancy Label 😶‍🌫️
+    </div>
   ),
 };
 
 const TemplateWithForm: Story<StoryRadioGroupProps> = (args) => {
-  const [submittedValue, setSubmittedValue] = useState<{
-    [key: string]: string;
-  } | null>(null);
-  const { handleSubmit, control } = useForm();
-
-  const onSubmit = handleSubmit((data) => {
-    setSubmittedValue(data);
-  });
+  const methods = useForm();
 
   return (
-    <form onSubmit={onSubmit}>
-      <RadioGroup formValidation={{ control, name: "radioGroup" }} {...args} />
-
-      <Button type="submit" borderType="outline" className="mt-4">
-        Submit
-      </Button>
-
-      {submittedValue && (
-        <pre className="mt-8">
-          <code>Submitted value {JSON.stringify(submittedValue)}</code>
-        </pre>
-      )}
-    </form>
+    <FormProvider {...methods}>
+      <StorybookCommonWithForm>
+        <RadioGroup
+          formValidation={{ control: methods.control, name: "radioGroup" }}
+          {...args}
+        />
+      </StorybookCommonWithForm>
+    </FormProvider>
   );
 };
 

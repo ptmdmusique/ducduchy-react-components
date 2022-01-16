@@ -7,6 +7,8 @@ import { faHandPeace } from "@fortawesome/free-solid-svg-icons/faHandPeace";
 import { faHeart } from "@fortawesome/free-solid-svg-icons/faHeart";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons/faInfoCircle";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons/faSpinner";
+import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons/faCalendarAlt";
+import { faTimes } from "@fortawesome/free-solid-svg-icons/faTimes";
 
 export const initializeIconList = () => {
   const iconList = [
@@ -18,6 +20,8 @@ export const initializeIconList = () => {
     faHeart,
     faCheck,
     faChevronDown,
+    faCalendarAlt,
+    faTimes,
   ];
 
   // Set up icon libraries

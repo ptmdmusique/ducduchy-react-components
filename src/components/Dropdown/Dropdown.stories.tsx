@@ -1,9 +1,9 @@
 import { Meta, Story } from "@storybook/react";
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import React from "react";
+import { FormProvider, useForm } from "react-hook-form";
 import { Dropdown, DropdownProps } from ".";
-import { Button } from "..";
 import { storyDisabledOption } from "../resources/story-common";
+import { StorybookCommonWithForm } from "../resources/StorybookCommonWithForm";
 
 const optionList = [
   { label: "💪 My label", value: "my value" },
@@ -47,29 +47,16 @@ MultiValueDropdown.args = {
 };
 
 const TemplateWithForm: Story<DropdownData> = (args) => {
-  const [submittedValue, setSubmittedValue] = useState<{
-    [key: string]: string;
-  } | null>(null);
-  const { handleSubmit, control } = useForm();
-
-  const onSubmit = handleSubmit((data) => {
-    setSubmittedValue(data);
-  });
-
+  const methods = useForm();
   return (
-    <form onSubmit={onSubmit}>
-      <Dropdown {...args} formValidation={{ control, name: "dropdown" }} />
-
-      <Button type="submit" borderType="outline" className="mt-4">
-        Submit
-      </Button>
-
-      {submittedValue && (
-        <pre className="mt-8">
-          <code>Submitted value {JSON.stringify(submittedValue)}</code>
-        </pre>
-      )}
-    </form>
+    <FormProvider {...methods}>
+      <StorybookCommonWithForm>
+        <Dropdown
+          {...args}
+          formValidation={{ control: methods.control, name: "dropdown" }}
+        />
+      </StorybookCommonWithForm>
+    </FormProvider>
   );
 };
 

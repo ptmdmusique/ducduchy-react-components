@@ -107,7 +107,9 @@
     "@fortawesome/react-fontawesome": "^0.1.16",
     "@headlessui/react": "^1.4.2",
     "classnames": "^2.3.1",
+    "dayjs": "^1.10.7",
     "react-calendar": "^3.5.0",
+    "react-date-picker": "^8.3.6",
     "react-hook-form": "^7.23.0",
     "react-select": "^5.2.2"
   }
