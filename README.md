@@ -9,7 +9,7 @@
 
 ### Installation
 
-¯\_(ツ)\_/¯ (under construction)
+`npm i ducduchy-react-components`
 
 ### Local development
 

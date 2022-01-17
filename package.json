@@ -1,6 +1,6 @@
 {
   "name": "ducduchy-react-components",
-  "version": "0.1.0",
+  "version": "1",
   "license": "MIT",
   "author": "Duc Phan",
   "main": "dist/index.js",
