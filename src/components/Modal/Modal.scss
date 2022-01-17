@@ -1,0 +1,79 @@
+$modal-padding-x: theme("padding.6");
+$modal-padding-x-desktop: theme("padding.12");
+
+.modal {
+  @apply flex justify-center items-center;
+  @apply overflow-hidden;
+  @apply text-skin-base;
+  @apply fixed inset-0;
+  @apply z-50;
+
+  > .overlay {
+    @apply bg-black bg-opacity-60;
+    @apply absolute inset-0;
+    content: "";
+  }
+  > .modal-content {
+    @apply bg-skin-top;
+    @apply rounded-3xl;
+    @apply relative;
+    @apply z-50;
+    max-width: 80vw;
+    min-width: 18rem;
+    @screen lg {
+      min-width: 35rem;
+    }
+
+    &--fullscreen {
+      @apply w-full h-full;
+      @apply flex flex-col;
+      @apply rounded-none;
+      @apply max-w-full;
+
+      > .modal-body {
+        @apply flex-grow;
+        max-height: 100vh !important;
+      }
+      > .modal-footer {
+        @apply mt-auto;
+      }
+    }
+    > .modal-header,
+    > .modal-footer {
+      @apply flex items-center;
+      @apply rounded-tr-md;
+      @apply py-2;
+      min-height: 4rem;
+      padding-left: $modal-padding-x;
+      padding-right: $modal-padding-x;
+    }
+    > .modal-header {
+      @apply text-lg font-semibold;
+      @apply text-skin-secondary;
+    }
+    > .modal-body {
+      @apply overflow-auto;
+      min-height: min(10vh, 10rem);
+      max-height: calc(100vh - 12rem);
+    }
+    > .modal-footer {
+      @apply justify-end;
+    }
+    > .close-button {
+      @apply absolute right-0 top-0;
+      @apply rounded-tr-md;
+      @apply duration-200;
+      @apply h-16;
+      padding-left: $modal-padding-x;
+      padding-right: $modal-padding-x;
+
+      &:hover,
+      &:focus {
+        @apply text-skin-secondary;
+      }
+      &:focus {
+        @apply outline-none;
+      }
+    }
+  }
+}
