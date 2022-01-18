@@ -7,11 +7,11 @@ import Select, {
   GroupBase,
   MultiValue,
   Props as SelectProps,
-  SingleValue,
+  SingleValue
 } from "react-select";
-import { Icon } from "..";
 import { OmitStrict } from "../../utils/types";
 import { FadeTransition } from "../animation/CustomTransition";
+import { Icon } from "../Icon";
 import { FormValidationWithController } from "../resources/form/types";
 import "./Dropdown.scss";
 
@@ -45,7 +45,7 @@ export interface DropdownProps<
   captionIcon?: [string, string];
   state?: "normal" | "error";
 
-  chevronDownIcon?: [string, string];
+  dropdownIndicatorIcon?: [string, string];
 
   isMulti?: IsMulti;
 }
@@ -76,7 +76,7 @@ export function Dropdown<Data, IsMulti extends boolean = false, Form = any>({
   captionIcon,
   isMulti,
   className,
-  chevronDownIcon = ["fas", "chevron-down"],
+  dropdownIndicatorIcon = ["fas", "chevron-down"],
   ...selectProps
 }: DropdownProps<Data, IsMulti, Form>) {
   const hasError = state === "error";
@@ -134,7 +134,7 @@ export function Dropdown<Data, IsMulti extends boolean = false, Form = any>({
             components={{
               DropdownIndicator: (props) => (
                 <Icon
-                  icon={chevronDownIcon}
+                  icon={dropdownIndicatorIcon}
                   className={cx("fa-fw icon", props.className)}
                 />
               ),

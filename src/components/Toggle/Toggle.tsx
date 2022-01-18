@@ -3,7 +3,7 @@ import cx from "classnames";
 import { nanoid } from "nanoid";
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { Controller } from "react-hook-form";
-import { Icon } from "..";
+import { Icon } from "../Icon";
 import { StatusType } from "../resources/common.data";
 import {
   FormValidationWithController,
