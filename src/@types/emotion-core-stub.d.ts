@@ -1,0 +1,3 @@
+// react-select emotion breaks types...
+// emotion-core-stub.ts
+export {};
