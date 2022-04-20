@@ -99,9 +99,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     };
 
     const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-      setHasContent(
-        inputProps?.placeholder != null || event.target.value != null,
-      );
+      setHasContent(!!inputProps?.placeholder || !!event.target.value);
       debounceRef.current(event);
     };
 
