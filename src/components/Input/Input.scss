@@ -19,6 +19,9 @@
       @apply pt-5 px-4 pb-1;
       @apply w-full h-full;
       @apply duration-200;
+      &:disabled {
+        @apply cursor-not-allowed;
+      }
     }
     > .adornment-icon,
     > .adornment-wrapper > .adornment-icon {
