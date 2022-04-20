@@ -1,1 +1,1 @@
-export const COMPONENT_PREFIX = "duc-duchy"
+export const COMPONENT_PREFIX = "dd"; // Duc-Duchy :)

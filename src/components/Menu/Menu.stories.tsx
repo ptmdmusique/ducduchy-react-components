@@ -45,7 +45,7 @@ const Template: Story<MenuData> = (args) => {
         onItemChosen={setChosenItem}
         menuOpenerProps={{ children: "Click Me!" }}
         renderItemContent={(item) => (
-          <div className="w-full text-lg py-2 px-4 text-skin-base">
+          <div className="w-full py-2 px-4 text-skin-base">
             {item.label}
           </div>
         )}
