@@ -1,7 +1,6 @@
 import { Meta, Story } from "@storybook/react";
-import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { Dropdown, DropdownProps } from ".";
+import { Listbox, ListboxProps } from ".";
 import { storyDisabledOption } from "../resources/story-common";
 import { StorybookCommonWithForm } from "../resources/StorybookCommonWithForm";
 
@@ -12,11 +11,11 @@ const optionList = [
   { label: "🐱 Cat", value: "my value 4" },
 ];
 
-type DropdownData = DropdownProps<string>;
+type ListboxData = ListboxProps<string>;
 
-const meta: Meta<DropdownData> = {
-  title: "Components/Form/Dropdown",
-  component: Dropdown,
+const meta: Meta<ListboxData> = {
+  title: "Components/Form/Listbox",
+  component: Listbox,
   argTypes: {
     className: storyDisabledOption,
     placeholder: storyDisabledOption,
@@ -32,28 +31,28 @@ const meta: Meta<DropdownData> = {
 
 export default meta;
 
-const Template: Story<DropdownData> = (args) => <Dropdown {...args} />;
+const Template: Story<ListboxData> = (args) => <Listbox {...args} />;
 export const Default = Template.bind({});
 Default.args = {
   label: "A label",
   optionList,
 };
 
-export const MultiValueDropdown = Template.bind({});
-MultiValueDropdown.args = {
+export const MultiValueListbox = Template.bind({});
+MultiValueListbox.args = {
   label: "A label",
   optionList,
   isMulti: true,
 };
 
-const TemplateWithForm: Story<DropdownData> = (args) => {
+const TemplateWithForm: Story<ListboxData> = (args) => {
   const methods = useForm();
   return (
     <FormProvider {...methods}>
       <StorybookCommonWithForm>
-        <Dropdown
+        <Listbox
           {...args}
-          formValidation={{ control: methods.control, name: "dropdown" }}
+          formValidation={{ control: methods.control, name: "listbox" }}
         />
       </StorybookCommonWithForm>
     </FormProvider>

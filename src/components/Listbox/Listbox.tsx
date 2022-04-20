@@ -1,5 +1,5 @@
 import cx from "classnames";
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { Controller } from "react-hook-form";
 import Select, {
   ActionMeta,
@@ -7,13 +7,14 @@ import Select, {
   GroupBase,
   MultiValue,
   Props as SelectProps,
-  SingleValue
+  SingleValue,
 } from "react-select";
 import { OmitStrict } from "../../utils/types";
 import { FadeTransition } from "../animation/CustomTransition";
 import { Icon } from "../Icon";
 import { FormValidationWithController } from "../resources/form/types";
-import "./Dropdown.scss";
+import "./Listbox.scss";
+import React from "react";
 
 type Option<Data> = { label: string; value: Data };
 type OnChange<Data, IsMulti extends boolean> = (
@@ -21,7 +22,7 @@ type OnChange<Data, IsMulti extends boolean> = (
 ) => void;
 type OptionType<D> = D | GroupBase<D>;
 
-export interface DropdownProps<
+export interface ListboxProps<
   Data,
   IsMulti extends boolean = boolean,
   Form = any,
@@ -63,7 +64,7 @@ function getValue<Data, IsMulti extends boolean>(
     : (data as SingleValue<Option<Data>>)?.value ?? undefined;
 }
 
-export function Dropdown<Data, IsMulti extends boolean = false, Form = any>({
+export function Listbox<Data, IsMulti extends boolean = false, Form = any>({
   label,
   optionList,
   placeholder,
@@ -78,7 +79,7 @@ export function Dropdown<Data, IsMulti extends boolean = false, Form = any>({
   className,
   dropdownIndicatorIcon = ["fas", "chevron-down"],
   ...selectProps
-}: DropdownProps<Data, IsMulti, Form>) {
+}: ListboxProps<Data, IsMulti, Form>) {
   const hasError = state === "error";
 
   const renderContent = (formOnChange?: OnChange<Data, IsMulti>) => {
@@ -100,8 +101,8 @@ export function Dropdown<Data, IsMulti extends boolean = false, Form = any>({
     return (
       <div
         className={cx(
-          "form-dropdown",
-          { "form-dropdown--disabled": disabled },
+          "form-listbox",
+          { "form-listbox--disabled": disabled },
           className,
         )}
       >
@@ -121,13 +122,13 @@ export function Dropdown<Data, IsMulti extends boolean = false, Form = any>({
             isMulti={isMulti}
             isDisabled={disabled}
             className={cx(
-              "form-dropdown",
-              { "form-dropdown--fill": type === "fill" },
-              { "form-dropdown--outline": type === "outline" },
+              "form-listbox",
+              { "form-listbox--fill": type === "fill" },
+              { "form-listbox--outline": type === "outline" },
             )}
             options={optionList}
             onChange={onChangeWrapper}
-            classNamePrefix="form-dropdown"
+            classNamePrefix="form-listbox"
             placeholder={placeholder}
             // TODO: possibly dissect this more
             isOptionDisabled={() => (disabled ? true : false)}

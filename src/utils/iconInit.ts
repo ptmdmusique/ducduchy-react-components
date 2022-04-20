@@ -22,8 +22,9 @@ export const initializeIconList = () => {
     faChevronDown,
     faCalendarAlt,
     faTimes,
-  ];
+  ] as const;
 
   // Set up icon libraries
+  // @ts-ignore
   library.add(...iconList);
 };

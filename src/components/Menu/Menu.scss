@@ -1,0 +1,34 @@
+.duc-duchy-menu {
+  @apply relative;
+
+  &__item-container {
+    @apply ring-1 ring-skin-inverted ring-opacity-5;
+    @apply absolute left-0 origin-top-left;
+    @apply divide-y divide-skin-disabled;
+    @apply rounded-md shadow-lg;
+    @apply bg-skin-top;
+    @apply w-56 mt-2;
+
+    &:focus {
+      @apply outline-none;
+    }
+
+    &--right {
+      @apply right-0 left-auto origin-top-right;
+    }
+  }
+
+  &__item {
+    &:hover {
+      @apply cursor-pointer;
+    }
+
+    &--disabled {
+      @apply bg-skin-disabled;
+    }
+
+    &--active {
+      @apply bg-skin-base bg-opacity-5;
+    }
+  }
+}
