@@ -59,7 +59,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref,
   ) => {
-    const myId = useRef(`input---${nanoid()}`);
+    const myId = useRef(inputProps?.id ?? `input---${nanoid()}`);
     const hasError = state === "error";
 
     const debounceRef = useRef(
@@ -99,9 +99,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     };
 
     const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-      setHasContent(
-        inputProps?.placeholder != null || event.target.value != null,
-      );
+      setHasContent(!!inputProps?.placeholder || !!event.target.value);
       debounceRef.current(event);
     };
 
@@ -143,8 +141,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           {renderAdornment(leadingAdornment, true)}
           <label htmlFor={myId.current}>{label}</label>
           <input
-            id={myId.current}
             {...inputProps}
+            id={myId.current}
             ref={ref}
             onChange={onInputChange}
           />

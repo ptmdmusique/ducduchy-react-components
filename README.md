@@ -15,8 +15,9 @@
 ### Local development
 
 1. make sure to run `npm install` once to install dependencies
-2. run `npm storybook` to start the server
-3. to add more components, say `MyComponent`:
+2. run `npm run storybook` to start the server
+3. default port is 6006, so head to http://localhost:6006/ once it finishes loading
+4. to add more components, say `MyComponent`:
    - create a folder `src/components/MyComponent`
    - create component file `src/components/MyComponent/MyComponent.tsx`
    - create story file `src/components/MyComponent/MyComponent.stories.tsx`
