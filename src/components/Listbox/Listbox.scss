@@ -1,6 +1,6 @@
 @import "../assets/styles/form-common.scss";
 
-.form-dropdown {
+.form-listbox {
   &--disabled {
     @apply cursor-not-allowed;
   }
@@ -15,9 +15,9 @@
     > label {
       @extend .label;
     }
-    > .form-dropdown {
-      > .form-dropdown__control,
-      > .form-dropdown__menu {
+    > .form-listbox {
+      > .form-listbox__control,
+      > .form-listbox__menu {
         @apply bg-transparent;
         @apply shadow-none;
         @apply border-none;
@@ -28,7 +28,7 @@
           @apply cursor-not-allowed;
         }
       }
-      > .form-dropdown__control {
+      > .form-listbox__control {
         @apply flex justify-between;
         @apply cursor-pointer;
         @apply pl-4 pr-2;
@@ -37,23 +37,23 @@
           @apply pr-4;
         }
 
-        > .form-dropdown__value-container {
+        > .form-listbox__value-container {
           @apply px-0;
-          > .form-dropdown__placeholder,
-          > .form-dropdown__single-value,
-          > .form-dropdown__multi-value {
+          > .form-listbox__placeholder,
+          > .form-listbox__single-value,
+          > .form-listbox__multi-value {
             @apply text-skin-base;
             @apply duration-100;
           }
-          > .form-dropdown__placeholder {
+          > .form-listbox__placeholder {
             @apply opacity-50;
           }
-          > .form-dropdown__multi-value {
+          > .form-listbox__multi-value {
             @apply bg-skin-base bg-opacity-5;
             @apply rounded-md;
             @apply px-2;
 
-            > .form-dropdown__multi-value__label {
+            > .form-listbox__multi-value__label {
               @apply text-skin-base text-base;
               &:not(:only-child) {
                 @apply mr-2;
@@ -61,46 +61,46 @@
             }
           }
         }
-        > .form-dropdown__indicators > .icon {
+        > .form-listbox__indicators > .icon {
           @apply text-skin-base;
           @apply duration-100;
           @apply opacity-50;
           @apply ml-2;
         }
         &--menu-is-open {
-          > .form-dropdown__indicators > .icon {
+          > .form-listbox__indicators > .icon {
             @apply transform rotate-180;
           }
         }
         &--is-focused,
         &:hover {
-          > .form-dropdown__indicators > .icon {
+          > .form-listbox__indicators > .icon {
             @apply opacity-100;
           }
         }
         &--is-focused {
           @apply bg-opacity-70;
-          > .form-dropdown__value-container {
-            > .form-dropdown__placeholder {
+          > .form-listbox__value-container {
+            > .form-listbox__placeholder {
               @apply opacity-100;
             }
           }
         }
       }
-      > .form-dropdown__menu {
+      > .form-listbox__menu {
         @apply bg-skin-overflow-menu;
         @apply duration-100;
         @apply shadow-md;
         @apply mt-0;
-        .form-dropdown__option,
-        .form-dropdown__title {
+        .form-listbox__option,
+        .form-listbox__title {
           @apply text-skin-base;
           @apply pl-4 pr-2;
           @screen lg {
             @apply pr-4;
           }
         }
-        .form-dropdown__option {
+        .form-listbox__option {
           &--is-selected,
           &--is-focused {
             @apply bg-skin-active;
@@ -108,7 +108,7 @@
           &--is-selected {
             @apply bg-skin-active;
           }
-          &--is-focused:not(.form-dropdown__option--is-selected) {
+          &--is-focused:not(.form-listbox__option--is-selected) {
             @apply bg-opacity-50;
           }
         }
