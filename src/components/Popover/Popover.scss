@@ -1,0 +1,7 @@
+.dd-popover {
+  &__panel {
+    @apply bg-skin-top;
+    @apply rounded-md;
+    @apply shadow-lg;
+  }
+}

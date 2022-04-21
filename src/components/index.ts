@@ -6,5 +6,7 @@ export * from "./Input";
 export * from "./Listbox";
 export * from "./Menu";
 export * from "./Modal";
+export * from "./Popover";
 export * from "./RadioGroup";
 export * from "./Toggle";
+
