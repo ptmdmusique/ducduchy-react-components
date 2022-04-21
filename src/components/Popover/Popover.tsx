@@ -1,4 +1,3 @@
-import { ComputePositionConfig } from "@floating-ui/react-dom";
 import { Popover as LibPopover } from "@headlessui/react";
 import cx from "classnames";
 import { Float } from "headlessui-float-react";
@@ -29,14 +28,16 @@ export interface PopoverProps<T extends React.ElementType = "div"> {
 
   popoverPanelProps?: Parameters<typeof LibPopover.Panel>[0];
 
-  popperProps?: Parameters<typeof Float>[0];
+  popperProps?: Partial<Parameters<typeof Float>[0]>;
 }
 
 // TODO: add ref access
-/** Note, the menu dropdown is relative to the outer container
- *
- * To close popover manually, add a Popover.Button from @headlessui/react
+/**
+ * To close popover manually, add a PopoverButton (or Popover.Button from @headlessui/react)
  * https://headlessui.dev/react/popover#closing-popovers-manually
+ *
+ * To group with other Popover, wrap the Popover in a PopoverGroup (or Popover.Group from @headlessui/react)
+ * https://headlessui.dev/react/popover#grouping-related-popovers
  */
 export function Popover<ContainerAs extends React.ElementType = "div">({
   popoverContainerAs,
@@ -57,7 +58,7 @@ export function Popover<ContainerAs extends React.ElementType = "div">({
         // @ts-ignore
         <Float
           placement="bottom-start"
-          offset={15}
+          offset={8}
           shift
           flip
           portal
@@ -93,3 +94,6 @@ export function Popover<ContainerAs extends React.ElementType = "div">({
     </LibPopover>
   );
 }
+
+export const PopoverButton = LibPopover.Button;
+export const PopoverGroup = LibPopover.Group;
