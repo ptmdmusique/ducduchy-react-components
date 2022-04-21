@@ -33,10 +33,12 @@ export interface PopoverProps<T extends React.ElementType = "div"> {
 
 // TODO: add ref access
 /**
- * To close popover manually, add a PopoverButton (or Popover.Button from @headlessui/react)
+ * TODO: improve this export
+ *
+ * To close popover manually, add a Popover.Button from @headlessui/react
  * https://headlessui.dev/react/popover#closing-popovers-manually
  *
- * To group with other Popover, wrap the Popover in a PopoverGroup (or Popover.Group from @headlessui/react)
+ * To group with other Popover, wrap the Popover in a Popover.Group from @headlessui/react
  * https://headlessui.dev/react/popover#grouping-related-popovers
  */
 export function Popover<ContainerAs extends React.ElementType = "div">({
@@ -94,6 +96,3 @@ export function Popover<ContainerAs extends React.ElementType = "div">({
     </LibPopover>
   );
 }
-
-export const PopoverButton = LibPopover.Button;
-export const PopoverGroup = LibPopover.Group;

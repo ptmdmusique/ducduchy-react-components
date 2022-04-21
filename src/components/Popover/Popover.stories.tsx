@@ -3,6 +3,7 @@ import { Meta, Story } from "@storybook/react";
 import { Icon } from "../Icon";
 import { storyDisabledOption } from "../resources/story-common";
 import { Popover, PopoverProps } from "./Popover";
+import { Popover as LibPopover } from "@headlessui/react";
 
 type PopoverData = PopoverProps & { placement: Placement };
 const placement = [
@@ -127,10 +128,10 @@ const GroupTemplate: Story<PopoverData> = (args) => {
   return (
     <div className="w-[40rem] h-[30rem] flex flex-col justify-center items-center">
       <p className="text-skin-base mb-12">
-        Try placement with screen responsive to see Popover in action!
+        Notice how Popover doesn't close when tabbing other Opener
       </p>
 
-      <div className="flex border border-skin-base border-opacity-40 divide-x divide-skin-disabled rounded-lg">
+      <LibPopover.Group className="flex border border-skin-base border-opacity-40 divide-x divide-skin-disabled rounded-lg">
         {dataList.map((data, index) => (
           <Popover
             {...args}
@@ -158,7 +159,7 @@ const GroupTemplate: Story<PopoverData> = (args) => {
             </div>
           </Popover>
         ))}
-      </div>
+      </LibPopover.Group>
     </div>
   );
 };
