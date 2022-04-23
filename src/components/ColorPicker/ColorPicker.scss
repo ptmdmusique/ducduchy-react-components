@@ -1,0 +1,47 @@
+.color-picker {
+  @apply flex items-center;
+
+  .color-indicator {
+    @apply rounded-md;
+    @apply shadow-md;
+    @apply w-6 h-6;
+    @apply mr-2;
+  }
+}
+
+.color-picker__popover-outer {
+  @apply flex items-center;
+}
+
+.color-picker__popover {
+  @apply divide-y divide-skin-disabled;
+  @apply bg-skin-top;
+  @apply rounded-lg;
+
+  &--has-freq-list {
+    .react-colorful__last-control {
+      @apply rounded-b-none;
+    }
+  }
+
+  > .freq-used-color-container {
+    @apply grid gap-2;
+    @apply p-2 mt-2;
+    grid-template-columns: repeat(auto-fill, minmax(theme("width.6"), 1fr));
+
+    > .freq-used-color {
+      @apply duration-200;
+      @apply rounded-md;
+      @apply w-6 h-6;
+
+      &:focus {
+        @apply ring ring-skin-secondary;
+        outline: none;
+      }
+
+      &--selected {
+        @apply transform scale-75;
+      }
+    }
+  }
+}

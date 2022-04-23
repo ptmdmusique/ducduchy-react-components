@@ -24,7 +24,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   leadingAdornment?: FormAdornment;
   leadingAdornmentOnClick?: () => void;
   trailingAdornment?: FormAdornment;
-  traillingAdornmentOnClick?: () => void;
+  trailingAdornmentOnClick?: () => void;
 
   debounceParam?: {
     /** in millisecond */
@@ -52,7 +52,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       leadingAdornment,
       leadingAdornmentOnClick,
       trailingAdornment,
-      traillingAdornmentOnClick,
+      trailingAdornmentOnClick,
       debounceParam,
       className,
       ...inputProps
@@ -79,7 +79,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         "adornment-icon-left": left,
       });
 
-      let onClick = traillingAdornmentOnClick;
+      let onClick = trailingAdornmentOnClick;
       if (left) {
         onClick = leadingAdornmentOnClick;
       }

@@ -104,7 +104,7 @@ export function DatePicker<Form>({
               : value
           }
           trailingAdornment={clearDateIcon}
-          traillingAdornmentOnClick={clearValue}
+          trailingAdornmentOnClick={clearValue}
           leadingAdornment={calendarLeadingIcon}
           disabled={disabled}
           readOnly={disabled}
