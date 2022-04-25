@@ -1,11 +1,12 @@
 import cx from "classnames";
 import { nanoid } from "nanoid";
-import React, {
+import {
   ChangeEvent,
   forwardRef,
   InputHTMLAttributes,
   ReactNode,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -62,6 +63,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const myId = useRef(inputProps?.id ?? `input---${nanoid()}`);
     const hasError = state === "error";
 
+    const inputRef = useRef<HTMLInputElement>();
+
     const debounceRef = useRef(
       debounce((event: ChangeEvent<HTMLInputElement>) => {
         inputProps?.onChange?.(event);
@@ -105,11 +108,23 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
 
     useEffect(() => {
       setHasContent(
-        inputProps?.value != null ||
-          inputProps?.defaultValue != null ||
-          inputProps?.placeholder != null,
+        !!inputProps?.value ||
+          !!inputProps?.defaultValue ||
+          !!inputProps?.placeholder,
       );
     }, [inputProps?.value, inputProps?.placeholder, inputProps?.defaultValue]);
+
+    useLayoutEffect(() => {
+      // ! Workaround for auto-filling and manually setting input's `value`
+      setTimeout(() => {
+        setHasContent(
+          !!inputProps?.value ||
+            !!inputProps?.defaultValue ||
+            !!inputProps?.placeholder ||
+            !!inputRef.current?.value,
+        );
+      }, 1);
+    }, []);
 
     useEffect(() => {
       const debouncer = debounceRef.current;
@@ -143,7 +158,17 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           <input
             {...inputProps}
             id={myId.current}
-            ref={ref}
+            ref={(ele) => {
+              inputRef.current = ele ?? undefined;
+
+              if (ref) {
+                if (typeof ref === "function") {
+                  ref(ele);
+                } else {
+                  ref.current = ele;
+                }
+              }
+            }}
             onChange={onInputChange}
           />
         </div>
