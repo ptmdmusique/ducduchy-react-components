@@ -4,7 +4,7 @@ import { Float } from "headlessui-float-react";
 import React from "react";
 import { OmitStrict } from "../../utils/types";
 import { Button, ButtonProps } from "../Button";
-import { COMPONENT_PREFIX } from "../main/data";
+import { COMPONENT_PREFIX } from "../resources/common.data";
 import "./Popover.scss";
 
 export interface PopoverProps<T extends React.ElementType = "div"> {

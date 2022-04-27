@@ -3,7 +3,7 @@ import cx from "classnames";
 import React, { Fragment } from "react";
 import { OmitStrict } from "../../utils/types";
 import { Button, ButtonProps } from "../Button";
-import { COMPONENT_PREFIX } from "../main/data";
+import { COMPONENT_PREFIX } from "../resources/common.data";
 import "./Menu.scss";
 
 export interface MenuProps<Item, T extends React.ElementType = "div"> {

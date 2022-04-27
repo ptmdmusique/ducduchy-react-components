@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+- Slider (#16)
+
+### FIxed
+
+- Input's `hasContent` and active behavior (#12)
+
+## [1.0.11] - 2022-04-22
+
+### Added
+
 - ColorPicker
 
 ## [1.0.5] - 2022-17-01
