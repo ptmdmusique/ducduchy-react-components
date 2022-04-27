@@ -2,6 +2,7 @@ import { FC } from "react";
 import "./components/assets/styles/index.scss";
 import "./components/assets/styles/theme.scss";
 import { initializeIconList } from "./utils/iconInit";
+import React from "react";
 
 initializeIconList();
 
