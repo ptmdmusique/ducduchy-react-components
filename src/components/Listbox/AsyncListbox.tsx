@@ -1,9 +1,6 @@
 import cx from "classnames";
-import Select, {
-  CommonProps as CommonSelectProps,
-  GroupBase,
-  Props as SelectProps,
-} from "react-select";
+import { GroupBase } from "react-select";
+import AsyncSelect, { AsyncProps } from "react-select/async";
 import { OmitStrict } from "../../utils/types";
 import { Icon } from "../Icon";
 import {
@@ -13,31 +10,26 @@ import {
   listBoxOnChange,
   ListboxOption,
 } from "./common";
-import "./Listbox.scss";
 import { ListboxBase, ListboxBaseProps } from "./ListboxBase";
 
-export type ListboxProps<Data, IsMulti extends boolean = boolean, Form = any> =
-  OmitStrict<
-    Partial<
-      // TODO: handle this any
-      CommonSelectProps<ListboxOption<Data>, IsMulti, any> &
-        SelectProps<
-          ListboxOption<Data>,
-          IsMulti,
-          GroupBase<ListboxOption<Data>>
-        >
-    >,
-    "onChange"
-  > &
-    ListboxBaseProps<Data, IsMulti, Form>;
+export type AsyncListboxProps<
+  Data,
+  IsMulti extends boolean = boolean,
+  Form = any,
+> = OmitStrict<
+  Partial<
+    AsyncProps<ListboxOption<Data>, IsMulti, GroupBase<ListboxOption<Data>>>
+  >,
+  "onChange"
+> &
+  ListboxBaseProps<Data, IsMulti, Form>;
 
-export function Listbox<Data, IsMulti extends boolean = false, Form = any>(
-  props: ListboxProps<Data, IsMulti, Form>,
+export function AsyncListbox<Data, IsMulti extends boolean = false, Form = any>(
+  props: AsyncListboxProps<Data, IsMulti, Form>,
 ) {
   const {
     label,
     optionList,
-    placeholder,
     disabled,
     onChange,
     formValidation,
@@ -53,7 +45,7 @@ export function Listbox<Data, IsMulti extends boolean = false, Form = any>(
   return (
     <ListboxBase {...props}>
       {(formOnChange) => (
-        <Select<ListboxOption<Data>, IsMulti>
+        <AsyncSelect<ListboxOption<Data>, IsMulti>
           isOptionDisabled={() => (disabled ? true : false)}
           noOptionsMessage={listboxNoOptionMessage}
           {...selectProps}

@@ -5,7 +5,7 @@
     @apply cursor-not-allowed;
   }
 
-  > .dropdown-container {
+  > .listbox-container {
     @extend .form-common-container, .form-bg--filled;
     @apply relative;
 
@@ -28,6 +28,7 @@
           @apply cursor-not-allowed;
         }
       }
+
       > .form-listbox__control {
         @apply flex justify-between;
         @apply cursor-pointer;
@@ -60,13 +61,22 @@
               }
             }
           }
+
+          > .form-listbox__input-container {
+            @apply text-skin-base;
+          }
         }
-        > .form-listbox__indicators > .icon {
-          @apply text-skin-base;
-          @apply duration-100;
-          @apply opacity-50;
-          @apply ml-2;
+
+        > .form-listbox__indicators {
+          > .icon,
+          > .form-listbox__indicator {
+            @apply text-skin-base;
+            @apply duration-100;
+            @apply opacity-50;
+            @apply ml-2;
+          }
         }
+
         &--menu-is-open {
           > .form-listbox__indicators > .icon {
             @apply transform rotate-180;
@@ -112,6 +122,10 @@
             @apply bg-opacity-50;
           }
         }
+
+        .form-listbox__menu-notice--loading {
+          @apply text-skin-base;
+        }
       }
     }
 
@@ -131,7 +145,7 @@
         @apply border-b;
       }
       &:focus-within,
-      &.dropdown-container--has-content {
+      &.listbox-container--has-content {
         > label {
           @extend .label-float;
           transform: translateY(-145%) scale(0.75) !important;
@@ -149,7 +163,7 @@
         @apply border;
       }
       &:focus-within,
-      &.dropdown-container--has-content {
+      &.listbox-container--has-content {
         & > label {
           @extend .label-float--outline;
         }
