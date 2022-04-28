@@ -31,6 +31,7 @@ export type SliderProps = OmitStrict<
   renderMark?: RangeProps["renderMark"];
   renderTrack?: RangeProps["renderTrack"];
   renderThumb?: RangeProps["renderThumb"];
+  renderThumbValue?: (value: number) => React.ReactNode;
 };
 
 const BASE_CLASSNAME = `${COMPONENT_PREFIX}-slider`;
@@ -45,7 +46,18 @@ const BASE_CLASSNAME = `${COMPONENT_PREFIX}-slider`;
  * TODO: Support rtl and vertical
  */
 export const Slider = forwardRef<Range, SliderProps>(
-  ({ className, useDefaultMark, valueList, min, max, ...sliderProps }, ref) => {
+  (
+    {
+      className,
+      useDefaultMark,
+      valueList,
+      min,
+      max,
+      renderThumbValue,
+      ...sliderProps
+    },
+    ref,
+  ) => {
     const { trackLeft, trackRight } = useMemo<{
       trackLeft: number;
       trackRight: number;
@@ -107,7 +119,9 @@ export const Slider = forwardRef<Range, SliderProps>(
                 [`${BASE_CLASSNAME}__thumb--disabled`]: sliderProps?.disabled,
               })}
             >
-              <p className="thumb__value">{value}</p>
+              {renderThumbValue?.(value) ?? (
+                <p className="thumb__value">{value}</p>
+              )}
             </div>
           )}
           renderMark={
