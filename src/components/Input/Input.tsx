@@ -1,6 +1,6 @@
 import cx from "classnames";
 import { nanoid } from "nanoid";
-import React, {
+import {
   ChangeEvent,
   forwardRef,
   InputHTMLAttributes,
@@ -8,7 +8,7 @@ import React, {
   useEffect,
   useLayoutEffect,
   useRef,
-  useState,
+  useState
 } from "react";
 import { debounce } from "../../utils/lodash/debounce";
 import { FadeTransition } from "../animation/CustomTransition";

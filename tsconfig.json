@@ -3,6 +3,7 @@
   "extends": "@tsconfig/create-react-app/tsconfig.json",
   "include": ["src", "types"],
   "compilerOptions": {
+    "jsx": "react-jsx",
     "paths": {
       "@emotion/core": ["./src/@types/emotion-core-stub.d.ts"]
     }
