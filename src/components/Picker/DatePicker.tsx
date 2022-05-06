@@ -12,7 +12,6 @@ import { FormValidationWithController } from "../resources/form/types";
 import "./DatePicker.scss";
 import { PickerBase, PickerBaseProps } from "./PickerBase";
 
-type OnChange = (newDate: Date) => void;
 export type DatePickerProps<Form = any> = PickerBaseProps<Form> &
   ReactDatePickerProps & {
     label?: string;
@@ -62,82 +61,9 @@ export function DatePicker<Form>({
     }
   };
 
-  const renderContent = (formOnChange?: OnChange) => {
-    const onChangeWrapper: OnChangeDateCallback = (newDate, event) => {
-      closeDropdown();
-
-      setValue(newDate);
-      formOnChange?.(newDate);
-      onChange?.(newDate, event);
-    };
-
-    return (
-      <div className="form-date-picker">
-        <ReactDatePicker
-          {...datePickerProps}
-          onCalendarOpen={() => {
-            if (disabled) {
-              return;
-            }
-
-            datePickerProps.onCalendarOpen?.();
-            openDropdown();
-          }}
-          onCalendarClose={() => {
-            datePickerProps.onCalendarClose?.();
-            closeDropdown();
-          }}
-          isOpen={dropdownOpen}
-          value={typeof value !== "string" ? value : undefined}
-          onChange={onChangeWrapper}
-          disabled={disabled}
-        />
-
-        {/* <Input
-          label={label}
-          onClick={toggleDropdown}
-          value={
-            typeof value !== "string"
-              ? formatDate(
-                  Array.isArray(value)
-                    ? formatDateRange(value, displayDateFormat)
-                    : value,
-                  displayDateFormat,
-                )
-              : value
-          }
-          trailingAdornment={clearDateIcon}
-          trailingAdornmentOnClick={clearValue}
-          leadingAdornment={calendarLeadingIcon}
-          disabled={disabled}
-          readOnly={disabled}
-          state={state}
-          caption={caption}
-          captionIcon={captionIcon}
-        /> */}
-      </div>
-    );
-  };
-
-  // if (!formValidation) {
-  //   return renderContent();
-  // }
-
-  // const { control, name, rules } = formValidation;
-  // // TODO: Figure out this ignore
-  // return (
-  //   <Controller
-  //     name={name}
-  //     rules={rules}
-  //     control={control}
-  //     // @ts-ignore
-  //     defaultValue={value}
-  //     render={({ field: { onChange } }) => renderContent(onChange)}
-  //   />
-  // );
-
   return (
     <PickerBase
+      className="form-date-picker"
       disabled={disabled}
       formValidation={formValidation}
       toggleDropdown={toggleDropdown}
@@ -169,27 +95,25 @@ export function DatePicker<Form>({
         };
 
         return (
-          <>
-            <ReactDatePicker
-              {...datePickerProps}
-              onCalendarOpen={() => {
-                if (disabled) {
-                  return;
-                }
+          <ReactDatePicker
+            {...datePickerProps}
+            onCalendarOpen={() => {
+              if (disabled) {
+                return;
+              }
 
-                datePickerProps.onCalendarOpen?.();
-                openDropdown();
-              }}
-              onCalendarClose={() => {
-                datePickerProps.onCalendarClose?.();
-                closeDropdown();
-              }}
-              isOpen={dropdownOpen}
-              value={typeof value !== "string" ? value : undefined}
-              onChange={onChangeWrapper}
-              disabled={disabled}
-            />
-          </>
+              datePickerProps.onCalendarOpen?.();
+              openDropdown();
+            }}
+            onCalendarClose={() => {
+              datePickerProps.onCalendarClose?.();
+              closeDropdown();
+            }}
+            isOpen={dropdownOpen}
+            value={typeof value !== "string" ? value : undefined}
+            onChange={onChangeWrapper}
+            disabled={disabled}
+          />
         );
       }}
     </PickerBase>

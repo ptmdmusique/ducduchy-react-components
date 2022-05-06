@@ -34,12 +34,14 @@ export function PickerBase<Form>({
   toggleDropdown,
   children,
   disabled,
+  className,
 }: PickerBaseProps<Form> & {
   children: (formOnChange?: OnChange) => React.ReactNode;
+  className: string;
 }) {
   const renderContent = (formOnChange?: OnChange) => {
     return (
-      <div className="form-date-picker">
+      <div className={className}>
         {children(formOnChange)}
 
         <Input

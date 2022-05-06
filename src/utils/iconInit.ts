@@ -3,6 +3,7 @@ import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons/faCalendarAlt";
 import { faCat } from "@fortawesome/free-solid-svg-icons/faCat";
 import { faCheck } from "@fortawesome/free-solid-svg-icons/faCheck";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
+import { faClock } from "@fortawesome/free-solid-svg-icons/faClock";
 import { faDog } from "@fortawesome/free-solid-svg-icons/faDog";
 import { faFileAudio } from "@fortawesome/free-solid-svg-icons/faFileAudio";
 import { faHandPeace } from "@fortawesome/free-solid-svg-icons/faHandPeace";
@@ -26,6 +27,7 @@ export const initializeIconList = () => {
     faCalendarAlt,
     faTimes,
     faTrash,
+    faClock,
   ] as const;
 
   // Set up icon libraries

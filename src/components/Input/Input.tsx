@@ -23,7 +23,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   caption?: ReactNode;
   captionIcon?: [string, string];
   state?: "normal" | "error";
-  label?: string;
+  label?: ReactNode;
   leadingAdornment?: FormAdornment;
   leadingAdornmentOnClick?: () => void;
   trailingAdornment?: FormAdornment;
