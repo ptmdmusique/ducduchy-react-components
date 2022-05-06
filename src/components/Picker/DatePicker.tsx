@@ -3,27 +3,28 @@ import { OnChangeDateCallback } from "react-calendar";
 import ReactDatePicker, {
   DatePickerProps as ReactDatePickerProps,
 } from "react-date-picker";
-import { Controller } from "react-hook-form";
 import {
   formatDate,
   formatDateRange,
   getDatePlaceholder,
 } from "../../utils/date";
-import { Input } from "../Input";
 import { FormValidationWithController } from "../resources/form/types";
 import "./DatePicker.scss";
+import { PickerBase, PickerBaseProps } from "./PickerBase";
 
 type OnChange = (newDate: Date) => void;
-export interface DatePickerProps<Form = any> extends ReactDatePickerProps {
-  label?: string;
-  formValidation?: FormValidationWithController<Form>;
-  onChange?: (date: Date, event: React.ChangeEvent<HTMLInputElement>) => void;
-  caption?: ReactNode;
-  captionIcon?: [string, string];
-  state?: "normal" | "error";
-  calendarLeadingIcon?: [string, string];
-  clearDateIcon?: [string, string];
-}
+export type DatePickerProps<Form = any> = PickerBaseProps<Form> &
+  ReactDatePickerProps & {
+    label?: string;
+    formValidation?: FormValidationWithController<Form>;
+    onChange?: (date: Date, event: React.ChangeEvent<HTMLInputElement>) => void;
+    caption?: ReactNode;
+    captionIcon?: [string, string];
+    state?: "normal" | "error";
+    calendarLeadingIcon?: [string, string];
+    clearDateIcon?: [string, string];
+    displayDateFormat?: string;
+  };
 
 export function DatePicker<Form>({
   label,
@@ -37,6 +38,7 @@ export function DatePicker<Form>({
   state,
   calendarLeadingIcon = ["fas", "calendar-alt"],
   clearDateIcon = ["fas", "times"],
+  displayDateFormat,
   ...datePickerProps
 }: DatePickerProps<Form>) {
   const [value, setValue] = useState<Date | Date[] | string>(
@@ -59,8 +61,6 @@ export function DatePicker<Form>({
       setValue(getDatePlaceholder());
     }
   };
-
-  // TODO: Link i18n
 
   const renderContent = (formOnChange?: OnChange) => {
     const onChangeWrapper: OnChangeDateCallback = (newDate, event) => {
@@ -93,13 +93,16 @@ export function DatePicker<Form>({
           disabled={disabled}
         />
 
-        <Input
+        {/* <Input
           label={label}
           onClick={toggleDropdown}
           value={
             typeof value !== "string"
               ? formatDate(
-                  Array.isArray(value) ? formatDateRange(value) : value,
+                  Array.isArray(value)
+                    ? formatDateRange(value, displayDateFormat)
+                    : value,
+                  displayDateFormat,
                 )
               : value
           }
@@ -111,25 +114,84 @@ export function DatePicker<Form>({
           state={state}
           caption={caption}
           captionIcon={captionIcon}
-        />
+        /> */}
       </div>
     );
   };
 
-  if (!formValidation) {
-    return renderContent();
-  }
+  // if (!formValidation) {
+  //   return renderContent();
+  // }
 
-  const { control, name, rules } = formValidation;
-  // TODO: Figure out this ignore
+  // const { control, name, rules } = formValidation;
+  // // TODO: Figure out this ignore
+  // return (
+  //   <Controller
+  //     name={name}
+  //     rules={rules}
+  //     control={control}
+  //     // @ts-ignore
+  //     defaultValue={value}
+  //     render={({ field: { onChange } }) => renderContent(onChange)}
+  //   />
+  // );
+
   return (
-    <Controller
-      name={name}
-      rules={rules}
-      control={control}
-      // @ts-ignore
-      defaultValue={value}
-      render={({ field: { onChange } }) => renderContent(onChange)}
-    />
+    <PickerBase
+      disabled={disabled}
+      formValidation={formValidation}
+      toggleDropdown={toggleDropdown}
+      clearValue={clearValue}
+      clearDateIcon={clearDateIcon}
+      calendarLeadingIcon={calendarLeadingIcon}
+      state={state}
+      caption={caption}
+      captionIcon={captionIcon}
+      label={label}
+      value={
+        typeof value !== "string"
+          ? formatDate(
+              Array.isArray(value)
+                ? formatDateRange(value, displayDateFormat)
+                : value,
+              displayDateFormat,
+            )
+          : value
+      }
+    >
+      {(formOnChange) => {
+        const onChangeWrapper: OnChangeDateCallback = (newDate, event) => {
+          closeDropdown();
+
+          setValue(newDate);
+          formOnChange?.(newDate);
+          onChange?.(newDate, event);
+        };
+
+        return (
+          <>
+            <ReactDatePicker
+              {...datePickerProps}
+              onCalendarOpen={() => {
+                if (disabled) {
+                  return;
+                }
+
+                datePickerProps.onCalendarOpen?.();
+                openDropdown();
+              }}
+              onCalendarClose={() => {
+                datePickerProps.onCalendarClose?.();
+                closeDropdown();
+              }}
+              isOpen={dropdownOpen}
+              value={typeof value !== "string" ? value : undefined}
+              onChange={onChangeWrapper}
+              disabled={disabled}
+            />
+          </>
+        );
+      }}
+    </PickerBase>
   );
 }

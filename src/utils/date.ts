@@ -1,6 +1,8 @@
 import dayjs from "dayjs";
 
+export const STANDARD_Time_FORMAT = "HH:mm";
 export const STANDARD_DATE_FORMAT = "DD/MM/YYYY";
+export const STANDARD_DATE_TIME_FORMAT = "DD/MM/YYYY HH:mm";
 
 export const formatDate = (
   date: string | Date,
