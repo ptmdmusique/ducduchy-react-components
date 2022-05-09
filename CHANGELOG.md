@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- DateTimePicker
+- DateTimePicker (#22)
 - MaskedInput (no stories yet)
 - TimePicker (unfinished - unstable)
 - useMediaQuery hook
