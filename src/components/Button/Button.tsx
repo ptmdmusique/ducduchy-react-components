@@ -46,27 +46,36 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           buttonProps.className,
         )}
       >
-        {!isLoading ? (
-          <>
-            {icon && (
-              <Icon
-                icon={icon}
-                className={cx(
-                  "fa-fw",
-                  `${COMPONENT_PREFIX}-button-icon`,
-                  {
-                    [`${COMPONENT_PREFIX}-button-icon--with-children`]:
-                      !!buttonProps.children,
-                  },
-                  iconClassName,
-                )}
-              />
+        {isLoading ? (
+          <Icon
+            icon={loadingIcon ?? ["fas", "spinner"]}
+            className={cx(
+              `fa-fw ${COMPONENT_PREFIX}-button-icon`,
+              {
+                [`${COMPONENT_PREFIX}-button-icon--with-children`]:
+                  !!buttonProps.children,
+              },
+              iconClassName,
             )}
-            {buttonProps.children}
-          </>
+            spin
+          />
         ) : (
-          <Icon icon={loadingIcon ?? ["fas", "spinner"]} spin />
+          icon && (
+            <Icon
+              icon={icon}
+              className={cx(
+                `fa-fw ${COMPONENT_PREFIX}-button-icon`,
+                {
+                  [`${COMPONENT_PREFIX}-button-icon--with-children`]:
+                    !!buttonProps.children,
+                },
+                iconClassName,
+              )}
+            />
+          )
         )}
+
+        {buttonProps.children}
       </button>
     );
   },
