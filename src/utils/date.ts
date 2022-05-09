@@ -17,6 +17,9 @@ export const formatDateRange = (
 // TODO: Support locale for this
 export const getDatePlaceholder = () => "__/__/____";
 
+// TODO: Support locale for this
+export const getTimePlaceholder = () => "__:__";
+
 /** Sort date array IN PLACE */
 export const sortDateArray = <T>({
   myArr,
