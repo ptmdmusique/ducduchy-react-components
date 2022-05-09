@@ -1,78 +1,86 @@
-.form-time-picker {
-  @apply relative;
+.dd-date-time-picker__popper {
+  .MuiCalendarPicker-root,
+  .MuiClockPicker-root {
+    @apply text-skin-base;
+    @apply bg-skin-top;
+  }
 
-  > .react-time-picker {
-    @apply absolute inset-0;
+  .MuiButtonBase-root,
+  .MuiTypography-root {
+    @apply text-skin-base;
+  }
 
-    > .react-time-picker__wrapper {
-      @apply invisible;
+  .MuiPickersDay-root {
+    @apply bg-skin-default;
+
+    &.Mui-selected {
+      @apply text-skin-inverted;
+      @apply bg-skin-secondary;
     }
-    .react-time-picker__calendar {
-      @apply mt-1;
+  }
 
-      > .react-calendar {
-        @apply text-skin-base;
-        @apply bg-skin-top;
-        @apply border-none;
-        @apply rounded-md;
-        @apply shadow-lg;
+  .MuiClockPicker-root {
+    // ! MUI doesnt' provide a clock picker className
+    > *:not(.MuiClockPicker-arrowSwitcher) {
+      > :first-child {
+        // Clock inner
+        @apply bg-skin-default bg-opacity-70;
 
-        .react-calendar__navigation,
-        .react-calendar__tile {
-          @apply duration-200;
+        > :not(:last-child):not(:first-child) {
+          // Clock hand
+          @apply bg-skin-secondary;
         }
-        .react-calendar__tile {
-          @apply relative;
-          &::before {
-            @apply transform -translate-x-1/2 -translate-y-1/2;
-            @apply border border-transparent;
-            @apply absolute top-1/2 left-1/2;
-            @apply rounded-full;
-            @apply duration-200;
-            @apply w-6 h-6;
-            @apply z-0;
-            content: "";
+
+        > :last-child {
+          // Time number container
+          > span {
+            @apply text-skin-base;
+
+            &.Mui-selected {
+              @apply text-skin-inverted;
+              @apply bg-skin-secondary;
+            }
           }
-          > * {
-            @apply relative;
-            @apply text-xs;
-          }
-        }
-        .react-calendar__month-view__days__day--weekend {
-          @apply text-skin-danger;
-        }
-        .react-calendar__month-view__days__day--neighboringMonth {
-          @apply text-skin-base text-opacity-75;
-        }
-        .react-calendar__tile:enabled:hover:not(.react-calendar__tile--active),
-        .react-calendar__tile:enabled:focus:not(.react-calendar__tile--active) {
-          @apply bg-transparent;
-          &::before {
-            @apply border-skin-fill;
-          }
-        }
-        .react-calendar__tile--active {
-          @apply text-skin-inverted;
-          @apply bg-transparent;
-          @apply rounded-full;
-          &::before {
-            @apply bg-skin-fill;
-          }
-        }
-        .react-calendar__year-view__months__month,
-        .react-calendar__decade-view__years__year {
-          &::before {
-            @apply w-full h-full;
-            @apply rounded-none;
-          }
-        }
-        .react-calendar__navigation button:enabled:hover,
-        .react-calendar__navigation button:enabled:focus,
-        .react-calendar__tile--hasActive {
-          @apply text-skin-inverted;
-          @apply bg-skin-fill;
         }
       }
+    }
+
+    > .MuiClockPicker-arrowSwitcher {
+      @apply text-skin-base;
+
+      > .MuiButtonBase-root {
+        &:hover {
+          @apply bg-skin-default bg-opacity-80;
+        }
+
+        &.Mui-disabled {
+          @apply text-skin-disabled;
+        }
+      }
+    }
+  }
+
+  // TODO: find a better way to do this
+  .MuiCalendarPicker-root {
+    > :first-child {
+      // Header
+      > :first-child {
+        > * {
+          @apply text-skin-base;
+
+          > * {
+            @apply text-skin-base;
+          }
+        }
+      }
+    }
+  }
+
+  .MuiDialogActions-root {
+    @apply bg-skin-top;
+
+    .MuiButton-root {
+      @apply text-skin-secondary;
     }
   }
 }

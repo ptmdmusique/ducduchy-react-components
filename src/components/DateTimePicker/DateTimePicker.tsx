@@ -1,20 +1,31 @@
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DateTimePickerProps as MUIDateTimePickerProps } from "@mui/x-date-pickers/DateTimePicker";
-import { DesktopDateTimePicker } from "@mui/x-date-pickers/DesktopDateTimePicker";
+import {
+  DateTimePicker as MUIDateTimePicker,
+  DateTimePickerProps as MUIDateTimePickerProps
+} from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { MobileDateTimePicker } from "@mui/x-date-pickers/MobileDateTimePicker";
 import cx from "classnames";
 import dayjs from "dayjs";
-import { forwardRef, ReactNode, useMemo, useState } from "react";
-import { useMediaQuery } from "../../hooks/useMediaQuery";
-import { formatDate, STANDARD_DATE_TIME_FORMAT } from "../../utils/date";
+import "dayjs/locale/en";
+import "dayjs/locale/vi";
+import { forwardRef, ReactNode, useState } from "react";
+import { Controller } from "react-hook-form";
+import { formatDate } from "../../utils/date";
+import { OmitStrict } from "../../utils/types";
 import { Input, InputProps } from "../Input";
 import { COMPONENT_PREFIX } from "../resources/common.data";
+import { FormValidationWithController } from "../resources/form/types";
 import "./DateTimePicker.scss";
 
 type ValueType = string | null;
+type OnChange = (newDate: Date) => void;
 
-export type DateTimePickerProps = InputProps & {
+const localeDateMap = {
+  en: "MM/DD/YYYY HH:mm",
+  vi: "DD/MM/YYYY HH:mm",
+} as const;
+
+export type DateTimePickerProps = OmitStrict<InputProps, "onChange"> & {
   dateFormat?: string;
   label?: string;
   caption?: ReactNode;
@@ -23,35 +34,35 @@ export type DateTimePickerProps = InputProps & {
   calendarLeadingIcon?: [string, string];
   clearDateIcon?: [string, string];
 
+  locale?: keyof typeof localeDateMap;
+
   timePickerProps?: MUIDateTimePickerProps;
+
+  onChange?: OnChange;
+  formValidation?: FormValidationWithController<any>;
 };
 
 export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
   (
     {
       label,
-      calendarLeadingIcon = ["fas", "clock"],
+      calendarLeadingIcon = ["fas", "calendar-alt"],
       clearDateIcon = ["fas", "times"],
 
       disabled,
       dateFormat,
       timePickerProps,
+
+      locale = "en",
+      formValidation,
+      onChange,
       ...inputProps
     },
     ref,
   ) => {
-    // TODO: add props for this
-    const isLg = useMediaQuery("lg");
-    const Component = useMemo(
-      () => (isLg ? DesktopDateTimePicker : MobileDateTimePicker),
-      [isLg],
-    );
-
+    const finalFormat = dateFormat ?? localeDateMap[locale];
     const [value, setValue] = useState<ValueType>(
-      formatDate(
-        dayjs().toISOString(),
-        dateFormat ?? STANDARD_DATE_TIME_FORMAT,
-      ),
+      formatDate(dayjs().toISOString(), finalFormat),
     );
 
     const [isOpen, setIsOpen] = useState(false);
@@ -68,45 +79,44 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
       }
     };
 
-    return (
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Component
-          value={value}
-          label={label}
-          onChange={(value) => {
-            setValue(
-              formatDate(
-                value as Date,
-                dateFormat ?? STANDARD_DATE_TIME_FORMAT,
-              ),
-            );
-          }}
-          open={isOpen}
-          onClose={closeDropdown}
-          onOpen={openDropdown}
-          disabled={disabled}
-          renderInput={({
-            size: _1,
-            value: _2,
-            InputProps: _3,
-            fullWidth: _4,
-            defaultValue,
-            inputRef: MUIInputRef,
-            inputProps: MUIInputProps,
-            error,
-            ...params
-          }) => {
-            return (
+    const renderContent = (formOnChange?: OnChange) => {
+      return (
+        <LocalizationProvider locale={locale} dateAdapter={AdapterDayjs}>
+          <MUIDateTimePicker
+            value={value}
+            label={label}
+            onChange={(newValue) => {
+              const dateValue = newValue as Date;
+
+              setValue(formatDate(dateValue, finalFormat));
+
+              formOnChange?.(dateValue);
+              onChange?.(dateValue);
+            }}
+            open={isOpen}
+            onClose={closeDropdown}
+            onOpen={openDropdown}
+            disabled={disabled}
+            renderInput={({
+              size: _1,
+              value: _2,
+              InputProps: _3,
+              fullWidth: _4,
+              defaultValue,
+              inputRef: MUIInputRef,
+              inputProps: MUIInputProps,
+              error,
+              ...params
+            }) => (
               <Input
                 {...params}
-                {...MUIInputProps}
-                state={error ? "error" : undefined}
                 value={value ?? undefined}
-                defaultValue={defaultValue as InputProps["value"]}
-                trailingAdornment={value && clearDateIcon}
-                trailingAdornmentOnClick={clearValue}
+                state={error ? "error" : undefined}
                 onClick={openDropdown}
-                {...inputProps}
+                leadingAdornment={calendarLeadingIcon}
+                leadingAdornmentOnClick={openDropdown}
+                trailingAdornment={value ? clearDateIcon : undefined}
+                trailingAdornmentOnClick={clearValue}
                 className={cx(
                   `${COMPONENT_PREFIX}-date-time-picker`,
                   inputProps.className,
@@ -129,12 +139,42 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
                     }
                   }
                 }}
+                {...MUIInputProps}
+                {...inputProps}
               />
-            );
-          }}
-          {...timePickerProps}
-        />
-      </LocalizationProvider>
+            )}
+            ampm={false}
+            {...timePickerProps}
+            PopperProps={{
+              className: cx(
+                `${COMPONENT_PREFIX}-date-time-picker__popper`,
+                timePickerProps?.PaperProps?.className,
+              ),
+              popperOptions: {
+                placement: "bottom-start",
+                modifiers: [{ name: "offset", options: { offset: [0, 5] } }],
+              },
+            }}
+          />
+        </LocalizationProvider>
+      );
+    };
+
+    if (!formValidation) {
+      return renderContent();
+    }
+
+    const { control, name, rules } = formValidation;
+    // TODO: Figure out this ignore
+    return (
+      <Controller
+        name={name}
+        rules={rules}
+        control={control}
+        // @ts-ignore
+        defaultValue={dayjs(value, finalFormat).toDate()}
+        render={({ field: { onChange } }) => renderContent(onChange)}
+      />
     );
   },
 );

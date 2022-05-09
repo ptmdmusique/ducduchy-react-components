@@ -1,6 +1,8 @@
 import { Meta, Story } from "@storybook/react";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { DateTimePicker, DateTimePickerProps } from ".";
+import { Button } from "../Button";
 import { storyDisabledOption } from "../resources/story-common";
 import { StorybookCommonWithForm } from "../resources/StorybookCommonWithForm";
 
@@ -11,6 +13,11 @@ const meta: Meta<DateTimePickerProps> = {
     className: storyDisabledOption,
     onChange: storyDisabledOption,
     caption: storyDisabledOption,
+    leadingAdornment: storyDisabledOption,
+    trailingAdornment: storyDisabledOption,
+    leadingAdornmentOnClick: storyDisabledOption,
+    trailingAdornmentOnClick: storyDisabledOption,
+    locale: storyDisabledOption,
   },
   parameters: {
     controls: { expanded: true },
@@ -31,11 +38,33 @@ export const WithForm: Story<DateTimePickerProps> = (args) => {
   return (
     <FormProvider {...methods}>
       <StorybookCommonWithForm>
-        <DateTimePicker {...args} {...methods.register("dateTimePicker")} />
+        <DateTimePicker
+          {...args}
+          formValidation={{ control: methods.control, name: "dateTimePicker" }}
+        />
       </StorybookCommonWithForm>
     </FormProvider>
   );
 };
 WithForm.args = {
   label: "Meeting time",
+};
+
+export const WithLocale: Story<DateTimePickerProps> = (args) => {
+  const [locale, setLocale] = useState<"vi" | "en">("en");
+
+  return (
+    <div className="mt-64">
+      <DateTimePicker {...args} locale={locale} />
+
+      <Button
+        onClick={() => {
+          setLocale(locale === "en" ? "vi" : "en");
+        }}
+        className="mt-8"
+      >
+        {locale === "vi" ? "Đổi ngôn ngữ!" : "Change languages"}
+      </Button>
+    </div>
+  );
 };
