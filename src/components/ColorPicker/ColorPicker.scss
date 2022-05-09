@@ -1,4 +1,4 @@
-.color-picker {
+.dd-color-picker {
   @apply flex items-center;
 
   .color-indicator {
@@ -9,11 +9,11 @@
   }
 }
 
-.color-picker__popover-outer {
+.dd-color-picker__popover-outer {
   @apply flex items-center;
 }
 
-.color-picker__popover {
+.dd-color-picker__popover {
   @apply divide-y divide-skin-disabled;
   @apply bg-skin-top;
   @apply rounded-lg;

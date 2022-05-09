@@ -1,4 +1,4 @@
-.badge {
+.dd-badge {
   @apply flex justify-center items-center;
   @apply rounded-lg;
   @apply text-sm;
@@ -14,19 +14,19 @@
     @apply bg-skin-base bg-opacity-10;
     @apply text-skin-base;
 
-    &.badge--success {
+    &.dd-badge--success {
       @apply bg-skin-success bg-opacity-5;
       @apply text-skin-success;
     }
-    &.badge--danger {
+    &.dd-badge--danger {
       @apply bg-skin-danger bg-opacity-10;
       @apply text-skin-danger;
     }
-    &.badge--warning {
+    &.dd-badge--warning {
       @apply bg-skin-warning bg-opacity-10;
       @apply text-skin-warning;
     }
-    &.badge--info {
+    &.dd-badge--info {
       @apply bg-skin-secondary bg-opacity-10;
       @apply text-skin-secondary;
     }
@@ -36,19 +36,19 @@
     @apply text-skin-base;
     @apply border;
 
-    &.badge--success {
+    &.dd-badge--success {
       @apply border-skin-success;
       @apply text-skin-success;
     }
-    &.badge--danger {
+    &.dd-badge--danger {
       @apply border-skin-danger;
       @apply text-skin-danger;
     }
-    &.badge--warning {
+    &.dd-badge--warning {
       @apply border-skin-warning;
       @apply text-skin-warning;
     }
-    &.badge--info {
+    &.dd-badge--info {
       @apply border-skin-secondary;
       @apply text-skin-secondary;
     }

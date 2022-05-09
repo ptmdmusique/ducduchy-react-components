@@ -2,11 +2,8 @@ import { Meta, Story } from "@storybook/react";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import {
-  CreatableListbox,
-  AsyncListbox,
-  AsyncCreatableListbox,
-  Listbox,
-  ListboxProps,
+  AsyncCreatableListbox, AsyncListbox, CreatableListbox, Listbox,
+  ListboxProps
 } from ".";
 import { storyDisabledOption } from "../resources/story-common";
 import { StorybookCommonWithForm } from "../resources/StorybookCommonWithForm";
@@ -111,10 +108,6 @@ const promiseOptions = (optionList?: ColourOption[]) => (inputValue: string) =>
     }
 
     setTimeout(() => {
-      console.log(
-        "filterColors(inputValue, optionList):",
-        filterColors(inputValue, optionList),
-      );
       resolve(filterColors(inputValue, optionList));
     }, 1000);
   });

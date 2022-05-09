@@ -1,6 +1,6 @@
 @import "../assets/styles/form-common.scss";
 
-.form-listbox {
+.dd-listbox {
   &--disabled {
     @apply cursor-not-allowed;
   }
@@ -15,9 +15,10 @@
     > label {
       @extend .label;
     }
-    > .form-listbox {
-      > .form-listbox__control,
-      > .form-listbox__menu {
+
+    > .dd-listbox {
+      > .dd-listbox__control,
+      > .dd-listbox__menu {
         @apply bg-transparent;
         @apply shadow-none;
         @apply border-none;
@@ -29,7 +30,7 @@
         }
       }
 
-      > .form-listbox__control {
+      > .dd-listbox__control {
         @apply flex justify-between;
         @apply cursor-pointer;
         @apply pl-4 pr-2;
@@ -38,23 +39,23 @@
           @apply pr-4;
         }
 
-        > .form-listbox__value-container {
+        > .dd-listbox__value-container {
           @apply px-0;
-          > .form-listbox__placeholder,
-          > .form-listbox__single-value,
-          > .form-listbox__multi-value {
+          > .dd-listbox__placeholder,
+          > .dd-listbox__single-value,
+          > .dd-listbox__multi-value {
             @apply text-skin-base;
             @apply duration-100;
           }
-          > .form-listbox__placeholder {
+          > .dd-listbox__placeholder {
             @apply opacity-50;
           }
-          > .form-listbox__multi-value {
+          > .dd-listbox__multi-value {
             @apply bg-skin-base bg-opacity-5;
             @apply rounded-md;
             @apply px-2;
 
-            > .form-listbox__multi-value__label {
+            > .dd-listbox__multi-value__label {
               @apply text-skin-base text-base;
               &:not(:only-child) {
                 @apply mr-2;
@@ -62,14 +63,14 @@
             }
           }
 
-          > .form-listbox__input-container {
+          > .dd-listbox__input-container {
             @apply text-skin-base;
           }
         }
 
-        > .form-listbox__indicators {
+        > .dd-listbox__indicators {
           > .icon,
-          > .form-listbox__indicator {
+          > .dd-listbox__indicator {
             @apply text-skin-base;
             @apply duration-100;
             @apply opacity-50;
@@ -78,39 +79,39 @@
         }
 
         &--menu-is-open {
-          > .form-listbox__indicators > .icon {
+          > .dd-listbox__indicators > .icon {
             @apply transform rotate-180;
           }
         }
         &--is-focused,
         &:hover {
-          > .form-listbox__indicators > .icon {
+          > .dd-listbox__indicators > .icon {
             @apply opacity-100;
           }
         }
         &--is-focused {
           @apply bg-opacity-70;
-          > .form-listbox__value-container {
-            > .form-listbox__placeholder {
+          > .dd-listbox__value-container {
+            > .dd-listbox__placeholder {
               @apply opacity-100;
             }
           }
         }
       }
-      > .form-listbox__menu {
+      > .dd-listbox__menu {
         @apply bg-skin-overflow-menu;
         @apply duration-100;
         @apply shadow-md;
         @apply mt-0;
-        .form-listbox__option,
-        .form-listbox__title {
+        .dd-listbox__option,
+        .dd-listbox__title {
           @apply text-skin-base;
           @apply pl-4 pr-2;
           @screen lg {
             @apply pr-4;
           }
         }
-        .form-listbox__option {
+        .dd-listbox__option {
           &--is-selected,
           &--is-focused {
             @apply bg-skin-active;
@@ -118,12 +119,12 @@
           &--is-selected {
             @apply bg-skin-active;
           }
-          &--is-focused:not(.form-listbox__option--is-selected) {
+          &--is-focused:not(.dd-listbox__option--is-selected) {
             @apply bg-opacity-50;
           }
         }
 
-        .form-listbox__menu-notice--loading {
+        .dd-listbox__menu-notice--loading {
           @apply text-skin-base;
         }
       }

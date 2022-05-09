@@ -1,6 +1,8 @@
 import { Meta, Story } from "@storybook/react";
-import React from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { Input, InputProps } from ".";
+import { Button } from "../Button";
 import { storyIconOption } from "../resources/story-common";
 import "./Input.stories.scss";
 
@@ -50,3 +52,39 @@ WithAdornments.args = {
 };
 
 Default.args = {};
+
+export const WithUseFormSetValue: Story<InputProps> = (args) => {
+  const { register, setValue, control } = useForm<{ formValue: string }>();
+
+  const generateRandomValue = () => {
+    setValue("formValue", Math.random().toString());
+  };
+
+  return (
+    <div>
+      <p className="mb-4">
+        <code>useForm's</code> <code>setValue</code> demo
+      </p>
+
+      <Input
+        {...args}
+        {...register("formValue")}
+        label="My Label"
+        formControl={control}
+      />
+
+      <Button
+        borderType="outline"
+        className="mt-4"
+        onClick={generateRandomValue}
+      >
+        Generate random value
+      </Button>
+
+      <p className="mt-8">
+        You <strong>MUST</strong> pass the <code>control</code> value from
+        <code>useForm</code> to make the label float correctly
+      </p>
+    </div>
+  );
+};

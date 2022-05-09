@@ -1,4 +1,4 @@
-.toggle-checkbox {
+.dd-toggle-checkbox {
   @apply relative flex items-center justify-center;
   @apply border-skin-secondary;
   @apply transition-colors;
@@ -47,7 +47,7 @@
   }
 }
 
-.toggle-switch {
+.dd-toggle-switch {
   @apply relative inline-flex items-center;
   @apply transition-colors;
   @apply filter grayscale;

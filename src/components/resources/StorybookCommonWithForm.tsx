@@ -23,7 +23,7 @@ export const StorybookCommonWithForm: FC<{ children: ReactNode }> = ({
       </Button>
 
       {submittedValue && (
-        <pre className="mt-8">
+        <pre className="mt-8 text-skin-base">
           <code>Submitted value {JSON.stringify(submittedValue)}</code>
         </pre>
       )}

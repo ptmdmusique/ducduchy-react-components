@@ -1,7 +1,7 @@
 import cx from "classnames";
 import React, { forwardRef } from "react";
 import Icon from "../Icon/Icon";
-import { StatusType } from "../resources/common.data";
+import { COMPONENT_PREFIX, StatusType } from "../resources/common.data";
 import "./Button.scss";
 
 export interface ButtonProps extends React.HTMLProps<HTMLButtonElement> {
@@ -37,30 +37,45 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {...buttonProps}
         ref={ref}
         className={cx(
-          `btn--${borderType}`,
-          `btn--${colorType}`,
-          { "btn--rounded": isRounded, "btn--with-background": withBackground },
+          `${COMPONENT_PREFIX}-button--${borderType}`,
+          `${COMPONENT_PREFIX}-button--${colorType}`,
+          {
+            [`${COMPONENT_PREFIX}-button--rounded`]: isRounded,
+            [`${COMPONENT_PREFIX}-button--with-background`]: withBackground,
+          },
           buttonProps.className,
         )}
       >
-        {!isLoading ? (
-          <>
-            {icon && (
-              <Icon
-                icon={icon}
-                className={cx(
-                  "fa-fw",
-                  "btn-icon",
-                  { "btn-icon--with-children": !!buttonProps.children },
-                  iconClassName,
-                )}
-              />
+        {isLoading ? (
+          <Icon
+            icon={loadingIcon ?? ["fas", "spinner"]}
+            className={cx(
+              `fa-fw ${COMPONENT_PREFIX}-button-icon`,
+              {
+                [`${COMPONENT_PREFIX}-button-icon--with-children`]:
+                  !!buttonProps.children,
+              },
+              iconClassName,
             )}
-            {buttonProps.children}
-          </>
+            spin
+          />
         ) : (
-          <Icon icon={loadingIcon ?? ["fas", "spinner"]} spin />
+          icon && (
+            <Icon
+              icon={icon}
+              className={cx(
+                `fa-fw ${COMPONENT_PREFIX}-button-icon`,
+                {
+                  [`${COMPONENT_PREFIX}-button-icon--with-children`]:
+                    !!buttonProps.children,
+                },
+                iconClassName,
+              )}
+            />
+          )
         )}
+
+        {buttonProps.children}
       </button>
     );
   },

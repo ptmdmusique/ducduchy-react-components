@@ -1,4 +1,4 @@
-.btn-state {
+.dd-button-state {
   &:disabled {
     @apply filter grayscale opacity-80;
     @apply cursor-not-allowed;
@@ -13,8 +13,8 @@
   }
 }
 
-.btn {
-  @extend .btn-state;
+.dd-button {
+  @extend .dd-button-state;
   @apply flex justify-center items-center;
   @apply border border-transparent;
   @apply font-semibold;
@@ -22,7 +22,7 @@
   @apply rounded-full;
   @apply py-2 px-8;
 
-  > .btn-icon--with-children {
+  > .dd-button-icon--with-children {
     @apply mr-1;
   }
   &--with-background {
@@ -34,19 +34,19 @@
     @apply h-12 w-12;
   }
   &--fill {
-    @extend .btn;
+    @extend .dd-button;
     @apply text-skin-inverted;
     @apply bg-skin-fill;
-    &.btn--success {
+    &.dd-button--success {
       @apply bg-skin-success;
     }
-    &.btn--danger {
+    &.dd-button--danger {
       @apply bg-skin-danger;
     }
-    &.btn--warning {
+    &.dd-button--warning {
       @apply bg-skin-warning;
     }
-    &.btn--info {
+    &.dd-button--info {
       @apply bg-skin-info;
     }
     &:disabled {
@@ -65,22 +65,22 @@
   }
 
   &--outline {
-    @extend .btn;
+    @extend .dd-button;
     @apply border-skin-secondary;
     @apply text-skin-secondary;
-    &.btn--success {
+    &.dd-button--success {
       @apply border-skin-success;
       @apply text-skin-success;
     }
-    &.btn--danger {
+    &.dd-button--danger {
       @apply border-skin-danger;
       @apply text-skin-danger;
     }
-    &.btn--warning {
+    &.dd-button--warning {
       @apply border-skin-warning;
       @apply text-skin-warning;
     }
-    &.btn--info {
+    &.dd-button--info {
       @apply border-skin-info;
       @apply text-skin-info;
     }
@@ -91,7 +91,7 @@
     &:active {
       @apply bg-skin-secondary bg-opacity-10;
     }
-    &.btn--success {
+    &.dd-button--success {
       &:hover:not(:disabled),
       &:focus {
         @apply bg-skin-success bg-opacity-5;
@@ -100,7 +100,7 @@
         @apply bg-skin-success bg-opacity-10;
       }
     }
-    &.btn--danger {
+    &.dd-button--danger {
       &:hover:not(:disabled),
       &:focus {
         @apply bg-skin-danger bg-opacity-5;
@@ -109,7 +109,7 @@
         @apply bg-skin-danger bg-opacity-10;
       }
     }
-    &.btn--warning {
+    &.dd-button--warning {
       &:hover:not(:disabled),
       &:focus {
         @apply bg-skin-warning bg-opacity-5;
@@ -118,7 +118,7 @@
         @apply bg-skin-warning bg-opacity-10;
       }
     }
-    &.btn--info {
+    &.dd-button--info {
       &:hover:not(:disabled),
       &:focus {
         @apply bg-skin-info bg-opacity-5;
@@ -129,7 +129,7 @@
     }
   }
   &--plain {
-    @extend .btn;
+    @extend .dd-button;
     @apply text-skin-base text-opacity-90;
     @apply py-2 px-6;
     &:hover:not(:disabled),
@@ -142,7 +142,7 @@
     &:active {
       @apply bg-skin-base bg-opacity-10;
     }
-    &.btn--success {
+    &.dd-button--success {
       @apply text-skin-success;
       &:hover:not(:disabled),
       &:focus {
@@ -152,7 +152,7 @@
         @apply bg-skin-success bg-opacity-10;
       }
     }
-    &.btn--danger {
+    &.dd-button--danger {
       @apply text-skin-danger;
       &:hover:not(:disabled),
       &:focus {
@@ -163,7 +163,7 @@
       }
     }
 
-    &.btn--warning {
+    &.dd-button--warning {
       @apply text-skin-warning;
       &:hover:not(:disabled),
       &:focus {
@@ -173,7 +173,7 @@
         @apply bg-skin-warning bg-opacity-10;
       }
     }
-    &.btn--info {
+    &.dd-button--info {
       @apply text-skin-info;
       &:hover:not(:disabled),
       &:focus {

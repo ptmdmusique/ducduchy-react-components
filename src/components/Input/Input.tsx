@@ -5,14 +5,17 @@ import {
   forwardRef,
   InputHTMLAttributes,
   ReactNode,
+  useCallback,
   useEffect,
   useLayoutEffect,
   useRef,
   useState
 } from "react";
+import { Control, useWatch } from "react-hook-form";
 import { debounce } from "../../utils/lodash/debounce";
 import { FadeTransition } from "../animation/CustomTransition";
 import Icon from "../Icon/Icon";
+import { COMPONENT_PREFIX } from "../resources/common.data";
 import { FormAdornment } from "../resources/form/types";
 import "./Input.scss";
 
@@ -21,7 +24,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   caption?: ReactNode;
   captionIcon?: [string, string];
   state?: "normal" | "error";
-  label?: string;
+  label?: ReactNode;
   leadingAdornment?: FormAdornment;
   leadingAdornmentOnClick?: () => void;
   trailingAdornment?: FormAdornment;
@@ -32,6 +35,8 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     debounceTime: number;
     flushOnUnmount?: boolean;
   };
+
+  formControl?: Control<any>;
 }
 
 const checkIsIcon = (prop: FormAdornment): prop is [string, string] => {
@@ -40,6 +45,23 @@ const checkIsIcon = (prop: FormAdornment): prop is [string, string] => {
     prop.length === 2 &&
     prop.every((entry) => typeof entry === "string")
   );
+};
+
+const UseFormWatcher = ({
+  control,
+  name,
+  onChange,
+}: {
+  control: InputProps["formControl"];
+  name: string;
+  onChange: (value: any) => void;
+}) => {
+  const dataToWatch = useWatch({ name, control });
+  useEffect(() => {
+    onChange(dataToWatch);
+  }, [dataToWatch]);
+
+  return null;
 };
 
 export const Input = forwardRef<HTMLInputElement, InputProps>(
@@ -56,6 +78,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       trailingAdornmentOnClick,
       debounceParam,
       className,
+      formControl,
       ...inputProps
     },
     ref,
@@ -72,6 +95,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     );
 
     const [hasContent, setHasContent] = useState(false);
+    const checkInputPropsHasContent = useCallback(
+      () =>
+        !!inputProps?.value ||
+        !!inputProps?.defaultValue ||
+        !!inputProps?.placeholder,
+      [inputProps?.value, inputProps?.placeholder, inputProps?.defaultValue],
+    );
 
     const renderAdornment = (adornment?: FormAdornment, left = false) => {
       if (!adornment) {
@@ -101,28 +131,23 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       return <div className={iconCN}>{adornment}</div>;
     };
 
+    const handleWatchValueChange = (value: any) => {
+      setHasContent(!!value || checkInputPropsHasContent());
+    };
+
     const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
       setHasContent(!!inputProps?.placeholder || !!event.target.value);
       debounceRef.current(event);
     };
 
     useEffect(() => {
-      setHasContent(
-        !!inputProps?.value ||
-          !!inputProps?.defaultValue ||
-          !!inputProps?.placeholder,
-      );
-    }, [inputProps?.value, inputProps?.placeholder, inputProps?.defaultValue]);
+      setHasContent(checkInputPropsHasContent());
+    }, [checkInputPropsHasContent]);
 
     useLayoutEffect(() => {
       // ! Workaround for auto-filling and manually setting input's `value`
       setTimeout(() => {
-        setHasContent(
-          !!inputProps?.value ||
-            !!inputProps?.defaultValue ||
-            !!inputProps?.placeholder ||
-            !!inputRef.current?.value,
-        );
+        setHasContent(checkInputPropsHasContent() || !!inputRef.current?.value);
       }, 1);
     }, []);
 
@@ -140,7 +165,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     }, [debounceParam]);
 
     return (
-      <div className={cx("form-input", className)}>
+      <div className={cx(`${COMPONENT_PREFIX}-input`, className)}>
         <div
           className={cx(
             "input-container",
@@ -154,7 +179,9 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         >
           {renderAdornment(trailingAdornment)}
           {renderAdornment(leadingAdornment, true)}
+
           <label htmlFor={myId.current}>{label}</label>
+
           <input
             {...inputProps}
             id={myId.current}
@@ -171,6 +198,14 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             }}
             onChange={onInputChange}
           />
+
+          {formControl && (
+            <UseFormWatcher
+              control={formControl}
+              name={inputProps.name ?? ""}
+              onChange={handleWatchValueChange}
+            />
+          )}
         </div>
 
         <FadeTransition show={!!caption}>

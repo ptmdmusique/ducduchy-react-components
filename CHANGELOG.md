@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2022-05-08
+
+### Added
+
+- DateTimePicker (#22)
+- MaskedInput (no stories yet)
+- TimePicker (unfinished - unstable)
+- useMediaQuery hook
+- Add `dd-` prefix to components
+
+### Fixed
+
+- `Input`: handle label float when user set value via `useForm`'s `setValue` (#23)
+- `Button`: fix issue with no content on `isLoading` `true`
+
 ## [1.0.14] - 2022-04-29
 
 ### Fixed
@@ -15,15 +30,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Listbox: Added missing import
+- `Listbox`: Added missing import
 - TSConfig: Specify jsx transform so "React" import UMD issue is resolved
 
 ## [1.0.12] - 2022-04-27
 
 ### Added
 
-- Slider: Add `renderThumbValue` method
-- Listbox: Add more variants to support async and creatable
+- `Slider`: Add `renderThumbValue` method
+- `Listbox`: Add more variants to support async and creatable
 
 ## [1.0.11] - 2022-04-26
 

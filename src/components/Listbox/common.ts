@@ -1,5 +1,6 @@
 import cx from "classnames";
 import { ActionMeta, MultiValue, SingleValue } from "react-select";
+import { COMPONENT_PREFIX } from "../resources/common.data";
 
 export type ListboxOption<Data> = { label: string; value: Data };
 
@@ -24,12 +25,13 @@ export function getListboxValue<Data, IsMulti extends boolean>(
 
 export const getListboxClassName = (borderType: ListboxBorderType) =>
   cx(
-    "form-listbox",
-    { "form-listbox--fill": borderType === "fill" },
-    { "form-listbox--outline": borderType === "outline" },
+    `${COMPONENT_PREFIX}-listbox`,
+    { [`${COMPONENT_PREFIX}-listbox--fill`]: borderType === "fill" },
+    { [`${COMPONENT_PREFIX}-listbox--outline`]: borderType === "outline" },
   );
 
-export const listboxClassNamePrefix = "form-listbox";
+export const listboxInnerClassNamePrefix =
+  `${COMPONENT_PREFIX}-listbox` as const;
 
 export function listBoxOnChange<Data, IsMulti extends boolean = false>(
   onChange?: ListboxOnChange<Data, IsMulti>,

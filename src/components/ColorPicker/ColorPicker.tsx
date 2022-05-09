@@ -5,6 +5,7 @@ import { HexColorPicker } from "react-colorful";
 import { OmitStrict } from "../../utils/types";
 import { Input, InputProps } from "../Input";
 import { Popover } from "../Popover";
+import { COMPONENT_PREFIX } from "../resources/common.data";
 import "./ColorPicker.scss";
 
 type RGB = `rgb(${number}, ${number}, ${number})`;
@@ -140,9 +141,11 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
     };
 
     return (
-      <div className="color-picker">
+      <div className={`${COMPONENT_PREFIX}-color-picker`}>
         <Popover
-          popoverProps={{ className: "color-picker__popover-outer" }}
+          popoverProps={{
+            className: `${COMPONENT_PREFIX}-color-picker__popover-outer`,
+          }}
           popoverOpenerProps={{
             as: "button",
             className: "color-indicator",
@@ -150,7 +153,7 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
           }}
         >
           <div
-            className={cx("color-picker__popover", {
+            className={cx(`${COMPONENT_PREFIX}-color-picker__popover`, {
               "color-picker__popover--has-freq-list": !!frequentlyUsedColorList,
             })}
           >

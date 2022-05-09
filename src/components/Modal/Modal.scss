@@ -1,7 +1,7 @@
 $modal-padding-x: theme("padding.6");
 $modal-padding-x-desktop: theme("padding.12");
 
-.modal {
+.dd-modal {
   @apply flex justify-center items-center;
   @apply overflow-hidden;
   @apply text-skin-base;

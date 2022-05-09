@@ -8,12 +8,11 @@ import { OmitStrict } from "../../utils/types";
 import { Icon } from "../Icon";
 import {
   getListboxClassName,
-  listboxClassNamePrefix,
+  listboxInnerClassNamePrefix,
   listboxNoOptionMessage,
   listBoxOnChange,
   ListboxOption,
 } from "./common";
-import "./Listbox.scss";
 import { ListboxBase, ListboxBaseProps } from "./ListboxBase";
 
 export type ListboxProps<Data, IsMulti extends boolean = boolean, Form = any> =
@@ -65,7 +64,7 @@ export function Listbox<Data, IsMulti extends boolean = false, Form = any>(
             selectProps.isMulti,
             formOnChange,
           )}
-          classNamePrefix={listboxClassNamePrefix}
+          classNamePrefix={listboxInnerClassNamePrefix}
           components={{
             DropdownIndicator: (props) => (
               <Icon

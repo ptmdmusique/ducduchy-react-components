@@ -1,0 +1,86 @@
+.dd-date-time-picker__popper {
+  .MuiCalendarPicker-root,
+  .MuiClockPicker-root {
+    @apply text-skin-base;
+    @apply bg-skin-top;
+  }
+
+  .MuiButtonBase-root,
+  .MuiTypography-root {
+    @apply text-skin-base;
+  }
+
+  .MuiPickersDay-root {
+    @apply bg-skin-default;
+
+    &.Mui-selected {
+      @apply text-skin-inverted;
+      @apply bg-skin-secondary;
+    }
+  }
+
+  .MuiClockPicker-root {
+    // ! MUI doesnt' provide a clock picker className
+    > *:not(.MuiClockPicker-arrowSwitcher) {
+      > :first-child {
+        // Clock inner
+        @apply bg-skin-default bg-opacity-70;
+
+        > :not(:last-child):not(:first-child) {
+          // Clock hand
+          @apply bg-skin-secondary;
+        }
+
+        > :last-child {
+          // Time number container
+          > span {
+            @apply text-skin-base;
+
+            &.Mui-selected {
+              @apply text-skin-inverted;
+              @apply bg-skin-secondary;
+            }
+          }
+        }
+      }
+    }
+
+    > .MuiClockPicker-arrowSwitcher {
+      @apply text-skin-base;
+
+      > .MuiButtonBase-root {
+        &:hover {
+          @apply bg-skin-default bg-opacity-80;
+        }
+
+        &.Mui-disabled {
+          @apply text-skin-disabled;
+        }
+      }
+    }
+  }
+
+  // TODO: find a better way to do this
+  .MuiCalendarPicker-root {
+    > :first-child {
+      // Header
+      > :first-child {
+        > * {
+          @apply text-skin-base;
+
+          > * {
+            @apply text-skin-base;
+          }
+        }
+      }
+    }
+  }
+
+  .MuiDialogActions-root {
+    @apply bg-skin-top;
+
+    .MuiButton-root {
+      @apply text-skin-secondary;
+    }
+  }
+}

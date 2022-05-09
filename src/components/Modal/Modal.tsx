@@ -1,13 +1,14 @@
 import { Dialog } from "@headlessui/react";
 import cx from "classnames";
 import { AnimatePresence, motion, Variants } from "framer-motion";
-import React, { FC, ReactNode, useMemo, useRef } from "react";
+import { FC, ReactNode, useMemo, useRef } from "react";
 import { useWindowSize } from "react-use";
 import { Icon } from "../Icon";
 import {
   getModalIntuitiveAnimation,
-  modalVariantMap,
+  modalVariantMap
 } from "../resources/animation";
+import { COMPONENT_PREFIX } from "../resources/common.data";
 import "./Modal.scss";
 
 export interface ModalProps {
@@ -91,7 +92,7 @@ export const Modal: FC<ModalProps> = ({
       {isOpen && (
         <Dialog
           static
-          className={cx("modal", className)}
+          className={cx(`${COMPONENT_PREFIX}-modal`, className)}
           open={isOpen}
           onClose={closeModal}
           initialFocus={containerRef}

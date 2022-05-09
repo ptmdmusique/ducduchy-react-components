@@ -7,7 +7,7 @@ import { OmitStrict } from "../../utils/types";
 import { Icon } from "../Icon";
 import {
   getListboxClassName,
-  listboxClassNamePrefix,
+  listboxInnerClassNamePrefix,
   listboxNoOptionMessage,
   listBoxOnChange,
   ListboxOption,
@@ -65,7 +65,7 @@ export function AsyncCreatableListbox<
             selectProps.isMulti,
             formOnChange,
           )}
-          classNamePrefix={listboxClassNamePrefix}
+          classNamePrefix={listboxInnerClassNamePrefix}
           components={{
             DropdownIndicator: (props) => (
               <Icon
