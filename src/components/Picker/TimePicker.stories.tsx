@@ -1,15 +1,14 @@
 import { Meta, Story } from "@storybook/react";
 import { FormProvider, useForm } from "react-hook-form";
-import { TimePicker, TimePickerProps } from ".";
 import { storyDisabledOption } from "../resources/story-common";
 import { StorybookCommonWithForm } from "../resources/StorybookCommonWithForm";
+import { TimePicker, TimePickerProps } from "./TimePicker";
 
 const meta: Meta<TimePickerProps> = {
   title: "Components/Form/TimePicker",
   component: TimePicker,
   argTypes: {
     className: storyDisabledOption,
-    formValidation: storyDisabledOption,
     onChange: storyDisabledOption,
     caption: storyDisabledOption,
   },
@@ -20,17 +19,25 @@ const meta: Meta<TimePickerProps> = {
 
 export default meta;
 
-const Template: Story<TimePickerProps> = (args) => <TimePicker {...args} />;
+const Template: Story<TimePickerProps> = (args) => (
+  <div className="mt-[20rem]">
+    <TimePicker {...args} />
+  </div>
+);
 export const Default = Template.bind({});
 
 const TemplateWithForm: Story<TimePickerProps> = (args) => {
-  const methods = useForm();
+  const methods = useForm<{ timePicker: string }>();
+
   return (
     <FormProvider {...methods}>
       <StorybookCommonWithForm>
         <TimePicker
           {...args}
-          formValidation={{ control: methods.control, name: "timePicker" }}
+          {...methods.register("timePicker")}
+          onChange={(unmaskedValue) => {
+            // methods.setValue("timePicker", unmaskedValue);
+          }}
         />
       </StorybookCommonWithForm>
     </FormProvider>

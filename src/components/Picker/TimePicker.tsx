@@ -1,153 +1,157 @@
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DesktopTimePicker } from "@mui/x-date-pickers/DesktopTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import {
-  TimePicker as MUITimePicker,
-  TimePickerProps as MUITimePickerProps
-} from "@mui/x-date-pickers/TimePicker";
+import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
+import { TimePickerProps as MUITimePickerProps } from "@mui/x-date-pickers/TimePicker";
 import dayjs from "dayjs";
-import { useState } from "react";
+import IMask from "imask";
+import { forwardRef, ReactNode, useMemo, useState } from "react";
+import { useMediaQuery } from "../../hooks/useMediaQuery";
 import { STANDARD_TIME_FORMAT } from "../../utils/date";
-import { Input, InputProps } from "../Input";
-import { PickerBaseProps } from "./PickerBase";
+import { OmitStrict } from "../../utils/types";
+import { InputProps } from "../Input";
+import { MaskedInput } from "../MaskedInput/MaskedInput";
 import "./TimePicker.scss";
 
-export type TimePickerProps<Form = any> = PickerBaseProps<Form> &
-  MUITimePickerProps & {
-    dateFormat?: string;
-  };
-//  & {
-//   label?: string;
-//   formValidation?: FormValidationWithController<Form>;
-//   onChange?: (date: Date) => void;
-//   caption?: ReactNode;
-//   captionIcon?: [string, string];
-//   state?: "normal" | "error";
-//   calendarLeadingIcon?: [string, string];
-//   clearDateIcon?: [string, string];
-//   displayDateFormat?: string;
-// };
+type ValueType = string | null;
 
-export function TimePicker<Form>({
-  // label,
-  // formValidation,
-  // onChange,
-  // isOpen,
-  // disabled,
-  // caption,
-  // captionIcon,
-  // state,
-  // calendarLeadingIcon = ["fas", "clock"],
-  // clearDateIcon = ["fas", "times"],
-  // displayDateFormat,
-  dateFormat,
-  ...timePickerProps
-}: TimePickerProps<Form>) {
-  const [value, setValue] = useState<Date | null>(new Date());
+/** @ignore */
+export type TimePickerProps = OmitStrict<InputProps, "onChange"> & {
+  dateFormat?: string;
+} & {
+  label?: string;
+  caption?: ReactNode;
+  captionIcon?: [string, string];
+  state?: "normal" | "error";
+  calendarLeadingIcon?: [string, string];
+  clearDateIcon?: [string, string];
+  displayDateFormat?: string;
 
-  // const [dropdownOpen, setDropdownOpen] = useState(isOpen);
+  timePickerProps?: MUITimePickerProps;
+  onChange: (unmaskedValue: string, maskedValue: string) => void;
+};
 
-  // useEffect(() => {
-  //   if (timePickerProps.value) {
-  //     setValue(timePickerProps.value);
-  //   }
-  // }, [timePickerProps.value]);
+// TODO: finish this later, need to figure out the best way to handle the time format
+/** @ignore */
+export const TimePicker = forwardRef<HTMLInputElement, TimePickerProps>(
+  (
+    {
+      label,
+      caption,
+      captionIcon,
+      state,
+      calendarLeadingIcon = ["fas", "clock"],
+      clearDateIcon = ["fas", "times"],
 
-  // const openDropdown = () => setDropdownOpen(true);
-  // const closeDropdown = () => setDropdownOpen(false);
-  // const toggleDropdown = () => setDropdownOpen((prev) => !prev);
-  // const clearValue = () => {
-  //   if (!disabled) {
-  //     setValue(getDatePlaceholder());
-  //   }
-  // };
+      displayDateFormat,
+      disabled,
+      dateFormat,
+      timePickerProps,
+      ...inputProps
+    },
+    ref,
+  ) => {
+    // TODO: add props for this
+    const isLg = useMediaQuery("lg");
+    const Component = useMemo(
+      () => (isLg ? DesktopTimePicker : MobileTimePicker),
+      [isLg],
+    );
 
-  // return (
-  //   <PickerBase
-  //     className="form-time-picker"
-  //     disabled={disabled}
-  //     formValidation={formValidation}
-  //     toggleDropdown={toggleDropdown}
-  //     clearValue={clearValue}
-  //     clearDateIcon={clearDateIcon}
-  //     calendarLeadingIcon={calendarLeadingIcon}
-  //     state={state}
-  //     caption={caption}
-  //     captionIcon={captionIcon}
-  //     label={label}
-  //     value={
-  //       typeof value !== "string"
-  //         ? formatDate(value, displayDateFormat ?? STANDARD_Time_FORMAT)
-  //         : value
-  //     }
-  //   >
-  //     {(formOnChange) => {
-  //       const onChangeWrapper = (newTime: TimePickerValue) => {
-  //         closeDropdown();
+    const [value, setValue] = useState<ValueType>(dayjs().toISOString());
+    const [isOpen, setIsOpen] = useState(false);
+    const closeDropdown = () => setIsOpen(false);
+    const openDropdown = () => {
+      if (!disabled) {
+        setIsOpen(true);
+      }
+    };
 
-  //         setValue(newTime);
-  //         formOnChange?.(new Date(newTime));
-  //         onChange?.(newTime);
-  //       };
+    const clearValue = () => {
+      if (!disabled) {
+        setValue(null);
+      }
+    };
 
-  //       return (
-  //         <ReactTimePicker
-  //           {...timePickerProps}
-  //           onClockOpen={() => {
-  //             if (disabled) {
-  //               return;
-  //             }
-
-  //             timePickerProps.onClockOpen?.();
-  //             openDropdown();
-  //           }}
-  //           onClockClose={() => {
-  //             timePickerProps.onClockClose?.();
-  //             closeDropdown();
-  //           }}
-  //           isOpen={dropdownOpen}
-  //           value={value}
-  //           onChange={onChangeWrapper}
-  //           disabled={disabled}
-  //         />
-  //       );
-  //     }}
-  //   </PickerBase>
-  // );
-  return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <MUITimePicker
-        label="Basic example"
-        value={value}
-        onChange={(newValue) => {
-          setValue(newValue);
-        }}
-        open={true}
-        renderInput={({
-          size: _1,
-          ref: MUIRef,
-          value: _3,
-          defaultValue,
-          ...params
-        }) => {
-          return (
-            <Input
-              {...params}
-              value={dayjs(value).format(dateFormat ?? STANDARD_TIME_FORMAT)}
-              defaultValue={defaultValue as InputProps["value"]}
-              ref={(ele) => {
-                if (MUIRef) {
-                  if (typeof MUIRef === "function") {
-                    MUIRef(ele);
-                  } else {
-                    // @ts-ignore
-                    MUIRef.current = ele;
+    return (
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <Component
+          label="Basic example"
+          value={value}
+          onChange={(value, bbb) => {
+            console.log("value:", value);
+            console.log("bbb:", bbb);
+            setValue(dayjs(value as Date).toISOString());
+          }}
+          open={isOpen}
+          onClose={closeDropdown}
+          onOpen={openDropdown}
+          renderInput={({
+            size: _1,
+            value: _2,
+            InputProps: _3,
+            fullWidth: _4,
+            defaultValue,
+            inputRef: MUIInputRef,
+            inputProps: MUIInputProps,
+            error,
+            ...params
+          }) => {
+            return (
+              <MaskedInput
+                {...params}
+                maskOptions={{
+                  mask: Date,
+                  pattern: dateFormat ?? STANDARD_TIME_FORMAT,
+                  format: (date) => {
+                    return dayjs(date).format(
+                      displayDateFormat ?? STANDARD_TIME_FORMAT,
+                    );
+                  },
+                  blocks: {
+                    HH: {
+                      mask: IMask.MaskedRange,
+                      from: 0,
+                      to: 23,
+                    },
+                    mm: {
+                      mask: IMask.MaskedRange,
+                      from: 0,
+                      to: 59,
+                    },
+                  },
+                }}
+                state={error ? "error" : state}
+                value={value ?? undefined}
+                defaultValue={defaultValue as InputProps["value"]}
+                trailingAdornment={value && clearDateIcon}
+                trailingAdornmentOnClick={clearValue}
+                ref={(ele) => {
+                  if (ref) {
+                    if (typeof ref === "function") {
+                      ref(ele);
+                    } else {
+                      ref.current = ele;
+                    }
                   }
-                }
-              }}
-            />
-          );
-        }}
-      />
-    </LocalizationProvider>
-  );
-}
+
+                  if (MUIInputRef) {
+                    if (typeof MUIInputRef === "function") {
+                      MUIInputRef(ele);
+                    } else {
+                      // @ts-ignore
+                      MUIInputRef.current = ele;
+                    }
+                  }
+                }}
+                {...MUIInputProps}
+                {...inputProps}
+              />
+            );
+          }}
+          {...timePickerProps}
+        />
+      </LocalizationProvider>
+    );
+  },
+);
