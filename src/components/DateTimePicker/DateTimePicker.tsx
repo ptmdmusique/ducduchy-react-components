@@ -1,7 +1,7 @@
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
   DateTimePicker as MUIDateTimePicker,
-  DateTimePickerProps as MUIDateTimePickerProps
+  DateTimePickerProps as MUIDateTimePickerProps,
 } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import cx from "classnames";
@@ -18,14 +18,17 @@ import { FormValidationWithController } from "../resources/form/types";
 import "./DateTimePicker.scss";
 
 type ValueType = string | null;
-type OnChange = (newDate: Date) => void;
+type OnChange = (newDateString: string) => void;
 
 const localeDateMap = {
   en: "MM/DD/YYYY HH:mm",
   vi: "DD/MM/YYYY HH:mm",
 } as const;
 
-export type DateTimePickerProps = OmitStrict<InputProps, "onChange"> & {
+export type DateTimePickerProps = OmitStrict<
+  InputProps,
+  "onChange" | "defaultValue" | "value"
+> & {
   dateFormat?: string;
   label?: string;
   caption?: ReactNode;
@@ -40,6 +43,9 @@ export type DateTimePickerProps = OmitStrict<InputProps, "onChange"> & {
 
   onChange?: OnChange;
   formValidation?: FormValidationWithController<any>;
+
+  defaultValue?: string;
+  value?: string;
 };
 
 export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
@@ -62,7 +68,7 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
   ) => {
     const finalFormat = dateFormat ?? localeDateMap[locale];
     const [value, setValue] = useState<ValueType>(
-      formatDate(dayjs().toISOString(), finalFormat),
+      formatDate(inputProps.defaultValue ?? dayjs().toISOString(), finalFormat),
     );
 
     const [isOpen, setIsOpen] = useState(false);
@@ -86,10 +92,9 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
             value={value}
             label={label}
             onChange={(newValue) => {
-              const dateValue = newValue as Date;
+              const dateValue = formatDate(newValue as Date, finalFormat);
 
-              setValue(formatDate(dateValue, finalFormat));
-
+              setValue(dateValue);
               formOnChange?.(dateValue);
               onChange?.(dateValue);
             }}
