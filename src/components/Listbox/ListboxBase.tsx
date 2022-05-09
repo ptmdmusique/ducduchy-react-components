@@ -4,14 +4,15 @@ import { Controller } from "react-hook-form";
 import { GroupBase, PropsValue } from "react-select";
 import { FadeTransition } from "../animation/CustomTransition";
 import { Icon } from "../Icon";
+import { COMPONENT_PREFIX } from "../resources/common.data";
 import { FormValidationWithController } from "../resources/form/types";
 import {
   getListboxValue,
   ListboxBorderType,
   ListboxOnChange,
-  ListboxOption,
+  ListboxOption
 } from "./common";
-import "./Listbox.scss";
+import "./ListboxBase.scss";
 
 type OptionType<D> = D | GroupBase<D>;
 
@@ -65,8 +66,8 @@ export function ListboxBase<Data, IsMulti extends boolean = false, Form = any>({
     return (
       <div
         className={cx(
-          "form-listbox",
-          { "form-listbox--disabled": disabled },
+          `${COMPONENT_PREFIX}-listbox`,
+          { [`${COMPONENT_PREFIX}-listbox--disabled`]: disabled },
           className,
         )}
       >

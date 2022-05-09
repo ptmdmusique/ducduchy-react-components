@@ -9,12 +9,13 @@ import {
   useEffect,
   useLayoutEffect,
   useRef,
-  useState,
+  useState
 } from "react";
 import { Control, useWatch } from "react-hook-form";
 import { debounce } from "../../utils/lodash/debounce";
 import { FadeTransition } from "../animation/CustomTransition";
 import Icon from "../Icon/Icon";
+import { COMPONENT_PREFIX } from "../resources/common.data";
 import { FormAdornment } from "../resources/form/types";
 import "./Input.scss";
 
@@ -164,7 +165,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     }, [debounceParam]);
 
     return (
-      <div className={cx("form-input", className)}>
+      <div className={cx(`${COMPONENT_PREFIX}-input`, className)}>
         <div
           className={cx(
             "input-container",

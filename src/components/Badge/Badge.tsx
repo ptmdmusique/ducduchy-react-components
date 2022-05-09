@@ -1,6 +1,6 @@
 import cx from "classnames";
 import Icon from "../Icon/Icon";
-import { StatusType } from "../resources/common.data";
+import { COMPONENT_PREFIX, StatusType } from "../resources/common.data";
 import "./Badge.scss";
 
 export interface BadgeProps {
@@ -24,7 +24,12 @@ export const Badge = ({
 }: BadgeProps) => {
   return (
     <div
-      className={cx("badge", `badge--${status}`, `badge--${type}`, className)}
+      className={cx(
+        `${COMPONENT_PREFIX}-badge`,
+        `${COMPONENT_PREFIX}-badge--${status}`,
+        `${COMPONENT_PREFIX}-badge--${type}`,
+        className,
+      )}
     >
       {icon && <Icon icon={icon} className={cx("fa-fw", iconClassName)} />}
       <p>{text}</p>

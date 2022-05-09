@@ -1,6 +1,6 @@
 export * from "./Badge";
 export * from "./Button";
-export * from "./Picker";
+export * from "./DateTimePicker";
 export * from "./Icon";
 export * from "./Input";
 export * from "./Listbox";

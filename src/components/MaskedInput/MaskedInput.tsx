@@ -1,7 +1,9 @@
+import cx from "classnames";
 import IMask from "imask";
 import { forwardRef, useEffect, useRef } from "react";
 import { OmitStrict } from "../../utils/types";
 import { Input, InputProps } from "../Input";
+import { COMPONENT_PREFIX } from "../resources/common.data";
 
 type MaskedInputProps = OmitStrict<InputProps, "onChange"> & {
   maskOptions: IMask.AnyMaskedOptions;
@@ -28,6 +30,7 @@ export const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
     return (
       <Input
         {...inputProps}
+        className={cx(`${COMPONENT_PREFIX}-masked-input`, inputProps.className)}
         ref={(newRef) => {
           inputRef.current = newRef;
           ref = inputRef;

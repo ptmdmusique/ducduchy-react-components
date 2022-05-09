@@ -8,6 +8,7 @@ import {
   formatDateRange,
   getDatePlaceholder,
 } from "../../utils/date";
+import { COMPONENT_PREFIX } from "../resources/common.data";
 import { FormValidationWithController } from "../resources/form/types";
 import "./DatePicker.scss";
 import { PickerBase, PickerBaseProps } from "./PickerBase";
@@ -63,7 +64,7 @@ export function DatePicker<Form>({
 
   return (
     <PickerBase
-      className="form-date-picker"
+      className={`${COMPONENT_PREFIX}-date-picker`}
       disabled={disabled}
       formValidation={formValidation}
       toggleDropdown={toggleDropdown}

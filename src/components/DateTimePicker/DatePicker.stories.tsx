@@ -1,5 +1,4 @@
 import { Meta, Story } from "@storybook/react";
-import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { DatePicker, DatePickerProps } from ".";
 import { storyDisabledOption } from "../resources/story-common";

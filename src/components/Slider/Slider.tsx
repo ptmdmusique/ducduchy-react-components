@@ -34,7 +34,7 @@ export type SliderProps = OmitStrict<
   renderThumbValue?: (value: number) => React.ReactNode;
 };
 
-const BASE_CLASSNAME = `${COMPONENT_PREFIX}-slider`;
+const BASE_CLASSNAME = `${COMPONENT_PREFIX}-slider` as const;
 
 /**
  *

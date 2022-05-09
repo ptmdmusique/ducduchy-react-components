@@ -127,6 +127,7 @@
     "dayjs": "^1.10.7",
     "framer-motion": "^5.6.0",
     "headlessui-float-react": "^0.4.2",
+    "imask": "^6.4.2",
     "nanoid": "^3.2.0",
     "react-calendar": "^3.5.0",
     "react-colorful": "^5.5.1",

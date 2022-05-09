@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { Controller } from "react-hook-form";
 import { Icon } from "../Icon";
-import { StatusType } from "../resources/common.data";
+import { COMPONENT_PREFIX, StatusType } from "../resources/common.data";
 import {
   FormValidationWithController,
   OnBlur,
@@ -77,7 +77,13 @@ export function Toggle<F>({
 
     return (
       <Switch.Group>
-        <div className={cx("toggle-container", className)}>
+        <div
+          className={cx(
+            `${COMPONENT_PREFIX}-toggle`,
+            "toggle-container",
+            className,
+          )}
+        >
           {label && labelLeft && renderLabel()}
 
           <Switch
@@ -86,10 +92,10 @@ export function Toggle<F>({
             onChange={onChangeWrapper}
             onBlur={onBlurWrapper}
             className={cx(
-              `toggle-${type}`,
-              `toggle-${type}--${status}`,
-              { [`toggle-${type}--enabled`]: enabled },
-              { [`toggle-${type}--disabled`]: disabled },
+              `${COMPONENT_PREFIX}-toggle-${type}`,
+              `${COMPONENT_PREFIX}-toggle-${type}--${status}`,
+              { [`${COMPONENT_PREFIX}-toggle-${type}--enabled`]: enabled },
+              { [`${COMPONENT_PREFIX}-toggle-${type}--disabled`]: disabled },
             )}
             disabled={disabled}
           >
