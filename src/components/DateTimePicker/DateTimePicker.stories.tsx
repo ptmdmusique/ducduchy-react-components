@@ -18,6 +18,13 @@ const meta: Meta<DateTimePickerProps> = {
     leadingAdornmentOnClick: storyDisabledOption,
     trailingAdornmentOnClick: storyDisabledOption,
     locale: storyDisabledOption,
+    calendarLeadingIcon: storyDisabledOption,
+    clearDateIcon: storyDisabledOption,
+    formValidation: storyDisabledOption,
+    timePickerProps: storyDisabledOption,
+    formControl: storyDisabledOption,
+    debounceParam: storyDisabledOption,
+    captionIcon: storyDisabledOption,
   },
   parameters: {
     controls: { expanded: true },
@@ -67,4 +74,47 @@ export const WithLocale: Story<DateTimePickerProps> = (args) => {
       </Button>
     </div>
   );
+};
+
+const randomDate = (start: Date, end: Date) =>
+  new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+
+export const WithReactHookFormSetValue: Story<DateTimePickerProps> = (args) => {
+  const methods = useForm<{ dateTimeISO: string | undefined }>({
+    defaultValues: { dateTimeISO: new Date().toISOString() },
+  });
+  const curValue = methods.watch("dateTimeISO")!;
+
+  return (
+    <FormProvider {...methods}>
+      <StorybookCommonWithForm>
+        <div className="mt-64">
+          <DateTimePicker
+            {...args}
+            value={new Date(curValue)}
+            onChange={(newISO) => {
+              methods.setValue("dateTimeISO", newISO?.toISOString());
+            }}
+          />
+
+          <Button
+            onClick={() => {
+              methods.setValue(
+                "dateTimeISO",
+                randomDate(new Date(1998, 0, 1), new Date()).toISOString(),
+              );
+            }}
+            borderType="outline"
+            className="mt-8"
+            type="button"
+          >
+            Generate random date
+          </Button>
+        </div>
+      </StorybookCommonWithForm>
+    </FormProvider>
+  );
+};
+WithReactHookFormSetValue.args = {
+  dateFormat: "DD/MM/YYYY HH:mm",
 };

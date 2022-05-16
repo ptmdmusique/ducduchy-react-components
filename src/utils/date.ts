@@ -20,6 +20,9 @@ export const getDatePlaceholder = () => "__/__/____";
 // TODO: Support locale for this
 export const getTimePlaceholder = () => "__:__";
 
+export const getDateTimePlaceholder = () =>
+  `${getDatePlaceholder()} ${getTimePlaceholder()}`;
+
 /** Sort date array IN PLACE */
 export const sortDateArray = <T>({
   myArr,

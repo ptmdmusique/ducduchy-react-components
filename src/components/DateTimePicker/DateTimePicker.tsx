@@ -8,17 +8,17 @@ import cx from "classnames";
 import dayjs from "dayjs";
 import "dayjs/locale/en";
 import "dayjs/locale/vi";
-import { forwardRef, ReactNode, useState } from "react";
+import { forwardRef, ReactNode, useEffect, useMemo, useState } from "react";
 import { Controller } from "react-hook-form";
-import { formatDate } from "../../utils/date";
+import { formatDate, getDateTimePlaceholder } from "../../utils/date";
 import { OmitStrict } from "../../utils/types";
 import { Input, InputProps } from "../Input";
 import { COMPONENT_PREFIX } from "../resources/common.data";
 import { FormValidationWithController } from "../resources/form/types";
 import "./DateTimePicker.scss";
 
-type ValueType = string | null;
-type OnChange = (newDateString: string) => void;
+type ValueType = Date | null;
+type OnChange = (newDateString: ValueType) => void;
 
 const localeDateMap = {
   en: "MM/DD/YYYY HH:mm",
@@ -29,6 +29,7 @@ export type DateTimePickerProps = OmitStrict<
   InputProps,
   "onChange" | "defaultValue" | "value"
 > & {
+  /** https://day.js.org/docs/en/display/format */
   dateFormat?: string;
   label?: string;
   caption?: ReactNode;
@@ -44,8 +45,8 @@ export type DateTimePickerProps = OmitStrict<
   onChange?: OnChange;
   formValidation?: FormValidationWithController<any>;
 
-  defaultValue?: string;
-  value?: string;
+  defaultValue?: ValueType;
+  value?: ValueType;
 };
 
 export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
@@ -62,14 +63,30 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
       locale = "en",
       formValidation,
       onChange,
+      defaultValue,
+      value,
       ...inputProps
     },
     ref,
   ) => {
     const finalFormat = dateFormat ?? localeDateMap[locale];
-    const [value, setValue] = useState<ValueType>(
-      formatDate(inputProps.defaultValue ?? dayjs().toISOString(), finalFormat),
+
+    const [baseValue, setBaseValue] = useState<ValueType>(
+      dayjs(value ?? defaultValue).toDate(),
     );
+    const formattedValue = useMemo<string | undefined>(
+      () =>
+        baseValue
+          ? formatDate(baseValue, finalFormat)
+          : getDateTimePlaceholder(),
+      [baseValue, finalFormat],
+    );
+
+    useEffect(() => {
+      if (value) {
+        setBaseValue(dayjs(value).toDate());
+      }
+    }, [value]);
 
     const [isOpen, setIsOpen] = useState(false);
     const closeDropdown = () => setIsOpen(false);
@@ -81,7 +98,7 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
 
     const clearValue = () => {
       if (!disabled) {
-        setValue(null);
+        setBaseValue(null);
       }
     };
 
@@ -89,12 +106,12 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
       return (
         <LocalizationProvider locale={locale} dateAdapter={AdapterDayjs}>
           <MUIDateTimePicker
-            value={value}
+            value={baseValue}
             label={label}
             onChange={(newValue) => {
-              const dateValue = formatDate(newValue as Date, finalFormat);
+              const dateValue = newValue as Date | null;
 
-              setValue(dateValue);
+              setBaseValue(dateValue);
               formOnChange?.(dateValue);
               onChange?.(dateValue);
             }}
@@ -115,12 +132,11 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
             }) => (
               <Input
                 {...params}
-                value={value ?? undefined}
                 state={error ? "error" : undefined}
                 onClick={openDropdown}
                 leadingAdornment={calendarLeadingIcon}
                 leadingAdornmentOnClick={openDropdown}
-                trailingAdornment={value ? clearDateIcon : undefined}
+                trailingAdornment={formattedValue ? clearDateIcon : undefined}
                 trailingAdornmentOnClick={clearValue}
                 className={cx(
                   `${COMPONENT_PREFIX}-date-time-picker`,
@@ -146,6 +162,7 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
                 }}
                 {...MUIInputProps}
                 {...inputProps}
+                value={formattedValue}
               />
             )}
             ampm={false}
@@ -177,7 +194,7 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
         rules={rules}
         control={control}
         // @ts-ignore
-        defaultValue={dayjs(value, finalFormat).toDate()}
+        defaultValue={dayjs(value ?? defaultValue).toDate()}
         render={({ field: { onChange } }) => renderContent(onChange)}
       />
     );
