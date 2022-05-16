@@ -145,6 +145,9 @@
       &:focus-within::before {
         @apply border-b-2;
       }
+      > input {
+        @apply py-3;
+      }
     }
 
     &--plain {
