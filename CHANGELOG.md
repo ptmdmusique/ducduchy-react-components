@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.5] - 2022-05-18
+
+### Fixed
+
+- ⏰📅 `DateTimePicker`: prevent `minDate` and `maxDate` to be locked to current day if not defined via props
+
 ## [1.1.4] - 2022-05-17
 
 ### Added
@@ -12,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ⏰📅 `DateTimePicker`: expose `minDate` and `maxDate` for ease of use
 
 ### Fixed
+
 - ⏰📅 `DateTimePicker`: `timePickerProps` -> `dateTimePickerProps`
 - ⏰📅 `DateTimePicker`: makes `dateTimePickerProps` `Partial` so user can freely pass in whatever they want
 

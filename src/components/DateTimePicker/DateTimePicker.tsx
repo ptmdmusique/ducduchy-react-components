@@ -87,8 +87,14 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
     ref,
   ) => {
     const finalFormat = dateFormat ?? localeDateMap[locale];
-    const formattedMinDate = useMemo(() => dayjs(minDate), [minDate]);
-    const formattedMaxDate = useMemo(() => dayjs(maxDate), [maxDate]);
+    const formattedMinDate = useMemo(
+      () => (minDate ? dayjs(minDate) : undefined),
+      [minDate],
+    );
+    const formattedMaxDate = useMemo(
+      () => (maxDate ? dayjs(maxDate) : undefined),
+      [maxDate],
+    );
 
     const [baseValue, setBaseValue] = useState<ValueType>(
       dayjs(value ?? defaultValue).toDate(),
