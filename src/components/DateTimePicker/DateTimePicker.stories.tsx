@@ -33,11 +33,36 @@ const meta: Meta<DateTimePickerProps> = {
 
 export default meta;
 
-const Template: Story<DateTimePickerProps> = (args) => (
-  <div className="mt-[20rem]">
-    <DateTimePicker {...args} />
-  </div>
-);
+const Template: Story<DateTimePickerProps> = (args) => {
+  const [regularOnChangeValue, setRegularOnChangeValue] =
+    useState<Date | null>(null);
+  const [onCloseValue, setOnCloseValue] = useState<Date | null>(null);
+
+  return (
+    <div className="mt-[12rem]">
+      <p className="mb-4">
+        Regular onChange value:{" "}
+        {regularOnChangeValue ? regularOnChangeValue.toString() : "null"}
+      </p>
+
+      <p className="mb-32">
+        onClose value: {onCloseValue ? onCloseValue.toString() : "null"}
+      </p>
+
+      <DateTimePicker
+        {...args}
+        onChange={(newValue, triggeredOn) => {
+          console.log("newValue:", triggeredOn, newValue);
+          if (triggeredOn === "user-pick") {
+            setRegularOnChangeValue(newValue);
+          } else if (triggeredOn === "on-accepted") {
+            setOnCloseValue(newValue);
+          }
+        }}
+      />
+    </div>
+  );
+};
 export const Default = Template.bind({});
 
 export const WithForm: Story<DateTimePickerProps> = (args) => {

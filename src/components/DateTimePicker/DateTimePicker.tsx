@@ -18,7 +18,10 @@ import { FormValidationWithController } from "../resources/form/types";
 import "./DateTimePicker.scss";
 
 type ValueType = Date | null;
-type OnChange = (newDateString: ValueType) => void;
+type OnChange = (
+  newDateString: ValueType,
+  triggeredOn: "user-pick" | "on-accepted" | "on-error" | "on-clear",
+) => void;
 
 const localeDateMap = {
   en: "MM/DD/YYYY HH:mm",
@@ -99,6 +102,7 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
     const clearValue = () => {
       if (!disabled) {
         setBaseValue(null);
+        onChange?.(null, "on-clear");
       }
     };
 
@@ -109,16 +113,23 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
             value={baseValue}
             label={label}
             onChange={(newValue) => {
-              const dateValue = newValue as Date | null;
+              const dateValue = newValue as ValueType;
 
               setBaseValue(dateValue);
-              formOnChange?.(dateValue);
-              onChange?.(dateValue);
+              formOnChange?.(dateValue, "user-pick");
+              onChange?.(dateValue, "user-pick");
             }}
             open={isOpen}
             onClose={closeDropdown}
+            onError={(_, curValue) => {
+              onChange?.(curValue as ValueType, "on-error");
+            }}
+            onAccept={(newValue) => {
+              onChange?.(newValue as ValueType, "on-accepted");
+            }}
             onOpen={openDropdown}
             disabled={disabled}
+            showToolbar
             renderInput={({
               size: _1,
               value: _2,

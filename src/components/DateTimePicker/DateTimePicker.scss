@@ -83,4 +83,16 @@
       @apply text-skin-secondary;
     }
   }
+
+  .MuiTabs-root {
+    @apply bg-skin-top;
+
+    .MuiButtonBase-root {
+      @apply text-skin-base;
+
+      &.Mui-selected {
+        @apply text-skin-secondary;
+      }
+    }
+  }
 }
