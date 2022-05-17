@@ -21,7 +21,7 @@ const meta: Meta<DateTimePickerProps> = {
     calendarLeadingIcon: storyDisabledOption,
     clearDateIcon: storyDisabledOption,
     formValidation: storyDisabledOption,
-    timePickerProps: storyDisabledOption,
+    dateTimePickerProps: storyDisabledOption,
     formControl: storyDisabledOption,
     debounceParam: storyDisabledOption,
     captionIcon: storyDisabledOption,
@@ -141,4 +141,12 @@ export const WithReactHookFormSetValue: Story<DateTimePickerProps> = (args) => {
 };
 WithReactHookFormSetValue.args = {
   dateFormat: "DD/MM/YYYY HH:mm",
+};
+
+export const WithDateConstraints: Story<DateTimePickerProps> = (args) => (
+  <DateTimePicker {...args} />
+);
+WithDateConstraints.args = {
+  minDate: new Date(2022, 1, 1),
+  maxDate: new Date(),
 };

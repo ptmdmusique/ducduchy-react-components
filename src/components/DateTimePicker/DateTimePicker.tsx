@@ -30,7 +30,13 @@ const localeDateMap = {
 
 export type DateTimePickerProps = OmitStrict<
   InputProps,
-  "onChange" | "defaultValue" | "value"
+  | "onChange"
+  | "defaultValue"
+  | "value"
+  | "min"
+  | "max"
+  | "minLength"
+  | "maxLength"
 > & {
   /** https://day.js.org/docs/en/display/format */
   dateFormat?: string;
@@ -43,10 +49,16 @@ export type DateTimePickerProps = OmitStrict<
 
   locale?: keyof typeof localeDateMap;
 
-  timePickerProps?: MUIDateTimePickerProps;
+  dateTimePickerProps?: OmitStrict<
+    Partial<MUIDateTimePickerProps>,
+    "minDate" | "maxDate"
+  >;
 
   onChange?: OnChange;
   formValidation?: FormValidationWithController<any>;
+
+  minDate?: Date;
+  maxDate?: Date;
 
   defaultValue?: ValueType;
   value?: ValueType;
@@ -61,18 +73,22 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
 
       disabled,
       dateFormat,
-      timePickerProps,
+      dateTimePickerProps,
 
       locale = "en",
       formValidation,
       onChange,
       defaultValue,
       value,
+      minDate,
+      maxDate,
       ...inputProps
     },
     ref,
   ) => {
     const finalFormat = dateFormat ?? localeDateMap[locale];
+    const formattedMinDate = useMemo(() => dayjs(minDate), [minDate]);
+    const formattedMaxDate = useMemo(() => dayjs(maxDate), [maxDate]);
 
     const [baseValue, setBaseValue] = useState<ValueType>(
       dayjs(value ?? defaultValue).toDate(),
@@ -112,6 +128,8 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
           <MUIDateTimePicker
             value={baseValue}
             label={label}
+            minDate={formattedMinDate}
+            maxDate={formattedMaxDate}
             onChange={(newValue) => {
               const dateValue = newValue as ValueType;
 
@@ -177,11 +195,11 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
               />
             )}
             ampm={false}
-            {...timePickerProps}
+            {...dateTimePickerProps}
             PopperProps={{
               className: cx(
                 `${COMPONENT_PREFIX}-date-time-picker__popper`,
-                timePickerProps?.PaperProps?.className,
+                dateTimePickerProps?.PaperProps?.className,
               ),
               popperOptions: {
                 placement: "bottom-start",

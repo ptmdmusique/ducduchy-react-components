@@ -5,40 +5,51 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.3] - 2022-05-16
+## [1.1.4] - 2022-05-17
+
+### Added
+
+- ⏰📅 `DateTimePicker`: expose `minDate` and `maxDate` for ease of use
 
 ### Fixed
+- ⏰📅 `DateTimePicker`: `timePickerProps` -> `dateTimePickerProps`
+- ⏰📅 `DateTimePicker`: makes `dateTimePickerProps` `Partial` so user can freely pass in whatever they want
 
-- `DateTimePicker`: add `triggeredOn` param for `onChange` for more fine-grained control on when the onChange happens.
+## [1.1.3] - 2022-05-16
+
+### Added
+
+- ⏰📅 `DateTimePicker`: add `triggeredOn` param for `onChange` for more fine-grained control on when the onChange happens.
 
 ## [1.1.2] - 2022-05-15
 
 ### Fixed
 
-- `DateTimePicker`: Fix `value` prop doesn't do much
-- `DateTimePicker`: Split between regular `value` prop and rendered `value` (via `Input`) which is affected by `dateFormat`
+- ⏰📅 `DateTimePicker`: Fix `value` prop doesn't do much
+- ⏰📅 `DateTimePicker`: Split between regular `value` prop and rendered `value` (via `Input`) which is affected by `dateFormat`
 - `Input`: Fix `fill` label `y` position on float
 
 ## [1.1.1] - 2022-05-09
 
 ### Fixed
 
-- `DateTimePicker`: Fix default value not being applied
+- ⏰📅 `DateTimePicker`: Fix default value not being applied
 
 ## [1.1.0] - 2022-05-08
 
 ### Added
 
-- DateTimePicker (#22)
-- MaskedInput (no stories yet)
-- TimePicker (unfinished - unstable)
-- useMediaQuery hook
-- Add `dd-` prefix to components
+- ⏰📅 `DateTimePicker` (#22) 🚀
+
+- 📝🐱‍👤 MaskedInput (no stories yet)
+- ⌚ TimePicker (unfinished - unstable)
+- 🏴‍☠️ useMediaQuery hook
+- 💅 Add `dd-` prefix to components
 
 ### Fixed
 
-- `Input`: handle label float when user set value via `useForm`'s `setValue` (#23)
-- `Button`: fix issue with no content on `isLoading` `true`
+- 📝 `Input`: handle label float when user set value via `useForm`'s `setValue` (#23)
+- 🔘 `Button`: fix issue with no content on `isLoading` `true`
 
 ## [1.0.14] - 2022-04-29
 
@@ -50,31 +61,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- `Listbox`: Added missing import
-- TSConfig: Specify jsx transform so "React" import UMD issue is resolved
+- 📃 `Listbox`: Added missing import
+- ⚙ TSConfig: Specify jsx transform so "React" import UMD issue is resolved
 
 ## [1.0.12] - 2022-04-27
 
 ### Added
 
-- `Slider`: Add `renderThumbValue` method
-- `Listbox`: Add more variants to support async and creatable
+- 🎚 `Slider`: Add `renderThumbValue` method
+- 📃 `Listbox`: Add more variants to support async and creatable
 
 ## [1.0.11] - 2022-04-26
 
 ### Added
 
-- Slider (#16)
+- 🎚 `Slider` (#16)
 
 ### Fixed
 
-- Input's `hasContent` and active behavior (#12)
+- 📝 `Input`'s `hasContent` and active behavior (#12)
 
 ## [1.0.11] - 2022-04-22
 
 ### Added
 
-- ColorPicker
+- 🟢🔴🔵 `ColorPicker`
 
 ## [1.0.5] - 2022-17-01
 
