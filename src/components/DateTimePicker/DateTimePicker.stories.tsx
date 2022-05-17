@@ -52,7 +52,6 @@ const Template: Story<DateTimePickerProps> = (args) => {
       <DateTimePicker
         {...args}
         onChange={(newValue, triggeredOn) => {
-          console.log("newValue:", triggeredOn, newValue);
           if (triggeredOn === "user-pick") {
             setRegularOnChangeValue(newValue);
           } else if (triggeredOn === "on-accepted") {
