@@ -17,9 +17,9 @@ import { COMPONENT_PREFIX } from "../resources/common.data";
 import { FormValidationWithController } from "../resources/form/types";
 import "./DateTimePicker.scss";
 
-type ValueType = Date | null;
+type DateValueType = Date | null;
 type OnChange = (
-  newDateString: ValueType,
+  newDateString: DateValueType,
   triggeredOn: "user-pick" | "on-accepted" | "on-error" | "on-clear",
 ) => void;
 
@@ -60,8 +60,8 @@ export type DateTimePickerProps = OmitStrict<
   minDate?: Date;
   maxDate?: Date;
 
-  defaultValue?: ValueType;
-  value?: ValueType;
+  defaultValue?: DateValueType;
+  value?: DateValueType;
 };
 
 export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
@@ -96,7 +96,7 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
       [maxDate],
     );
 
-    const [baseValue, setBaseValue] = useState<ValueType>(
+    const [baseValue, setBaseValue] = useState<DateValueType>(
       dayjs(value ?? defaultValue).toDate(),
     );
     const formattedValue = useMemo<string | undefined>(
@@ -108,8 +108,8 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
     );
 
     useEffect(() => {
-      if (value) {
-        setBaseValue(dayjs(value).toDate());
+      if (value !== undefined) {
+        setBaseValue(value ? dayjs(value).toDate() : null);
       }
     }, [value]);
 
@@ -121,14 +121,15 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
       }
     };
 
-    const clearValue = () => {
-      if (!disabled) {
-        setBaseValue(null);
-        onChange?.(null, "on-clear");
-      }
-    };
-
     const renderContent = (formOnChange?: OnChange) => {
+      const clearValue = () => {
+        if (!disabled) {
+          setBaseValue(null);
+          onChange?.(null, "on-clear");
+          formOnChange?.(null, "user-pick");
+        }
+      };
+
       return (
         <LocalizationProvider locale={locale} dateAdapter={AdapterDayjs}>
           <MUIDateTimePicker
@@ -137,7 +138,7 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
             minDate={formattedMinDate}
             maxDate={formattedMaxDate}
             onChange={(newValue) => {
-              const dateValue = newValue as ValueType;
+              const dateValue = newValue as DateValueType;
 
               setBaseValue(dateValue);
               formOnChange?.(dateValue, "user-pick");
@@ -146,10 +147,10 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
             open={isOpen}
             onClose={closeDropdown}
             onError={(_, curValue) => {
-              onChange?.(curValue as ValueType, "on-error");
+              onChange?.(curValue as DateValueType, "on-error");
             }}
             onAccept={(newValue) => {
-              onChange?.(newValue as ValueType, "on-accepted");
+              onChange?.(newValue as DateValueType, "on-accepted");
             }}
             onOpen={openDropdown}
             disabled={disabled}

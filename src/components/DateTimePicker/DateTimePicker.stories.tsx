@@ -1,5 +1,6 @@
 import { Meta, Story } from "@storybook/react";
-import { useState } from "react";
+import dayjs from "dayjs";
+import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { DateTimePicker, DateTimePickerProps } from ".";
 import { Button } from "../Button";
@@ -149,4 +150,46 @@ export const WithDateConstraints: Story<DateTimePickerProps> = (args) => (
 WithDateConstraints.args = {
   minDate: new Date(2022, 1, 1),
   maxDate: new Date(),
+};
+
+const getTomorrowDate = (date: Date) => {
+  const tomorrow = new Date(date);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  return tomorrow;
+};
+
+export const WithSyncPicker: Story<DateTimePickerProps> = (args) => {
+  const [startDate, setStartDate] = useState<null | Date>(new Date());
+  const [endDate, setEndDate] = useState<null | Date>(
+    getTomorrowDate(new Date()),
+  );
+
+  useEffect(() => {
+    setEndDate(startDate ? getTomorrowDate(startDate) : null);
+  }, [startDate]);
+
+  return (
+    <div className="mt-32">
+      <DateTimePicker value={startDate} label="Start date" />
+      <DateTimePicker value={endDate} label="Tomorrow date" className="mt-2" />
+
+      <Button
+        onClick={() => {
+          setStartDate(null);
+        }}
+        className="mt-8"
+      >
+        Clear Date
+      </Button>
+      <Button
+        onClick={() => {
+          setStartDate(randomDate(new Date(), new Date(2099, 1, 1)));
+        }}
+        borderType="outline"
+        className="mt-2"
+      >
+        Random date
+      </Button>
+    </div>
+  );
 };
