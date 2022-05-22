@@ -93,6 +93,46 @@ WithCloseButtonAndEvent.args = {
   header: "What a dope header 👌",
 };
 
+export const WithDetailOnCloseControl: Story<ModalProps> = (args) => {
+  const [isOpen, setIsOpen] = React.useState(true);
+  const [onCloseMessage, setOnCloseMessage] =
+    React.useState<string | null>(null);
+
+  return (
+    <>
+      <Modal
+        {...args}
+        isOpen={isOpen}
+        onClose={(triggeredOn) => {
+          switch (triggeredOn) {
+            case "close-button-click":
+              setOnCloseMessage("clicking close button");
+              break;
+            case "standard":
+              setOnCloseMessage("pressing Escape or clicking outside");
+              break;
+          }
+
+          setIsOpen(false);
+        }}
+      >
+        <div className="px-6 pb-4">
+          Try to click on close button vs pressing Escape or clicking outside
+        </div>
+      </Modal>
+
+      <div>
+        <Button onClick={() => setIsOpen(true)}>Open Modal</Button>
+
+        <p className="mt-8">Closed by: {onCloseMessage}</p>
+      </div>
+    </>
+  );
+};
+WithDetailOnCloseControl.args = {
+  header: "What a dope header 👌",
+};
+
 // TODO: fix this
 // const TemplateExpandFromEle: Story<ModalProps> = (args) => {
 //   const [isOpen, setIsOpen] = React.useState(false);

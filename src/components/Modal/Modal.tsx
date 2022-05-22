@@ -6,16 +6,18 @@ import { useWindowSize } from "react-use";
 import { Icon } from "../Icon";
 import {
   getModalIntuitiveAnimation,
-  modalVariantMap
+  modalVariantMap,
 } from "../resources/animation";
 import { COMPONENT_PREFIX } from "../resources/common.data";
 import "./Modal.scss";
 
+type OnCloseTriggerdOn = "close-button-click" | "standard";
 export interface ModalProps {
   isOpen: boolean;
   header?: ReactNode;
   footer?: ReactNode;
-  onClose?: () => void;
+  /** Use for more fine-grained control on when to trigger the close */
+  onClose?: (triggeredOn: OnCloseTriggerdOn) => void;
 
   showCloseButton?: boolean;
   closeButtonIcon?: [string, string];
@@ -81,10 +83,6 @@ export const Modal: FC<ModalProps> = ({
     });
   }, [animationType, animationAnchorElement, targetSize, winWidth, winHeight]);
 
-  const closeModal = () => {
-    onClose?.();
-  };
-
   const containerRef = useRef<HTMLDivElement>(null);
 
   return (
@@ -94,7 +92,9 @@ export const Modal: FC<ModalProps> = ({
           static
           className={cx(`${COMPONENT_PREFIX}-modal`, className)}
           open={isOpen}
-          onClose={closeModal}
+          onClose={() => {
+            onClose?.("standard");
+          }}
           initialFocus={containerRef}
           as={motion.div}
         >
@@ -132,7 +132,12 @@ export const Modal: FC<ModalProps> = ({
             )}
 
             {showCloseButton && (
-              <button className="close-button" onClick={closeModal}>
+              <button
+                className="close-button"
+                onClick={() => {
+                  onClose?.("close-button-click");
+                }}
+              >
                 <Icon icon={closeButtonIcon} className="fa-fw" />
               </button>
             )}
