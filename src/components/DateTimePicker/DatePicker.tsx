@@ -8,12 +8,16 @@ import {
   formatDateRange,
   getDatePlaceholder,
 } from "../../utils/date";
+import { OmitStrict } from "../../utils/types";
 import { COMPONENT_PREFIX } from "../resources/common.data";
 import { FormValidationWithController } from "../resources/form/types";
 import "./DatePicker.scss";
 import { PickerBase, PickerBaseProps } from "./PickerBase";
 
-export type DatePickerProps<Form = any> = PickerBaseProps<Form> &
+export type DatePickerProps<Form = any> = OmitStrict<
+  PickerBaseProps<Form>,
+  "value"
+> &
   ReactDatePickerProps & {
     label?: string;
     formValidation?: FormValidationWithController<Form>;
