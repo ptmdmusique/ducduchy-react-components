@@ -1,5 +1,7 @@
 import { Meta, Story } from "@storybook/react";
+import { FormProvider, useForm } from "react-hook-form";
 import { storyDisabledOption } from "../resources/story-common";
+import { StorybookCommonWithForm } from "../resources/StorybookCommonWithForm";
 import { ColorPicker, ColorPickerProps } from "./ColorPicker";
 
 const meta: Meta<ColorPickerProps> = {
@@ -24,9 +26,31 @@ export default meta;
 
 const Template: Story<ColorPickerProps> = (args) => <ColorPicker {...args} />;
 export const Default = Template.bind({});
-Default.args = {};
+Default.args = {
+  borderType: "plain",
+};
 
 export const WithFreqUsedColor = Template.bind({});
 WithFreqUsedColor.args = {
-  frequentlyUsedColorList: ["#f44336", "#e91e63", "#9c27b0", "#673ab7", "#3f51b5"],
+  borderType: "plain",
+  frequentlyUsedColorList: [
+    "#f44336",
+    "#e91e63",
+    "#9c27b0",
+    "#673ab7",
+    "#3f51b5",
+  ],
 };
+
+export const WithForm: Story<ColorPickerProps> = (args) => {
+  const methods = useForm<{ color: string }>();
+
+  return (
+    <FormProvider {...methods}>
+      <StorybookCommonWithForm>
+        <ColorPicker {...args} {...methods.register("color")} />
+      </StorybookCommonWithForm>
+    </FormProvider>
+  );
+};
+WithForm.args = { borderType: "plain" };

@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.1.8] - 2022-05-22
 
+### Added
+
+- 🟢🔴🔵 `ColorPicker`: Add usage with form
+
+### Fixed
+
+- 🟢🔴🔵 `ColorPicker`: `color` -> `value` ; `defaultColor` -> `defaultValue` and make onChange bubbles event when using with picker
+
+## [1.1.8] - 2022-05-22
+
 ### Fixed
 
 - 📅 `DatePicker`: Fix `value` prop

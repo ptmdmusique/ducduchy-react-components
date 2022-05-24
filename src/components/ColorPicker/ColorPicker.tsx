@@ -12,7 +12,7 @@ type RGB = `rgb(${number}, ${number}, ${number})`;
 type RGBA = `rgba(${number}, ${number}, ${number}, ${number})`;
 type HEX = `#${string}`;
 
-type ValidColor = HEX | RGB | RGBA;
+export type ValidColor = HEX | RGB | RGBA;
 
 // TODO: support other display type
 type ColorDisplayType = "hex";
@@ -56,8 +56,8 @@ const DEFAULT_COLOR = "#37d67a";
 
 export interface ColorPickerProps
   extends OmitStrict<InputProps, "defaultValue" | "value"> {
-  defaultColor?: ValidColor;
-  color?: ValidColor;
+  defaultValue?: ValidColor;
+  value?: ValidColor;
 
   colorDisplayType?: ColorDisplayType;
 
@@ -69,8 +69,8 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
     {
       colorDisplayType = "hex",
       frequentlyUsedColorList,
-      defaultColor,
-      color,
+      defaultValue,
+      value,
       onChange,
       ...inputProps
     },
@@ -98,20 +98,20 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
     }, [colorDisplayType]);
 
     const initialRender = useRef(true);
-    const [curColor, setCurColor] = useState<ValidColor>(
-      color ?? defaultColor ?? DEFAULT_COLOR,
+    const [curColor, setCurColor] = useState<ValidColor | undefined>(
+      value ?? defaultValue,
     );
 
     useEffect(() => {
       if (inputRef.current && initialRender.current) {
         initialRender.current = false;
-        inputRef.current.value = curColor;
+        inputRef.current.value = curColor ?? "";
       }
     }, [inputRef.current, curColor]);
 
     useEffect(() => {
-      setCurColor(color ?? DEFAULT_COLOR);
-    }, [color]);
+      setCurColor(value);
+    }, [value]);
 
     const onColorChange = (newColor: string) => {
       // Set the value of the Input to automatically have a event bubble up
@@ -124,15 +124,35 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
           convertColorToOtherType(newColor, colorDisplayType),
         );
 
-        const newEvent = new Event("input", {
+        setCurColor(newColor);
+
+        const newEvent = new InputEvent("change", {
           bubbles: true,
-          cancelable: true,
+          cancelable: false,
         });
-        input.dispatchEvent(newEvent);
+        onChange?.({
+          bubbles: true,
+          cancelable: false,
+          currentTarget: input,
+          target: input,
+          defaultPrevented: false,
+          eventPhase: 1,
+          isTrusted: true,
+          timeStamp: Date.now(),
+          type: "change",
+          isDefaultPrevented: () => false,
+          preventDefault: () => {},
+          isPropagationStopped: () => false,
+          stopPropagation: () => {},
+          nativeEvent: newEvent,
+          persist: () => {},
+        });
       }
     };
 
     const onInputChange: InputProps["onChange"] = (event) => {
+      onChange?.(event);
+
       try {
         const newColor = Color(event.target.value).hex();
         isValidColor(newColor) &&
@@ -163,7 +183,7 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
               <div className="freq-used-color-container">
                 {frequentlyUsedColorList.map((color) => {
                   const isActive =
-                    curColor.toLowerCase() === color.toLowerCase();
+                    curColor?.toLowerCase() === color.toLowerCase();
                   return (
                     <button
                       key={color}
@@ -182,7 +202,6 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
         </Popover>
 
         <Input
-          borderType="plain"
           {...inputProps}
           onChange={onInputChange}
           ref={(ele) => {
