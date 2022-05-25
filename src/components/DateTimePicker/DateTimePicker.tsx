@@ -5,7 +5,7 @@ import {
 } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import cx from "classnames";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
 import "dayjs/locale/en";
 import "dayjs/locale/vi";
 import { forwardRef, ReactNode, useEffect, useMemo, useState } from "react";
@@ -138,7 +138,7 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
             minDate={formattedMinDate}
             maxDate={formattedMaxDate}
             onChange={(newValue) => {
-              const dateValue = newValue as DateValueType;
+              const dateValue = newValue ? (newValue as Dayjs).toDate() : null;
 
               setBaseValue(dateValue);
               formOnChange?.(dateValue, "user-pick");
