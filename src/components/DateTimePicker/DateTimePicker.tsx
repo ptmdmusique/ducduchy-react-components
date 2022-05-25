@@ -147,10 +147,13 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
             open={isOpen}
             onClose={closeDropdown}
             onError={(_, curValue) => {
-              onChange?.(curValue as DateValueType, "on-error");
+              const dateValue = curValue ? (curValue as Dayjs).toDate() : null;
+              onChange?.(dateValue, "on-error");
             }}
             onAccept={(newValue) => {
-              onChange?.(newValue as DateValueType, "on-accepted");
+              const dateValue = newValue ? (newValue as Dayjs).toDate() : null;
+              formOnChange?.(dateValue, "on-accepted");
+              onChange?.(dateValue, "on-accepted");
             }}
             onOpen={openDropdown}
             disabled={disabled}
