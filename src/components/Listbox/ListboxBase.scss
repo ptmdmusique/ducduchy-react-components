@@ -184,11 +184,13 @@
     }
   }
 
-  & > .caption-container {
+  > .caption-container {
     @apply text-left text-xs;
     @apply font-semibold;
     @apply w-full;
     @apply px-4;
+    @apply flex;
+    @apply mt-1;
 
     &::before {
       @apply inline-block;
@@ -201,5 +203,9 @@
     > .icon {
       @apply mr-1;
     }
+  }
+
+  > .listbox-container--plain + .caption-container {
+    @apply px-0;
   }
 }

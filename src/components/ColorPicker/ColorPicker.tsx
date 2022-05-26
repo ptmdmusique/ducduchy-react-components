@@ -8,9 +8,9 @@ import { Popover } from "../Popover";
 import { COMPONENT_PREFIX } from "../resources/common.data";
 import "./ColorPicker.scss";
 
-type RGB = `rgb(${number}, ${number}, ${number})`;
-type RGBA = `rgba(${number}, ${number}, ${number}, ${number})`;
-type HEX = `#${string}`;
+export type RGB = `rgb(${number}, ${number}, ${number})`;
+export type RGBA = `rgba(${number}, ${number}, ${number}, ${number})`;
+export type HEX = `#${string}`;
 
 export type ValidColor = HEX | RGB | RGBA;
 
@@ -51,8 +51,6 @@ export function convertColorToOtherType<T extends ColorDisplayType>(
   // @ts-ignore
   return colorObj.hex();
 }
-
-const DEFAULT_COLOR = "#37d67a";
 
 export interface ColorPickerProps
   extends OmitStrict<InputProps, "defaultValue" | "value"> {
@@ -97,14 +95,12 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
       }
     }, [colorDisplayType]);
 
-    const initialRender = useRef(true);
     const [curColor, setCurColor] = useState<ValidColor | undefined>(
       value ?? defaultValue,
     );
 
     useEffect(() => {
-      if (inputRef.current && initialRender.current) {
-        initialRender.current = false;
+      if (inputRef.current) {
         inputRef.current.value = curColor ?? "";
       }
     }, [inputRef.current, curColor]);
@@ -114,6 +110,10 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
     }, [value]);
 
     const onColorChange = (newColor: string) => {
+      if (curColor === newColor) {
+        return;
+      }
+
       // Set the value of the Input to automatically have a event bubble up
       const input = inputRef.current;
       const emitter = eventEmitter.current;

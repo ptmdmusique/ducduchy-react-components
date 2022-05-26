@@ -1,8 +1,9 @@
 import { Meta, Story } from "@storybook/react";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { storyDisabledOption } from "../resources/story-common";
 import { StorybookCommonWithForm } from "../resources/StorybookCommonWithForm";
-import { ColorPicker, ColorPickerProps } from "./ColorPicker";
+import { ColorPicker, ColorPickerProps, HEX } from "./ColorPicker";
 
 const meta: Meta<ColorPickerProps> = {
   title: "Components/Form/Color Picker",
@@ -43,7 +44,7 @@ WithFreqUsedColor.args = {
 };
 
 export const WithForm: Story<ColorPickerProps> = (args) => {
-  const methods = useForm<{ color: string }>();
+  const methods = useForm<{ color: HEX }>();
 
   return (
     <FormProvider {...methods}>

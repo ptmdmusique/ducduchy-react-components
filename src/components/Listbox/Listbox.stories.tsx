@@ -2,8 +2,11 @@ import { Meta, Story } from "@storybook/react";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import {
-  AsyncCreatableListbox, AsyncListbox, CreatableListbox, Listbox,
-  ListboxProps
+  AsyncCreatableListbox,
+  AsyncListbox,
+  CreatableListbox,
+  Listbox,
+  ListboxProps,
 } from ".";
 import { storyDisabledOption } from "../resources/story-common";
 import { StorybookCommonWithForm } from "../resources/StorybookCommonWithForm";
@@ -36,7 +39,9 @@ const meta: Meta<ListboxData> = {
 
 export default meta;
 
-const Template: Story<ListboxData> = (args) => <Listbox {...args} />;
+const Template: Story<ListboxData> = (args) => (
+  <Listbox {...args} caption={"ASD"} state={"error"} />
+);
 export const Default = Template.bind({});
 Default.args = {
   label: "A label",
