@@ -2,6 +2,7 @@ import cx from "classnames";
 import Color from "color";
 import { forwardRef, useEffect, useMemo, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
+import { debounce } from "../../utils/lodash/debounce";
 import { OmitStrict } from "../../utils/types";
 import { Input, InputProps } from "../Input";
 import { Popover } from "../Popover";
@@ -109,46 +110,51 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
       setCurColor(value);
     }, [value]);
 
-    const onColorChange = (newColor: string) => {
-      if (curColor === newColor) {
-        return;
-      }
+    const onColorChange = useRef(
+      debounce(
+        (newColor: string) => {
+          if (curColor === newColor) {
+            return;
+          }
 
-      // Set the value of the Input to automatically have a event bubble up
-      const input = inputRef.current;
-      const emitter = eventEmitter.current;
+          // Set the value of the Input to automatically have a event bubble up
+          const input = inputRef.current;
+          const emitter = eventEmitter.current;
 
-      if (input && emitter && isValidColor(newColor)) {
-        emitter.call(
-          input,
-          convertColorToOtherType(newColor, colorDisplayType),
-        );
+          if (input && emitter && isValidColor(newColor)) {
+            emitter.call(
+              input,
+              convertColorToOtherType(newColor, colorDisplayType),
+            );
 
-        setCurColor(newColor);
+            setCurColor(newColor);
 
-        const newEvent = new InputEvent("change", {
-          bubbles: true,
-          cancelable: false,
-        });
-        onChange?.({
-          bubbles: true,
-          cancelable: false,
-          currentTarget: input,
-          target: input,
-          defaultPrevented: false,
-          eventPhase: 1,
-          isTrusted: true,
-          timeStamp: Date.now(),
-          type: "change",
-          isDefaultPrevented: () => false,
-          preventDefault: () => {},
-          isPropagationStopped: () => false,
-          stopPropagation: () => {},
-          nativeEvent: newEvent,
-          persist: () => {},
-        });
-      }
-    };
+            onChange?.({
+              bubbles: true,
+              cancelable: false,
+              currentTarget: input,
+              target: input,
+              defaultPrevented: false,
+              eventPhase: 1,
+              isTrusted: true,
+              timeStamp: Date.now(),
+              type: "change",
+              isDefaultPrevented: () => false,
+              preventDefault: () => {},
+              isPropagationStopped: () => false,
+              stopPropagation: () => {},
+              nativeEvent: new InputEvent("change", {
+                bubbles: true,
+                cancelable: false,
+              }),
+              persist: () => {},
+            });
+          }
+        },
+        // Only debounce if it's not controlled props
+        value === undefined ? 0 : 1,
+      ),
+    );
 
     const onInputChange: InputProps["onChange"] = (event) => {
       onChange?.(event);
@@ -177,7 +183,7 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
               "color-picker__popover--has-freq-list": !!frequentlyUsedColorList,
             })}
           >
-            <Component color={curColor} onChange={onColorChange} />
+            <Component color={curColor} onChange={onColorChange.current} />
 
             {frequentlyUsedColorList && (
               <div className="freq-used-color-container">
@@ -192,7 +198,7 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
                         "freq-used-color--selected": isActive,
                       })}
                       disabled={isActive}
-                      onClick={() => onColorChange(color)}
+                      onClick={() => onColorChange.current(color)}
                     />
                   );
                 })}
@@ -204,6 +210,7 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
         <Input
           {...inputProps}
           onChange={onInputChange}
+          hasContent={curColor != null}
           ref={(ele) => {
             inputRef.current = ele ?? undefined;
 
