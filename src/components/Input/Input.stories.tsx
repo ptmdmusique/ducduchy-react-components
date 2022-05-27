@@ -84,6 +84,11 @@ export const WithUseFormSetValue: Story<InputProps> = (args) => {
       <p className="mt-8">
         You <strong>MUST</strong> pass the <code>control</code> value from
         <code>useForm</code> to make the label float correctly
+        <br />
+        ---
+        <br />
+        OR you can pass the `hasContent` prop to control the label float
+        yourself
       </p>
     </div>
   );

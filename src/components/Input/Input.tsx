@@ -9,7 +9,7 @@ import {
   useEffect,
   useLayoutEffect,
   useRef,
-  useState
+  useState,
 } from "react";
 import { Control, useWatch } from "react-hook-form";
 import { debounce } from "../../utils/lodash/debounce";
@@ -29,6 +29,8 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   leadingAdornmentOnClick?: () => void;
   trailingAdornment?: FormAdornment;
   trailingAdornmentOnClick?: () => void;
+
+  hasContent?: boolean;
 
   debounceParam?: {
     /** in millisecond */
@@ -76,6 +78,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       leadingAdornmentOnClick,
       trailingAdornment,
       trailingAdornmentOnClick,
+      hasContent: propHasContent,
       debounceParam,
       className,
       formControl,
@@ -94,14 +97,25 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       }, debounceParam?.debounceTime ?? 0),
     );
 
-    const [hasContent, setHasContent] = useState(false);
+    const [hasContent, setHasContent] = useState(propHasContent ?? false);
     const checkInputPropsHasContent = useCallback(
       () =>
+        !!propHasContent ||
         !!inputProps?.value ||
         !!inputProps?.defaultValue ||
         !!inputProps?.placeholder,
-      [inputProps?.value, inputProps?.placeholder, inputProps?.defaultValue],
+      [
+        inputProps?.value,
+        inputProps?.placeholder,
+        inputProps?.defaultValue,
+        propHasContent,
+      ],
     );
+    useEffect(() => {
+      if (propHasContent != null) {
+        setHasContent(propHasContent);
+      }
+    }, [propHasContent]);
 
     const renderAdornment = (adornment?: FormAdornment, left = false) => {
       if (!adornment) {
@@ -136,7 +150,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     };
 
     const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-      setHasContent(!!inputProps?.placeholder || !!event.target.value);
+      setHasContent(
+        !!inputProps?.placeholder ||
+          checkInputPropsHasContent() ||
+          !!event.target.value,
+      );
+
       debounceRef.current(event);
     };
 
