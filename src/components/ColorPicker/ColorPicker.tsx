@@ -102,6 +102,7 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
       }
     }, [colorDisplayType]);
 
+    const isFirstRender = useRef(true);
     const [curColor, setCurColor] = useState<string | undefined>(
       value ?? defaultValue,
     );
@@ -113,7 +114,13 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
     }, [inputRef.current, curColor]);
 
     useEffect(() => {
-      setCurColor(value);
+      if (isFirstRender.current) {
+        isFirstRender.current = false;
+      } else {
+        // Prevent value getting set to undefined on first render
+        //  which causes default `curColor` to be `undefined` even when there is `defaultValue`
+        setCurColor(value);
+      }
     }, [value]);
 
     const onColorChange = useRef(

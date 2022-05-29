@@ -35,6 +35,7 @@ Default.args = {
 export const WithFreqUsedColor = Template.bind({});
 WithFreqUsedColor.args = {
   borderType: "plain",
+  defaultValue: "#6bf388",
   frequentlyUsedColorList: [
     "#f44336",
     "#e91e63",
