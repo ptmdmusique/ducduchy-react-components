@@ -23,7 +23,13 @@ interface ColorTypeLookupMap {
   rgba: RGBA;
 }
 
-export const isValidColor = (color: string): color is ValidColor => {
+export const isValidColorString = (
+  color: string | undefined,
+): color is ValidColor => {
+  if (!color) {
+    return false;
+  }
+
   try {
     Color(color);
     return true;
@@ -55,12 +61,12 @@ export function convertColorToOtherType<T extends ColorDisplayType>(
 
 export interface ColorPickerProps
   extends OmitStrict<InputProps, "defaultValue" | "value"> {
-  defaultValue?: ValidColor;
-  value?: ValidColor;
+  defaultValue?: string;
+  value?: string;
 
   colorDisplayType?: ColorDisplayType;
 
-  frequentlyUsedColorList?: ValidColor[];
+  frequentlyUsedColorList?: string[];
 }
 
 export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
@@ -96,7 +102,7 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
       }
     }, [colorDisplayType]);
 
-    const [curColor, setCurColor] = useState<ValidColor | undefined>(
+    const [curColor, setCurColor] = useState<string | undefined>(
       value ?? defaultValue,
     );
 
@@ -121,7 +127,7 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
           const input = inputRef.current;
           const emitter = eventEmitter.current;
 
-          if (input && emitter && isValidColor(newColor)) {
+          if (input && emitter && isValidColorString(newColor)) {
             emitter.call(
               input,
               convertColorToOtherType(newColor, colorDisplayType),
@@ -160,9 +166,8 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
       onChange?.(event);
 
       try {
-        const newColor = Color(event.target.value).hex();
-        isValidColor(newColor) &&
-          setCurColor(convertColorToOtherType(newColor, colorDisplayType));
+        const newColor = Color(event.target.value).hex() as ValidColor;
+        setCurColor(convertColorToOtherType(newColor, colorDisplayType));
       } catch (_) {}
     };
 
