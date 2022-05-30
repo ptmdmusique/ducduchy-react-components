@@ -23,6 +23,7 @@ module.exports = {
     },
 
     "storybook-addon-themes",
+    "storybook-addon-jsx",
   ],
   // https://storybook.js.org/docs/react/configure/typescript#mainjs-configuration
   typescript: {
