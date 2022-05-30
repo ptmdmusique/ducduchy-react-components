@@ -2,6 +2,7 @@ export * from "./Badge";
 export * from "./Button";
 export * from "./ColorPicker";
 export * from "./DateTimePicker";
+export * from "./DurationPicker";
 export * from "./Icon";
 export * from "./Input";
 export * from "./Listbox";
