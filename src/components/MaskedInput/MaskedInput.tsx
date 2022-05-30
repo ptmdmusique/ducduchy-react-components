@@ -1,39 +1,37 @@
 import cx from "classnames";
 import IMask from "imask";
-import { forwardRef, useEffect, useRef } from "react";
+import { forwardRef, useEffect } from "react";
+import { useIMask } from "react-imask";
 import { OmitStrict } from "../../utils/types";
 import { Input, InputProps } from "../Input";
 import { COMPONENT_PREFIX } from "../resources/common.data";
 
-type MaskedInputProps = OmitStrict<InputProps, "onChange"> & {
+export type MaskedInputProps = OmitStrict<InputProps, "onChange"> & {
   maskOptions: IMask.AnyMaskedOptions;
-  onChange: (unmaskedValue: string, maskedValue: string) => void;
+  onChange?: (unmaskedValue: string, maskedValue: string) => void;
 };
 
 export const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
   ({ maskOptions, onChange, ...inputProps }, ref) => {
-    const inputRef = useRef<HTMLInputElement | null>(null);
-
+    const { ref: maskRef, value, unmaskedValue } = useIMask(maskOptions);
     useEffect(() => {
-      if (inputRef.current) {
-        const iMask = IMask(inputRef.current, maskOptions);
-        iMask.on("accept", () => {
-          onChange?.(iMask.unmaskedValue, iMask.value);
-        });
-
-        return () => {
-          iMask.destroy();
-        };
-      }
-    }, [maskOptions, onChange]);
+      onChange?.(unmaskedValue, value);
+    }, [value, unmaskedValue]);
 
     return (
       <Input
         {...inputProps}
         className={cx(`${COMPONENT_PREFIX}-masked-input`, inputProps.className)}
         ref={(newRef) => {
-          inputRef.current = newRef;
-          ref = inputRef;
+          if (newRef) {
+            maskRef.current = newRef;
+          }
+
+          if (typeof ref === "function") {
+            ref(newRef);
+          } else if (ref) {
+            ref.current = newRef;
+          }
         }}
       />
     );
