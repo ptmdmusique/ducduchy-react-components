@@ -3,18 +3,17 @@ import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { AnyMaskedOptions, MaskedRange } from "imask";
 import { useMemo } from "react";
+import {
+  DEFAULT_DURATION_PREFIX,
+  durationToString,
+  getDurationFromMs,
+  PossibleDurationType,
+  possibleDurationTypeList,
+} from "../../utils/date";
 import { OmitStrict } from "../../utils/types";
 import { MaskedInput, MaskedInputProps } from "../MaskedInput";
 import { COMPONENT_PREFIX } from "../resources/common.data";
 dayjs.extend(duration);
-
-const possibleDurationTypeList = [
-  "days",
-  "hours",
-  "minutes",
-  "seconds",
-] as const;
-export type PossibleDurationType = typeof possibleDurationTypeList[number];
 
 const DEFAULT_DISABLE: Record<PossibleDurationType, boolean> = {
   days: true,
@@ -23,39 +22,32 @@ const DEFAULT_DISABLE: Record<PossibleDurationType, boolean> = {
   seconds: true,
 };
 
-const DEFAULT_PREFIX: Record<PossibleDurationType, string> = {
-  days: "d",
-  hours: "h",
-  minutes: "m",
-  seconds: "s",
-};
-
 type MaskedType = `dd--${PossibleDurationType}`;
 const DEFAULT_BLOCKS: Record<MaskedType, AnyMaskedOptions> = {
   "dd--days": {
     mask: MaskedRange,
-    placeholderChar: "00",
+    placeholderChar: "0",
     from: 0,
     to: 99,
     maxLength: 2,
   },
   "dd--hours": {
     mask: MaskedRange,
-    placeholderChar: "00",
+    placeholderChar: "0",
     from: 0,
     to: 99,
     maxLength: 2,
   },
   "dd--minutes": {
     mask: MaskedRange,
-    placeholderChar: "00",
+    placeholderChar: "0",
     from: 0,
     to: 99,
     maxLength: 2,
   },
   "dd--seconds": {
     mask: MaskedRange,
-    placeholderChar: "00",
+    placeholderChar: "0",
     from: 0,
     to: 99,
     maxLength: 2,
@@ -67,6 +59,7 @@ export const getMsFromDurationType = (
   durationValue: number,
 ) => dayjs.duration({ [durationType]: durationValue }).asMilliseconds();
 
+/** // TODO: fix controlled form  */
 export interface DurationPickerProps
   extends OmitStrict<MaskedInputProps, "onChange" | "value" | "defaultValue"> {
   localeText?: {
@@ -92,8 +85,29 @@ export const DurationPicker = ({
   localeText,
   doDisabled,
   onChange,
+  value: _value,
+  defaultValue: _defaultValue,
   ...maskedInputProps
 }: DurationPickerProps) => {
+  const value = useMemo(
+    () =>
+      _value == undefined
+        ? undefined
+        : durationToString(getDurationFromMs(_value, doDisabled), localeText),
+    [_value],
+  );
+
+  const defaultValue = useMemo(
+    () =>
+      _defaultValue == undefined
+        ? undefined
+        : durationToString(
+            getDurationFromMs(_defaultValue, doDisabled),
+            localeText,
+          ),
+    [_defaultValue],
+  );
+
   const getIfDisabled = (type: PossibleDurationType) => {
     if (doDisabled) {
       return doDisabled[type];
@@ -102,7 +116,7 @@ export const DurationPicker = ({
   };
 
   const getLocaleText = (type: PossibleDurationType) =>
-    localeText?.[type] ?? DEFAULT_PREFIX[type];
+    localeText?.[type] ?? DEFAULT_DURATION_PREFIX[type];
 
   const { mask, placeholder } = useMemo(() => {
     const maskMap: Partial<Record<`${MaskedType}${string}`, boolean>> = {};
@@ -122,6 +136,8 @@ export const DurationPicker = ({
   return (
     <MaskedInput
       {...maskedInputProps}
+      defaultValue={defaultValue}
+      value={value}
       className={cx(
         `${COMPONENT_PREFIX}-duration-picker`,
         maskedInputProps.className,
@@ -138,7 +154,7 @@ export const DurationPicker = ({
         overwrite: true,
       }}
       onChange={(unmaskedValue, maskedValue) => {
-        const mapToCheck = localeText ?? DEFAULT_PREFIX;
+        const mapToCheck = localeText ?? DEFAULT_DURATION_PREFIX;
         const durationInMs = maskedValue.split(" ").reduce((acc, curr) => {
           const curLocaleText = curr.substring(2);
           const type = possibleDurationTypeList.find(

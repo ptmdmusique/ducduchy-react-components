@@ -46,3 +46,98 @@ export const sortDateArray = <T>({
     return (type === "ascending" ? -1 : 1) * (aDate.isAfter(bDate) ? 1 : -1);
   });
 };
+
+export const possibleDurationTypeList = [
+  "days",
+  "hours",
+  "minutes",
+  "seconds",
+] as const;
+export type PossibleDurationType = typeof possibleDurationTypeList[number];
+
+const MILLISECOND_PER_DAY = 1000 * 60 * 60 * 24;
+const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
+const MILLISECOND_PER_MINUTE = 1000 * 60;
+const MILLISECOND_PER_SECOND = 1000;
+
+export const DEFAULT_DURATION_PREFIX: Record<PossibleDurationType, string> = {
+  days: "d",
+  hours: "h",
+  minutes: "m",
+  seconds: "s",
+};
+
+/** Get duration object from millisecond */
+export const getDurationFromMs = (
+  timeInMilliseconds: number,
+  doDisabled?: {
+    [key in PossibleDurationType]?: boolean;
+  },
+): Record<PossibleDurationType, number> => {
+  let timeLeft = timeInMilliseconds;
+  const duration: Record<PossibleDurationType, number> = {
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  };
+
+  if (!doDisabled?.days) {
+    duration.days = Math.floor(timeLeft / MILLISECOND_PER_DAY);
+    timeLeft -= duration.days * MILLISECOND_PER_DAY;
+  }
+
+  if (!doDisabled?.hours) {
+    duration.hours = Math.floor(timeLeft / MILLISECOND_PER_HOUR);
+    timeLeft -= duration.hours * MILLISECOND_PER_HOUR;
+  }
+
+  if (!doDisabled?.minutes) {
+    duration.minutes = Math.floor(timeLeft / MILLISECOND_PER_MINUTE);
+    timeLeft -= duration.minutes * MILLISECOND_PER_MINUTE;
+  }
+
+  if (!doDisabled?.seconds) {
+    duration.seconds = Math.floor(timeLeft / MILLISECOND_PER_SECOND);
+  }
+
+  return duration;
+};
+
+export const durationToString = (
+  duration: Record<PossibleDurationType, number>,
+  localeText?: {
+    [key in PossibleDurationType]?: string;
+  },
+  doAppend0 = true,
+) => {
+  const getLocaleText = (type: PossibleDurationType) =>
+    localeText?.[type] ?? DEFAULT_DURATION_PREFIX[type];
+
+  const { days, hours, minutes, seconds } = duration;
+
+  let dayString = days ? `${days}${getLocaleText("days")}` : null;
+  if (doAppend0 && dayString?.length === 2) {
+    dayString = `0${dayString}`;
+  }
+
+  let hourString = hours ? `${hours}${getLocaleText("hours")}` : null;
+  if (doAppend0 && hourString?.length === 2) {
+    hourString = `0${hourString}`;
+  }
+
+  let minuteString = minutes ? `${minutes}${getLocaleText("minutes")}` : null;
+  if (doAppend0 && minuteString?.length === 2) {
+    minuteString = `0${minuteString}`;
+  }
+
+  let secondString = seconds ? `${seconds}${getLocaleText("seconds")}` : null;
+  if (doAppend0 && secondString?.length === 2) {
+    secondString = `0${secondString}`;
+  }
+
+  const finalStr = [dayString, hourString, minuteString, secondString]
+    .filter((str) => str)
+    .join(" ");
+  return !finalStr.trim() ? "0'" : finalStr;
+};

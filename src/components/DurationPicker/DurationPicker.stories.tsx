@@ -32,7 +32,11 @@ export default meta;
 
 const Template: Story<DurationPickerProps> = (args) => (
   <div className="mt-[20rem]">
-    <DurationPicker {...args} label="A simple label" />
+    <p className="mb-12">
+      <strong>NOTE:</strong> Controlled form hasn't work yet
+    </p>
+
+    <DurationPicker {...args} label="A simple label" defaultValue={45240000} />
   </div>
 );
 export const Default = Template.bind({});
@@ -56,7 +60,6 @@ const TemplateWithForm: Story<DurationPickerProps> = (args) => {
           {...args}
           {...methods.register("durationPicker")}
           onChange={(unmaskedValue, maskedValue, durationInMs) => {
-            console.log("maskedValue:", maskedValue);
             methods.setValue("durationPicker", durationInMs);
             setUnmaskedValue(unmaskedValue);
             setMaskedValue(maskedValue);
