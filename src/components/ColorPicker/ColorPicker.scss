@@ -29,18 +29,24 @@
     @apply p-2 mt-2;
     grid-template-columns: repeat(auto-fill, minmax(theme("width.6"), 1fr));
 
+    &--alone {
+      @apply grid-cols-2;
+      @apply mt-0;
+    }
+
     > .freq-used-color {
+      @apply flex justify-center items-center;
       @apply duration-200;
       @apply rounded-md;
       @apply w-6 h-6;
 
       &:focus {
-        @apply ring ring-skin-secondary;
+        @apply transform scale-110;
         outline: none;
       }
 
-      &--selected {
-        @apply transform scale-75;
+      > .icon {
+        @apply text-skin-inverted;
       }
     }
   }

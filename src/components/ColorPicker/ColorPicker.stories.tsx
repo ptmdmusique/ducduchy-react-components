@@ -45,6 +45,20 @@ WithFreqUsedColor.args = {
   ],
 };
 
+export const WithFreqUsedColorAndNoPicker = Template.bind({});
+WithFreqUsedColorAndNoPicker.args = {
+  hidePicker: true,
+  borderType: "plain",
+  defaultValue: "#6bf388",
+  frequentlyUsedColorList: [
+    "#f44336",
+    "#e91e63",
+    "#9c27b0",
+    "#673ab7",
+    "#3f51b5",
+  ],
+};
+
 export const WithForm: Story<ColorPickerProps> = (args) => {
   const methods = useForm<{ color: HEX }>();
 

@@ -4,6 +4,7 @@ import { forwardRef, useEffect, useMemo, useRef, useState } from "react";
 import { HexColorPicker } from "react-colorful";
 import { debounce } from "../../utils/lodash/debounce";
 import { OmitStrict } from "../../utils/types";
+import { Icon } from "../Icon";
 import { Input, InputProps } from "../Input";
 import { Popover } from "../Popover";
 import { COMPONENT_PREFIX } from "../resources/common.data";
@@ -67,6 +68,7 @@ export interface ColorPickerProps
   colorDisplayType?: ColorDisplayType;
 
   frequentlyUsedColorList?: string[];
+  hidePicker?: boolean;
 }
 
 export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
@@ -77,6 +79,7 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
       defaultValue,
       value,
       onChange,
+      hidePicker,
       ...inputProps
     },
     ref,
@@ -195,10 +198,16 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
               "color-picker__popover--has-freq-list": !!frequentlyUsedColorList,
             })}
           >
-            <Component color={curColor} onChange={onColorChange.current} />
+            {!hidePicker && (
+              <Component color={curColor} onChange={onColorChange.current} />
+            )}
 
             {frequentlyUsedColorList && (
-              <div className="freq-used-color-container">
+              <div
+                className={cx("freq-used-color-container", {
+                  "freq-used-color-container--alone": hidePicker,
+                })}
+              >
                 {frequentlyUsedColorList.map((color) => {
                   const isActive =
                     curColor?.toLowerCase() === color.toLowerCase();
@@ -211,7 +220,11 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
                       })}
                       disabled={isActive}
                       onClick={() => onColorChange.current(color)}
-                    />
+                    >
+                      {isActive && (
+                        <Icon icon={["fas", "check"]} className="icon fa-fw" />
+                      )}
+                    </button>
                   );
                 })}
               </div>
