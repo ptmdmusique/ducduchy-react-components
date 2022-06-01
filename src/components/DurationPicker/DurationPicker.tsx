@@ -2,7 +2,7 @@ import cx from "classnames";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { AnyMaskedOptions, MaskedRange } from "imask";
-import { useMemo } from "react";
+import { forwardRef, useMemo } from "react";
 import {
   DEFAULT_DURATION_PREFIX,
   durationToString,
@@ -83,98 +83,105 @@ export interface DurationPickerProps
   defaultValue?: number;
 }
 
-export const DurationPicker = ({
-  localeText,
-  doDisabled,
-  onChange,
-  value: _value,
-  defaultValue: _defaultValue,
-  ...maskedInputProps
-}: DurationPickerProps) => {
-  const value = useMemo(
-    () =>
-      _value == undefined
-        ? undefined
-        : durationToString(getDurationFromMs(_value, doDisabled), localeText),
-    [_value],
-  );
+export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
+  (
+    {
+      localeText,
+      doDisabled,
+      onChange,
+      value: _value,
+      defaultValue: _defaultValue,
+      ...maskedInputProps
+    },
+    ref,
+  ) => {
+    const value = useMemo(
+      () =>
+        _value == undefined
+          ? undefined
+          : durationToString(getDurationFromMs(_value, doDisabled), localeText),
+      [_value],
+    );
 
-  const defaultValue = useMemo(
-    () =>
-      _defaultValue == undefined
-        ? undefined
-        : durationToString(
-            getDurationFromMs(_defaultValue, doDisabled),
-            localeText,
-          ),
-    [_defaultValue],
-  );
+    const defaultValue = useMemo(
+      () =>
+        _defaultValue == undefined
+          ? undefined
+          : durationToString(
+              getDurationFromMs(_defaultValue, doDisabled),
+              localeText,
+            ),
+      [_defaultValue],
+    );
 
-  const getIfDisabled = (type: PossibleDurationType) => {
-    if (doDisabled) {
-      return doDisabled[type];
-    }
-    return DEFAULT_DISABLE[type];
-  };
-
-  const getLocaleText = (type: PossibleDurationType) =>
-    localeText?.[type] ?? DEFAULT_DURATION_PREFIX[type];
-
-  const { mask, placeholder } = useMemo(() => {
-    const maskMap: Partial<Record<`${MaskedType}${string}`, boolean>> = {};
-    let placeholder = "";
-    possibleDurationTypeList.forEach((type) => {
-      const typeDisabled = getIfDisabled(type);
-      const localeText = getLocaleText(type);
-      maskMap[`dd--${type}${localeText}`] = !typeDisabled;
-      if (!typeDisabled) {
-        placeholder += `00${localeText} `;
+    const getIfDisabled = (type: PossibleDurationType) => {
+      if (doDisabled) {
+        return doDisabled[type];
       }
-    });
+      return DEFAULT_DISABLE[type];
+    };
 
-    return { mask: cx(maskMap), placeholder };
-  }, [localeText, doDisabled]);
+    const getLocaleText = (type: PossibleDurationType) =>
+      localeText?.[type] ?? DEFAULT_DURATION_PREFIX[type];
 
-  return (
-    <MaskedInput
-      {...maskedInputProps}
-      defaultValue={defaultValue}
-      value={value}
-      className={cx(
-        `${COMPONENT_PREFIX}-duration-picker`,
-        maskedInputProps.className,
-      )}
-      placeholder={placeholder}
-      // @ts-ignore
-      maskOptions={{
-        ...maskedInputProps.maskOptions,
-        mask,
-        lazy: false,
-        blocks: DEFAULT_BLOCKS,
-        eager: true,
-        autofix: true,
-        overwrite: true,
-      }}
-      onChange={(unmaskedValue, maskedValue) => {
-        const mapToCheck = localeText ?? DEFAULT_DURATION_PREFIX;
-        const durationInMs = maskedValue.split(" ").reduce((acc, curr) => {
-          const curLocaleText = curr.substring(2);
-          const type = possibleDurationTypeList.find(
-            (type) => mapToCheck[type] === curLocaleText,
-          )!;
+    const { mask, placeholder } = useMemo(() => {
+      const maskMap: Partial<Record<`${MaskedType}${string}`, boolean>> = {};
+      let placeholder = "";
+      possibleDurationTypeList.forEach((type) => {
+        const typeDisabled = getIfDisabled(type);
+        const localeText = getLocaleText(type);
+        maskMap[`dd--${type}${localeText}`] = !typeDisabled;
+        if (!typeDisabled) {
+          placeholder += `00${localeText} `;
+        }
+      });
 
-          if (getIfDisabled(type)) {
-            return acc;
-          }
+      return { mask: cx(maskMap), placeholder };
+    }, [localeText, doDisabled]);
 
-          const duration = parseInt(curr.replaceAll("_", ""), 10);
-          return (
-            acc + (isNaN(duration) ? 0 : getMsFromDurationType(type, duration))
-          );
-        }, 0);
+    return (
+      <MaskedInput
+        {...maskedInputProps}
+        ref={ref}
+        defaultValue={defaultValue}
+        value={value}
+        className={cx(
+          `${COMPONENT_PREFIX}-duration-picker`,
+          maskedInputProps.className,
+        )}
+        placeholder={placeholder}
+        // @ts-ignore
+        maskOptions={{
+          ...maskedInputProps.maskOptions,
+          mask,
+          lazy: false,
+          blocks: DEFAULT_BLOCKS,
+          eager: true,
+          autofix: true,
+          overwrite: true,
+        }}
+        onChange={(unmaskedValue, maskedValue) => {
+          const mapToCheck = localeText ?? DEFAULT_DURATION_PREFIX;
+          const durationInMs = maskedValue.split(" ").reduce((acc, curr) => {
+            const curLocaleText = curr.substring(2);
+            const type = possibleDurationTypeList.find(
+              (type) => mapToCheck[type] === curLocaleText,
+            )!;
 
-        onChange?.(unmaskedValue, maskedValue, durationInMs);
-      }}
-    />
-  );
-};
+            if (getIfDisabled(type)) {
+              return acc;
+            }
+
+            const duration = parseInt(curr.replaceAll("_", ""), 10);
+            return (
+              acc +
+              (isNaN(duration) ? 0 : getMsFromDurationType(type, duration))
+            );
+          }, 0);
+
+          onChange?.(unmaskedValue, maskedValue, durationInMs);
+        }}
+      />
+    );
+  },
+);
