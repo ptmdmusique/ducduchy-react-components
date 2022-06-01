@@ -61,7 +61,9 @@ export const getMsFromDurationType = (
 
 /** // TODO: fix controlled form  */
 export interface DurationPickerProps
-  extends OmitStrict<MaskedInputProps, "onChange" | "value" | "defaultValue"> {
+  extends Partial<
+    OmitStrict<MaskedInputProps, "onChange" | "value" | "defaultValue">
+  > {
   localeText?: {
     [key in PossibleDurationType]?: string;
   };
