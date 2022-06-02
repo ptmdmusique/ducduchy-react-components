@@ -183,57 +183,65 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
 
     return (
       <div className={`${COMPONENT_PREFIX}-color-picker`}>
-        <Popover
-          popoverProps={{
-            className: `${COMPONENT_PREFIX}-color-picker__popover-outer`,
-          }}
-          popoverOpenerProps={{
-            as: "button",
-            className: "color-indicator",
-            style: { backgroundColor: curColor },
-          }}
-        >
-          <div
-            className={cx(`${COMPONENT_PREFIX}-color-picker__popover`, {
-              "color-picker__popover--has-freq-list": !!frequentlyUsedColorList,
-            })}
-          >
-            {!hidePicker && (
-              <Component color={curColor} onChange={onColorChange.current} />
-            )}
-
-            {frequentlyUsedColorList && (
-              <div
-                className={cx("freq-used-color-container", {
-                  "freq-used-color-container--alone": hidePicker,
-                })}
-              >
-                {frequentlyUsedColorList.map((color) => {
-                  const isActive =
-                    curColor?.toLowerCase() === color.toLowerCase();
-                  return (
-                    <button
-                      key={color}
-                      style={{ backgroundColor: color }}
-                      className={cx("freq-used-color", {
-                        "freq-used-color--selected": isActive,
-                      })}
-                      disabled={isActive}
-                      onClick={() => onColorChange.current(color)}
-                    >
-                      {isActive && (
-                        <Icon icon={["fas", "check"]} className="icon fa-fw" />
-                      )}
-                    </button>
-                  );
-                })}
-              </div>
-            )}
-          </div>
-        </Popover>
-
         <Input
           {...inputProps}
+          leadingAdornment={
+            <Popover
+              popoverProps={{
+                className: `${COMPONENT_PREFIX}-color-picker__popover-outer`,
+              }}
+              popoverOpenerProps={{
+                as: "button",
+                className: "color-indicator",
+                style: { backgroundColor: curColor },
+              }}
+            >
+              <div
+                className={cx(`${COMPONENT_PREFIX}-color-picker__popover`, {
+                  "color-picker__popover--has-freq-list":
+                    !!frequentlyUsedColorList,
+                })}
+              >
+                {!hidePicker && (
+                  <Component
+                    color={curColor}
+                    onChange={onColorChange.current}
+                  />
+                )}
+
+                {frequentlyUsedColorList && (
+                  <div
+                    className={cx("freq-used-color-container", {
+                      "freq-used-color-container--alone": hidePicker,
+                    })}
+                  >
+                    {frequentlyUsedColorList.map((color) => {
+                      const isActive =
+                        curColor?.toLowerCase() === color.toLowerCase();
+                      return (
+                        <button
+                          key={color}
+                          style={{ backgroundColor: color }}
+                          className={cx("freq-used-color", {
+                            "freq-used-color--selected": isActive,
+                          })}
+                          disabled={isActive}
+                          onClick={() => onColorChange.current(color)}
+                        >
+                          {isActive && (
+                            <Icon
+                              icon={["fas", "check"]}
+                              className="icon fa-fw"
+                            />
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            </Popover>
+          }
           onChange={onInputChange}
           hasContent={curColor != null}
           ref={(ele) => {

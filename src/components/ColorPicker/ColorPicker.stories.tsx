@@ -28,13 +28,10 @@ export default meta;
 
 const Template: Story<ColorPickerProps> = (args) => <ColorPicker {...args} />;
 export const Default = Template.bind({});
-Default.args = {
-  borderType: "plain",
-};
+Default.args = {};
 
 export const WithFreqUsedColor = Template.bind({});
 WithFreqUsedColor.args = {
-  borderType: "plain",
   defaultValue: "#6bf388",
   frequentlyUsedColorList: [
     "#f44336",
@@ -48,7 +45,6 @@ WithFreqUsedColor.args = {
 export const WithFreqUsedColorAndNoPicker = Template.bind({});
 WithFreqUsedColorAndNoPicker.args = {
   hidePicker: true,
-  borderType: "plain",
   defaultValue: "#6bf388",
   frequentlyUsedColorList: [
     "#f44336",

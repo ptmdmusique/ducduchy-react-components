@@ -2,15 +2,15 @@
   @apply flex items-center;
 
   .color-indicator {
+    @apply w-full h-full;
     @apply rounded-md;
     @apply shadow-md;
-    @apply w-6 h-6;
-    @apply mr-2;
   }
 }
 
 .dd-color-picker__popover-outer {
   @apply flex items-center;
+  @apply w-full h-full;
 }
 
 .dd-color-picker__popover {
