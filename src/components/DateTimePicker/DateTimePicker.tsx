@@ -1,3 +1,4 @@
+import { ClickAwayListener } from "@material-ui/core";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
   DateTimePicker as MUIDateTimePicker,
@@ -47,6 +48,8 @@ export type DateTimePickerProps = OmitStrict<
   calendarLeadingIcon?: [string, string];
   clearDateIcon?: [string, string];
 
+  closeOnClickAway?: boolean;
+
   locale?: keyof typeof localeDateMap;
 
   dateTimePickerProps?: OmitStrict<
@@ -70,6 +73,7 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
       label,
       calendarLeadingIcon = ["fas", "calendar-alt"],
       clearDateIcon = ["fas", "times"],
+      closeOnClickAway = true,
 
       disabled,
       dateFormat,
@@ -172,7 +176,9 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
               <Input
                 {...params}
                 state={error ? "error" : undefined}
-                onClick={openDropdown}
+                onClick={() => {
+                  isOpen ? closeDropdown() : openDropdown();
+                }}
                 leadingAdornment={calendarLeadingIcon}
                 leadingAdornmentOnClick={openDropdown}
                 trailingAdornment={formattedValue ? clearDateIcon : undefined}
