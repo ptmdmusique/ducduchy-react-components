@@ -90,6 +90,8 @@
     "babel-loader": "^8.2.3",
     "css-loader": "^6.5.1",
     "dts-cli": "^1.1.5",
+    "eslint": "^8.17.0",
+    "eslint-plugin-storybook": "^0.5.12",
     "gh-pages": "^3.2.3",
     "html-webpack-plugin": "^5.5.0",
     "husky": "^7.0.4",

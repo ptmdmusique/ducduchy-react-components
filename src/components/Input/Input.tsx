@@ -89,7 +89,16 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const myId = useRef(inputProps?.id ?? `input---${nanoid()}`);
     const hasError = state === "error";
 
-    const inputRef = useRef<HTMLInputElement>();
+    const inputRef = useRef<HTMLInputElement>(null);
+    useEffect(() => {
+      if (ref) {
+        if (typeof ref === "function") {
+          ref(inputRef.current);
+        } else {
+          ref.current = inputRef.current;
+        }
+      }
+    }, [inputRef.current]);
 
     const debounceRef = useRef(
       debounce((event: ChangeEvent<HTMLInputElement>) => {
@@ -204,17 +213,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           <input
             {...inputProps}
             id={myId.current}
-            ref={(ele) => {
-              inputRef.current = ele ?? undefined;
-
-              if (ref) {
-                if (typeof ref === "function") {
-                  ref(ele);
-                } else {
-                  ref.current = ele;
-                }
-              }
-            }}
+            ref={inputRef}
             onChange={onInputChange}
           />
 

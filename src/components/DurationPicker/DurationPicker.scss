@@ -1,0 +1,14 @@
+.dd-duration-picker {
+  &__panel {
+    @apply overflow-y-auto;
+    max-height: 13.125rem;
+    min-width: 9.5rem;
+
+    .dd-duration-item {
+      @apply justify-start;
+      @apply rounded-none;
+      @apply font-normal;
+      @apply w-full;
+    }
+  }
+}

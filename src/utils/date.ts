@@ -55,6 +55,8 @@ export const possibleDurationTypeList = [
 ] as const;
 export type PossibleDurationType = typeof possibleDurationTypeList[number];
 
+export type Duration = Record<PossibleDurationType, number>;
+
 const MILLISECOND_PER_DAY = 1000 * 60 * 60 * 24;
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 const MILLISECOND_PER_MINUTE = 1000 * 60;
@@ -73,9 +75,9 @@ export const getDurationFromMs = (
   doDisabled?: {
     [key in PossibleDurationType]?: boolean;
   },
-): Record<PossibleDurationType, number> => {
+): Duration => {
   let timeLeft = timeInMilliseconds;
-  const duration: Record<PossibleDurationType, number> = {
+  const duration: Duration = {
     days: 0,
     hours: 0,
     minutes: 0,
@@ -105,7 +107,7 @@ export const getDurationFromMs = (
 };
 
 export const durationToString = (
-  duration: Record<PossibleDurationType, number>,
+  duration: Duration,
   localeText?: {
     [key in PossibleDurationType]?: string;
   },

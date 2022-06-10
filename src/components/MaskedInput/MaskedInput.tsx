@@ -34,14 +34,21 @@ export const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
       iMaskRef.current?.updateValue();
     }, [inputProps.value, inputProps.defaultValue]);
 
+    useEffect(() => {
+      if (ref) {
+        if (typeof ref === "function") {
+          ref(inputRef.current);
+        } else {
+          ref.current = inputRef.current;
+        }
+      }
+    }, [inputRef.current]);
+
     return (
       <Input
         {...inputProps}
         className={cx(`${COMPONENT_PREFIX}-masked-input`, inputProps.className)}
-        ref={(newRef) => {
-          inputRef.current = newRef;
-          ref = inputRef;
-        }}
+        ref={inputRef}
       />
     );
   },
