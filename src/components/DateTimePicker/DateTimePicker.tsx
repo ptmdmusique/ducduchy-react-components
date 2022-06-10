@@ -1,16 +1,23 @@
-import { ClickAwayListener } from "@material-ui/core";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
   DateTimePicker as MUIDateTimePicker,
-  DateTimePickerProps as MUIDateTimePickerProps,
+  DateTimePickerProps as MUIDateTimePickerProps
 } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import cx from "classnames";
 import dayjs, { Dayjs } from "dayjs";
 import "dayjs/locale/en";
 import "dayjs/locale/vi";
-import { forwardRef, ReactNode, useEffect, useMemo, useState } from "react";
+import {
+  forwardRef,
+  ReactNode,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react";
 import { Controller } from "react-hook-form";
+import { useClickAway } from "react-use";
 import { formatDate, getDateTimePlaceholder } from "../../utils/date";
 import { OmitStrict } from "../../utils/types";
 import { Input, InputProps } from "../Input";
@@ -125,6 +132,11 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
       }
     };
 
+    const pickerRef = useRef<HTMLDivElement | null>(null);
+    useClickAway(pickerRef, () => {
+      closeOnClickAway && closeDropdown();
+    });
+
     const renderContent = (formOnChange?: OnChange) => {
       const clearValue = () => {
         if (!disabled) {
@@ -221,6 +233,7 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
                 placement: "bottom-start",
                 modifiers: [{ name: "offset", options: { offset: [0, 5] } }],
               },
+              ref: pickerRef,
             }}
           />
         </LocalizationProvider>
