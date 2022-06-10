@@ -3,7 +3,7 @@
     @apply relative;
 
     > .tab-group__tab {
-      @apply border-b-2 border-b-transparent;
+      @apply border-b-2 border-skin-disabled border-opacity-40;
       @apply duration-200;
       @apply py-2;
 
@@ -13,6 +13,10 @@
 
       &:hover:not(.tab-group__tab--selected) {
         @apply border-skin-disabled;
+      }
+
+      &.tab-group__tab--selected {
+        @apply text-skin-secondary;
       }
 
       &--pill {

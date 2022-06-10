@@ -1,4 +1,6 @@
 import { Meta, Story } from "@storybook/react";
+import { useEffect, useState } from "react";
+import { Button } from "../Button";
 import { Icon } from "../Icon";
 import { storyDisabledOption } from "../resources/story-common";
 import { TabGroup, TabGroupProps } from "./TabGroup";
@@ -68,3 +70,68 @@ const Template: Story<TabGroupProps> = (args) => (
   />
 );
 export const Default = Template.bind({});
+
+export const FullyStyled: Story<TabGroupProps> = (args) => (
+  <TabGroup
+    {...args}
+    tabGroupProps={{ className: "text-skin-base ml-16 bg-skin-top rounded-md" }}
+    tabListProps={{ className: "flex" }}
+    numberOfTabs={Math.min(panelList.length, contentList.length)}
+    renderTab={(index) => (
+      <div className="flex w-full justify-center">
+        <Icon icon={panelList[index].icon} className="fa-fw mr-2" />
+        {panelList[index].title}
+      </div>
+    )}
+    getTabProps={() => ({ className: "px-4 flex-grow" })}
+    renderTabPanel={(index) => (
+      <div className="px-16 py-4">{contentList[index].text}</div>
+    )}
+  />
+);
+
+const getIndex = (index: number, length: number) =>
+  Math.max(0, Math.min(index, length - 1));
+
+export const ControlledIndex: Story<TabGroupProps> = (args) => {
+  const [selectedIndex, setSelectedIndex] = useState(
+    args.defaultSelectedIndex ?? 0,
+  );
+
+  useEffect(() => {
+    setSelectedIndex(
+      getIndex(args.defaultSelectedIndex ?? 0, panelList.length),
+    );
+  }, [args.selectedIndex]);
+
+  return (
+    <>
+      <Button
+        className="mb-8"
+        onClick={() => setSelectedIndex((selectedIndex + 1) % panelList.length)}
+      >
+        Next index
+      </Button>
+
+      <TabGroup
+        {...args}
+        selectedIndex={selectedIndex}
+        tabGroupProps={{
+          className: "text-skin-base bg-skin-top rounded-md",
+        }}
+        tabListProps={{ className: "flex" }}
+        numberOfTabs={Math.min(panelList.length, contentList.length)}
+        renderTab={(index) => (
+          <div className="flex w-full justify-center">
+            <Icon icon={panelList[index].icon} className="fa-fw mr-2" />
+            {panelList[index].title}
+          </div>
+        )}
+        getTabProps={() => ({ className: "px-4 flex-grow" })}
+        renderTabPanel={(index) => (
+          <div className="px-16 py-4">{contentList[index].text}</div>
+        )}
+      />
+    </>
+  );
+};

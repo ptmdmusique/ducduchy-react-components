@@ -7,7 +7,7 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState
+  useState,
 } from "react";
 import { ExtractProps } from "../../utils/types";
 import { COMPONENT_PREFIX } from "../resources/common.data";
@@ -38,6 +38,7 @@ export interface TabGroupProps {
   tabPanelsProps?: ExtractProps<typeof Tab.Panel>;
 }
 
+// TODO: fix bug where tab and tab panel still got switch even in controller mode
 export const TabGroup = forwardRef<HTMLDivElement, TabGroupProps>(
   (
     {
