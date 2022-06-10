@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { DateTimePicker, DateTimePickerProps } from ".";
 import { Button } from "../Button";
+import { Modal } from "../Modal";
 import { storyDisabledOption } from "../resources/story-common";
 import { StorybookCommonWithForm } from "../resources/StorybookCommonWithForm";
 
@@ -192,4 +193,27 @@ export const WithSyncPicker: Story<DateTimePickerProps> = (args) => {
       </Button>
     </div>
   );
+};
+
+export const WithModal: Story<DateTimePickerProps> = (args) => {
+  const [modalOpen, setModalOpen] = useState(false);
+
+  return (
+    <>
+      <Button onClick={() => setModalOpen(!modalOpen)}>Open modal</Button>
+
+      <Modal
+        isOpen={modalOpen}
+        bodyClassName="px-4 py-16"
+        onClose={() => setModalOpen(false)}
+      >
+        <DateTimePicker {...args} />
+      </Modal>
+    </>
+  );
+};
+
+WithModal.args = {
+  minDate: new Date(2022, 1, 1),
+  maxDate: new Date(),
 };

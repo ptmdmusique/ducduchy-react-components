@@ -1,15 +1,23 @@
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
   DateTimePicker as MUIDateTimePicker,
-  DateTimePickerProps as MUIDateTimePickerProps,
+  DateTimePickerProps as MUIDateTimePickerProps
 } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import cx from "classnames";
 import dayjs, { Dayjs } from "dayjs";
 import "dayjs/locale/en";
 import "dayjs/locale/vi";
-import { forwardRef, ReactNode, useEffect, useMemo, useState } from "react";
+import {
+  forwardRef,
+  ReactNode,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react";
 import { Controller } from "react-hook-form";
+import { useClickAway } from "react-use";
 import { formatDate, getDateTimePlaceholder } from "../../utils/date";
 import { OmitStrict } from "../../utils/types";
 import { Input, InputProps } from "../Input";
@@ -47,6 +55,8 @@ export type DateTimePickerProps = OmitStrict<
   calendarLeadingIcon?: [string, string];
   clearDateIcon?: [string, string];
 
+  closeOnClickAway?: boolean;
+
   locale?: keyof typeof localeDateMap;
 
   dateTimePickerProps?: OmitStrict<
@@ -70,6 +80,7 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
       label,
       calendarLeadingIcon = ["fas", "calendar-alt"],
       clearDateIcon = ["fas", "times"],
+      closeOnClickAway = true,
 
       disabled,
       dateFormat,
@@ -120,6 +131,11 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
         setIsOpen(true);
       }
     };
+
+    const pickerRef = useRef<HTMLDivElement | null>(null);
+    useClickAway(pickerRef, () => {
+      closeOnClickAway && closeDropdown();
+    });
 
     const renderContent = (formOnChange?: OnChange) => {
       const clearValue = () => {
@@ -172,7 +188,9 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
               <Input
                 {...params}
                 state={error ? "error" : undefined}
-                onClick={openDropdown}
+                onClick={() => {
+                  isOpen ? closeDropdown() : openDropdown();
+                }}
                 leadingAdornment={calendarLeadingIcon}
                 leadingAdornmentOnClick={openDropdown}
                 trailingAdornment={formattedValue ? clearDateIcon : undefined}
@@ -215,6 +233,7 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
                 placement: "bottom-start",
                 modifiers: [{ name: "offset", options: { offset: [0, 5] } }],
               },
+              ref: pickerRef,
             }}
           />
         </LocalizationProvider>

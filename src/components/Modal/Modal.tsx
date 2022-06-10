@@ -93,21 +93,24 @@ export const Modal: FC<ModalProps> = ({
           className={cx(`${COMPONENT_PREFIX}-modal`, className)}
           open={isOpen}
           onClose={() => {
-            onClose?.("standard");
+            if (isOpen) {
+              onClose?.("standard");
+            }
           }}
           initialFocus={containerRef}
           as={motion.div}
         >
-          <Dialog.Overlay
+          <motion.div
             className="overlay"
-            as={motion.div}
             variants={modalVariantMap.overlay}
             initial="hidden"
             animate="visible"
             exit="hidden"
+            aria-hidden="true"
           />
 
-          <motion.div
+          <Dialog.Panel
+            as={motion.div}
             className={cx("modal-content", {
               "modal-content--fullscreen": isFullscreen,
             })}
@@ -135,13 +138,15 @@ export const Modal: FC<ModalProps> = ({
               <button
                 className="close-button"
                 onClick={() => {
-                  onClose?.("close-button-click");
+                  if (isOpen) {
+                    onClose?.("close-button-click");
+                  }
                 }}
               >
                 <Icon icon={closeButtonIcon} className="fa-fw" />
               </button>
             )}
-          </motion.div>
+          </Dialog.Panel>
         </Dialog>
       )}
     </AnimatePresence>
