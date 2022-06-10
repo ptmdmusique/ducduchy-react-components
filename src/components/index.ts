@@ -12,5 +12,6 @@ export * from "./Modal";
 export * from "./Popover";
 export * from "./RadioGroup";
 export * from "./Slider";
+export * from "./TabGroup";
 export * from "./Toggle";
 

@@ -1,0 +1,60 @@
+.dd-tab-group {
+  > .tab-group__tab-list {
+    @apply relative;
+
+    > .tab-group__tab {
+      @apply border-b-2 border-b-transparent;
+      @apply duration-200;
+      @apply py-2;
+
+      &:focus {
+        outline: none;
+      }
+
+      &:hover:not(.tab-group__tab--selected) {
+        @apply border-skin-disabled;
+      }
+
+      &--pill {
+        @apply relative;
+
+        &.tab-group__tab--selected {
+          @apply text-skin-inverted;
+        }
+
+        &:hover:not(.tab-group__tab--selected) {
+          @apply bg-skin-disabled;
+          @apply border-0;
+        }
+      }
+    }
+
+    > .tab-group__tab-active-indicator {
+      @apply absolute left-0 bottom-0;
+      @apply bg-skin-secondary;
+      @apply duration-200;
+      height: 0.125rem;
+
+      &--pill {
+        @apply h-full;
+      }
+    }
+  }
+
+  > .tab-group__tab-panels {
+    > .tab-group__tab-panel {
+      animation-name: fadeIn;
+      animation-duration: theme("transitionDuration.500");
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

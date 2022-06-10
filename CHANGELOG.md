@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.2.5] - 2022-06-09
 
+### Added
+
+- 🗿 `TabGroup`: added `TabGroup`
+
 ### Fixed
 
 - 💭 `Modal`: prevent `onClose` to being bubbled if modal is closed but animation is still happening
