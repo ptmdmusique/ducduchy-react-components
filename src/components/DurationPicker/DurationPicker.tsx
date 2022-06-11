@@ -3,14 +3,23 @@ import cx from "classnames";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { AnyMaskedOptions, MaskedRange } from "imask";
-import { forwardRef, ReactNode, useMemo } from "react";
 import {
+  forwardRef,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import {
+  DEFAULT_DURATION_DISABLE,
   DEFAULT_DURATION_PREFIX,
   Duration,
   durationToString,
   getDurationFromMs,
+  getDurationInMsFromString,
   PossibleDurationType,
-  possibleDurationTypeList
+  possibleDurationTypeList,
 } from "../../utils/date";
 import { OmitStrict } from "../../utils/types";
 import { Button } from "../Button";
@@ -19,13 +28,6 @@ import { Popover } from "../Popover";
 import { COMPONENT_PREFIX } from "../resources/common.data";
 import "./DurationPicker.scss";
 dayjs.extend(duration);
-
-const DEFAULT_DISABLE: Record<PossibleDurationType, boolean> = {
-  days: true,
-  hours: false,
-  minutes: false,
-  seconds: true,
-};
 
 type MaskedType = `dd--${PossibleDurationType}`;
 const DEFAULT_BLOCKS: Record<MaskedType, AnyMaskedOptions> = {
@@ -59,11 +61,6 @@ const DEFAULT_BLOCKS: Record<MaskedType, AnyMaskedOptions> = {
   },
 };
 
-export const getMsFromDurationWithType = (
-  durationType: PossibleDurationType,
-  durationValue: number,
-) => dayjs.duration({ [durationType]: durationValue }).asMilliseconds();
-
 /** // TODO: fix controlled form  */
 export interface DurationPickerProps
   extends Partial<
@@ -87,9 +84,20 @@ export interface DurationPickerProps
   value?: number;
   defaultValue?: number;
 
-  formatDropdownItem?: (duration: Duration, durationInMs: number) => ReactNode;
+  separatedBySpace?: boolean;
+
+  dropdownItemProps?: {
+    minDuration?: number;
+    maxDuration?: number;
+    interval?: number;
+    /** Whether to include last item if equal to maxDuration or not */
+    inclusiveEnd?: boolean;
+    formatItem?: (duration: Duration, durationInMs: number) => ReactNode;
+    isItemValid?: (durationInMs: number) => boolean;
+  };
 }
 
+// TODO: support clear value
 export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
   (
     {
@@ -97,72 +105,148 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
       doDisabled,
       onChange,
       value: _value,
-      defaultValue: _defaultValue,
-      formatDropdownItem,
+      separatedBySpace = true,
+      defaultValue,
+      dropdownItemProps,
       ...maskedInputProps
     },
     ref,
   ) => {
-    const value = useMemo(
-      () =>
-        _value == undefined
-          ? undefined
-          : durationToString(getDurationFromMs(_value, doDisabled), localeText),
-      [_value],
+    const getFinalValueString = useCallback(
+      (newDurationInMs: number | undefined) => {
+        let newValue: string | undefined = undefined;
+
+        if (newDurationInMs !== undefined) {
+          const newDuration = getDurationFromMs(
+            newDurationInMs,
+            doDisabled ?? DEFAULT_DURATION_DISABLE,
+          );
+
+          newValue = durationToString(newDuration, localeText, {
+            doDisabled: doDisabled ?? DEFAULT_DURATION_DISABLE,
+            doPrepend0: true,
+          });
+        }
+
+        return newValue;
+      },
+      [doDisabled, localeText],
     );
 
-    const defaultValue = useMemo(
-      () =>
-        _defaultValue == undefined
-          ? undefined
-          : durationToString(
-              getDurationFromMs(_defaultValue, doDisabled),
-              localeText,
-            ),
-      [_defaultValue],
+    const [value, setValue] = useState(
+      getFinalValueString(_value ?? defaultValue ?? 0),
     );
+
+    useEffect(() => {
+      if (_value !== undefined) {
+        setValue(getFinalValueString(_value));
+      }
+    }, [_value]);
 
     const getIfDisabled = (type: PossibleDurationType) => {
       if (doDisabled) {
         return doDisabled[type];
       }
-      return DEFAULT_DISABLE[type];
+
+      return DEFAULT_DURATION_DISABLE[type];
     };
 
     const getLocaleText = (type: PossibleDurationType) =>
       localeText?.[type] ?? DEFAULT_DURATION_PREFIX[type];
 
     const { mask, placeholder } = useMemo(() => {
-      const maskMap: Partial<Record<`${MaskedType}${string}`, boolean>> = {};
+      const maskMap: Partial<Record<`${MaskedType}{${string}}`, boolean>> = {};
       let placeholder = "";
       possibleDurationTypeList.forEach((type) => {
         const typeDisabled = getIfDisabled(type);
         const localeText = getLocaleText(type);
-        maskMap[`dd--${type}${localeText}`] = !typeDisabled;
+        console.log("localeText:", localeText);
+        maskMap[`dd--${type}{${localeText}}`] = !typeDisabled;
         if (!typeDisabled) {
           placeholder += `00${localeText} `;
         }
       });
 
-      return { mask: cx(maskMap), placeholder };
+      const maskString = Object.keys(maskMap)
+        .filter((key) => maskMap[key as any] === true)
+        .join(separatedBySpace ? " " : "");
+
+      return { mask: maskString, placeholder };
     }, [localeText, doDisabled]);
 
     const dropDownItemList = useMemo(() => {
-      const durationInMsList = [1, 2, 3, 1, 12, 31, 23, 123, 14, 1];
+      const {
+        minDuration = 0,
+        maxDuration = 8.64e7, // 1 day
+        interval = 900000, // 15 minutes
+        formatItem,
+        inclusiveEnd = true,
+        isItemValid,
+      } = dropdownItemProps ?? {};
+      const curValueInMs = value ? getDurationInMsFromString(value) : null;
+
+      const durationInMsList: number[] = [];
+      let durationInMs = minDuration;
+      while (
+        inclusiveEnd ? durationInMs <= maxDuration : durationInMs < maxDuration
+      ) {
+        if (isItemValid?.(durationInMs) ?? true) {
+          durationInMsList.push(durationInMs);
+        }
+
+        durationInMs += interval;
+      }
+
+      const bubbleNewDuration = (durationInMs: number) => {
+        const newDurationString = durationToString(
+          getDurationFromMs(durationInMs, doDisabled),
+          localeText,
+        );
+
+        // Strip all locale text for unmasked value
+        const unmaskedValue = newDurationString
+          .replace(
+            new RegExp(
+              `${getLocaleText(possibleDurationTypeList[0])}|${getLocaleText(
+                possibleDurationTypeList[1],
+              )}|${getLocaleText(possibleDurationTypeList[2])}|${getLocaleText(
+                possibleDurationTypeList[3],
+              )}`,
+              "g",
+            ),
+            "",
+          )
+          .replaceAll(" ", "");
+
+        // Only set value for uncontrolled form
+        _value == null && setValue(getFinalValueString(durationInMs));
+        onChange?.(unmaskedValue, newDurationString, durationInMs);
+      };
 
       return durationInMsList.map((durationInMs, index) => (
         <Button
           className={`${COMPONENT_PREFIX}-duration-item`}
           borderType="plain"
           key={index}
+          ref={(ref) => {
+            if (curValueInMs === durationInMs) {
+              ref?.focus();
+            }
+          }}
+          onFocus={(event) => {
+            event.target.scrollIntoView({
+              behavior: "smooth",
+              block: "center",
+              inline: "center",
+            });
+            bubbleNewDuration(durationInMs);
+          }}
         >
-          {formatDropdownItem?.(
-            getDurationFromMs(durationInMs),
-            durationInMs,
-          ) ?? durationInMs}
+          {formatItem?.(getDurationFromMs(durationInMs), durationInMs) ??
+            getFinalValueString(durationInMs)}
         </Button>
       ));
-    }, [formatDropdownItem]);
+    }, [dropdownItemProps, doDisabled, localeText, getFinalValueString, value]);
 
     // TODO: remove this LibPopover once the focus via Tab in Popover is fixed
     return (
@@ -173,8 +257,7 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
             as: MaskedInput,
             ...maskedInputProps,
             ref,
-            defaultValue,
-            value: value,
+            value,
             className: cx(
               `${COMPONENT_PREFIX}-duration-picker__input`,
               maskedInputProps.className,
@@ -191,28 +274,9 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
               overwrite: true,
             },
             onChange: (unmaskedValue, maskedValue) => {
-              const mapToCheck = localeText ?? DEFAULT_DURATION_PREFIX;
-              const durationInMs = maskedValue
-                .split(" ")
-                .reduce((acc, curr) => {
-                  const curLocaleText = curr.substring(2);
-                  const type = possibleDurationTypeList.find(
-                    (type) => mapToCheck[type] === curLocaleText,
-                  )!;
-
-                  if (getIfDisabled(type)) {
-                    return acc;
-                  }
-
-                  const durationInMs = parseInt(curr.replaceAll("_", ""), 10);
-                  return (
-                    acc +
-                    (isNaN(durationInMs)
-                      ? 0
-                      : getMsFromDurationWithType(type, durationInMs))
-                  );
-                }, 0);
-
+              const durationInMs = getDurationInMsFromString(maskedValue);
+              // Only set value for uncontrolled form
+              _value == null && setValue(getFinalValueString(durationInMs));
               onChange?.(unmaskedValue, maskedValue, durationInMs);
             },
           }}
