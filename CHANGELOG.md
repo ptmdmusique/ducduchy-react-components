@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - 💃 `Popover`: added support for custom opener component props
+- ⌚ `DurationPicker`: Add dropdown with custom options
+- ⏰ `TimePicker`: Finish time picker
 
 ### Fixed
 

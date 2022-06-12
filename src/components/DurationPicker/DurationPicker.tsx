@@ -102,6 +102,7 @@ export interface DurationPickerProps
 }
 
 // TODO: support clear value
+// TODO: fix bug where cursor move to the end whenever editing and there is a state changed after (check TemplateWithForm for example)
 export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
   (
     {
