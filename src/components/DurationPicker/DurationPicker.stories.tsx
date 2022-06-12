@@ -1,7 +1,9 @@
 import { Meta, Story } from "@storybook/react";
-import { useState } from "react";
+import dayjs from "dayjs";
+import { useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { DurationPicker, DurationPickerProps } from ".";
+import { Button } from "../Button";
 import { storyDisabledOption } from "../resources/story-common";
 import { StorybookCommonWithForm } from "../resources/StorybookCommonWithForm";
 
@@ -32,10 +34,6 @@ export default meta;
 
 const Template: Story<DurationPickerProps> = (args) => (
   <div className="mt-[20rem]">
-    <p className="mb-12">
-      <strong>NOTE:</strong> Controlled form hasn't work yet
-    </p>
-
     <DurationPicker {...args} label="A simple label" defaultValue={45240000} />
   </div>
 );
@@ -74,4 +72,41 @@ const TemplateWithForm: Story<DurationPickerProps> = (args) => {
 export const WithForm = TemplateWithForm.bind({});
 WithForm.args = {
   label: "Meeting time",
+};
+
+export const WithControlledForm: Story<DurationPickerProps> = (args) => {
+  const methods = useForm<{ durationPicker: number }>({
+    defaultValues: { durationPicker: 0 },
+  });
+  const durationInMs = methods.watch("durationPicker");
+
+  return (
+    <FormProvider {...methods}>
+      <StorybookCommonWithForm>
+        <p className="text-skin-base mb-2">Value in ms {durationInMs}</p>
+
+        <DurationPicker
+          {...args}
+          {...methods.register("durationPicker")}
+          value={durationInMs}
+          onChange={(_1, _2, durationInMs) => {
+            methods.setValue("durationPicker", durationInMs);
+          }}
+        />
+
+        <Button
+          className="mt-4"
+          onClick={() => {
+            methods.setValue(
+              "durationPicker",
+              Math.round(Math.random() * 86400000),
+            );
+          }}
+          type="button"
+        >
+          Set custom value in ms
+        </Button>
+      </StorybookCommonWithForm>
+    </FormProvider>
+  );
 };

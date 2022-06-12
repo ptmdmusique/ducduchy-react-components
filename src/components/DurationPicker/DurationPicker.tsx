@@ -1,26 +1,37 @@
+import { Popover as LibPopover } from "@headlessui/react";
 import cx from "classnames";
 import dayjs from "dayjs";
 import duration from "dayjs/plugin/duration";
 import { AnyMaskedOptions, MaskedRange } from "imask";
-import { forwardRef, useMemo } from "react";
 import {
-  DEFAULT_DURATION_PREFIX,
+  forwardRef,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from "react";
+import {
+  DEFAULT_DURATION_DISABLE,
+  DEFAULT_DURATION_LOCALE_TEXT,
+  Duration,
   durationToString,
   getDurationFromMs,
+  getDurationInMsFromString,
   PossibleDurationType,
   possibleDurationTypeList,
 } from "../../utils/date";
 import { OmitStrict } from "../../utils/types";
-import { MaskedInput, MaskedInputProps } from "../MaskedInput";
+import { Button } from "../Button";
+import {
+  MaskedInput,
+  MaskedInputHandle,
+  MaskedInputProps,
+} from "../MaskedInput";
+import { Popover } from "../Popover";
 import { COMPONENT_PREFIX } from "../resources/common.data";
+import "./DurationPicker.scss";
 dayjs.extend(duration);
-
-const DEFAULT_DISABLE: Record<PossibleDurationType, boolean> = {
-  days: true,
-  hours: false,
-  minutes: false,
-  seconds: true,
-};
 
 type MaskedType = `dd--${PossibleDurationType}`;
 const DEFAULT_BLOCKS: Record<MaskedType, AnyMaskedOptions> = {
@@ -54,11 +65,6 @@ const DEFAULT_BLOCKS: Record<MaskedType, AnyMaskedOptions> = {
   },
 };
 
-export const getMsFromDurationType = (
-  durationType: PossibleDurationType,
-  durationValue: number,
-) => dayjs.duration({ [durationType]: durationValue }).asMilliseconds();
-
 /** // TODO: fix controlled form  */
 export interface DurationPickerProps
   extends Partial<
@@ -81,8 +87,22 @@ export interface DurationPickerProps
 
   value?: number;
   defaultValue?: number;
+
+  separatedBySpace?: boolean;
+
+  dropdownItemProps?: {
+    minDuration?: number;
+    maxDuration?: number;
+    interval?: number;
+    /** Whether to include last item if equal to maxDuration or not */
+    inclusiveEnd?: boolean;
+    formatItem?: (duration: Duration, durationInMs: number) => ReactNode;
+    isItemValid?: (durationInMs: number) => boolean;
+  };
 }
 
+// TODO: support clear value
+// TODO: fix bug where cursor move to the end whenever editing and there is a state changed after (check TemplateWithForm for example)
 export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
   (
     {
@@ -90,16 +110,49 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
       doDisabled,
       onChange,
       value: _value,
+      separatedBySpace = true,
       defaultValue: _defaultValue,
+      dropdownItemProps,
       ...maskedInputProps
     },
     ref,
   ) => {
+    const getFinalValueString = useCallback(
+      (newDurationInMs: number | undefined) => {
+        let newValue: string | undefined = undefined;
+
+        if (newDurationInMs !== undefined) {
+          const newDuration = getDurationFromMs(
+            newDurationInMs,
+            doDisabled ?? DEFAULT_DURATION_DISABLE,
+          );
+
+          newValue = durationToString(newDuration, localeText, {
+            doDisabled: doDisabled ?? DEFAULT_DURATION_DISABLE,
+            doPrepend0: true,
+            separatedBySpace,
+          });
+        }
+
+        return newValue;
+      },
+      [doDisabled, localeText],
+    );
+
+    const inputRef = useRef<HTMLInputElement>(null);
+    const inputMaskHandleRef = useRef<MaskedInputHandle>(null);
+    useEffect(() => {
+      if (ref) {
+        if (typeof ref === "function") {
+          ref(inputRef.current);
+        } else {
+          ref.current = inputRef.current;
+        }
+      }
+    }, [inputRef.current]);
+
     const value = useMemo(
-      () =>
-        _value == undefined
-          ? undefined
-          : durationToString(getDurationFromMs(_value, doDisabled), localeText),
+      () => (_value == undefined ? undefined : getFinalValueString(_value)),
       [_value],
     );
 
@@ -107,10 +160,7 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
       () =>
         _defaultValue == undefined
           ? undefined
-          : durationToString(
-              getDurationFromMs(_defaultValue, doDisabled),
-              localeText,
-            ),
+          : getFinalValueString(_defaultValue),
       [_defaultValue],
     );
 
@@ -118,70 +168,137 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
       if (doDisabled) {
         return doDisabled[type];
       }
-      return DEFAULT_DISABLE[type];
+
+      return DEFAULT_DURATION_DISABLE[type];
     };
 
-    const getLocaleText = (type: PossibleDurationType) =>
-      localeText?.[type] ?? DEFAULT_DURATION_PREFIX[type];
-
+    const getLocaleText = useCallback(
+      (type: PossibleDurationType) =>
+        localeText?.[type] ?? DEFAULT_DURATION_LOCALE_TEXT[type],
+      [localeText],
+    );
     const { mask, placeholder } = useMemo(() => {
-      const maskMap: Partial<Record<`${MaskedType}${string}`, boolean>> = {};
+      const maskMap: Partial<Record<`${MaskedType}{${string}}`, boolean>> = {};
       let placeholder = "";
       possibleDurationTypeList.forEach((type) => {
         const typeDisabled = getIfDisabled(type);
         const localeText = getLocaleText(type);
-        maskMap[`dd--${type}${localeText}`] = !typeDisabled;
+        maskMap[`dd--${type}{${localeText}}`] = !typeDisabled;
         if (!typeDisabled) {
           placeholder += `00${localeText} `;
         }
       });
 
-      return { mask: cx(maskMap), placeholder };
+      const maskString = Object.keys(maskMap)
+        .filter((key) => maskMap[key as any] === true)
+        .join(separatedBySpace ? " " : "");
+
+      return { mask: maskString, placeholder };
     }, [localeText, doDisabled]);
 
-    return (
-      <MaskedInput
-        {...maskedInputProps}
-        ref={ref}
-        defaultValue={defaultValue}
-        value={value}
-        className={cx(
-          `${COMPONENT_PREFIX}-duration-picker`,
-          maskedInputProps.className,
-        )}
-        placeholder={placeholder}
-        // @ts-ignore
-        maskOptions={{
-          ...maskedInputProps.maskOptions,
-          mask,
-          lazy: false,
-          blocks: DEFAULT_BLOCKS,
-          eager: true,
-          autofix: true,
-          overwrite: true,
-        }}
-        onChange={(unmaskedValue, maskedValue) => {
-          const mapToCheck = localeText ?? DEFAULT_DURATION_PREFIX;
-          const durationInMs = maskedValue.split(" ").reduce((acc, curr) => {
-            const curLocaleText = curr.substring(2);
-            const type = possibleDurationTypeList.find(
-              (type) => mapToCheck[type] === curLocaleText,
-            )!;
+    const dropDownItemList = useMemo(() => {
+      const {
+        minDuration = 0,
+        maxDuration = 8.64e7, // 1 day
+        interval = 900000, // 15 minutes
+        formatItem,
+        inclusiveEnd = true,
+        isItemValid,
+      } = dropdownItemProps ?? {};
+      const curValueInMs = value
+        ? getDurationInMsFromString(value, localeText, doDisabled)
+        : null;
 
-            if (getIfDisabled(type)) {
-              return acc;
+      const durationInMsList: number[] = [];
+      let durationInMs = minDuration;
+      while (
+        inclusiveEnd ? durationInMs <= maxDuration : durationInMs < maxDuration
+      ) {
+        if (isItemValid?.(durationInMs) ?? true) {
+          durationInMsList.push(durationInMs);
+        }
+
+        durationInMs += interval;
+      }
+
+      const bubbleNewDuration = (durationInMs: number) => {
+        const newDurationString = getFinalValueString(durationInMs);
+        inputMaskHandleRef.current?.setValue(newDurationString!);
+      };
+
+      return durationInMsList.map((durationInMs, index) => (
+        <Button
+          className={`${COMPONENT_PREFIX}-duration-item`}
+          borderType="plain"
+          key={index}
+          ref={(ref) => {
+            if (curValueInMs === durationInMs) {
+              ref?.focus();
             }
+          }}
+          onFocus={(event) => {
+            event.target.scrollIntoView({
+              behavior: "smooth",
+              block: "center",
+              inline: "center",
+            });
+            bubbleNewDuration(durationInMs);
+          }}
+        >
+          {formatItem?.(getDurationFromMs(durationInMs), durationInMs) ??
+            getFinalValueString(durationInMs)}
+        </Button>
+      ));
+    }, [dropdownItemProps, doDisabled, localeText, getFinalValueString, value]);
 
-            const duration = parseInt(curr.replaceAll("_", ""), 10);
-            return (
-              acc +
-              (isNaN(duration) ? 0 : getMsFromDurationType(type, duration))
-            );
-          }, 0);
+    const maskOptions = useMemo(
+      () => ({
+        ...maskedInputProps.maskOptions,
+        mask,
+        lazy: false,
+        blocks: DEFAULT_BLOCKS,
+        eager: true,
+        autofix: true,
+        overwrite: true,
+      }),
+      [maskedInputProps.maskOptions, mask],
+    );
 
-          onChange?.(unmaskedValue, maskedValue, durationInMs);
-        }}
-      />
+    // TODO: remove this LibPopover once the focus via Tab in Popover is fixed
+    return (
+      <LibPopover.Group>
+        <Popover<"div", MaskedInputProps>
+          popoverProps={{ className: `${COMPONENT_PREFIX}-duration-picker` }}
+          popoverOpenerProps={{
+            as: MaskedInput,
+            ...maskedInputProps,
+            ref: inputRef,
+            handlerRef: inputMaskHandleRef,
+            value,
+            defaultValue,
+            className: cx(
+              `${COMPONENT_PREFIX}-duration-picker__input`,
+              maskedInputProps.className,
+            ),
+            placeholder: placeholder,
+            // @ts-ignore
+            maskOptions,
+            onChange: (unmaskedValue, maskedValue) => {
+              const durationInMs = getDurationInMsFromString(
+                maskedValue,
+                localeText,
+                doDisabled,
+              );
+              onChange?.(unmaskedValue, maskedValue, durationInMs);
+            },
+          }}
+          popoverPanelProps={{
+            className: `${COMPONENT_PREFIX}-duration-picker__panel`,
+          }}
+        >
+          {dropDownItemList}
+        </Popover>
+      </LibPopover.Group>
     );
   },
 );

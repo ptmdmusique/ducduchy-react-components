@@ -69,26 +69,31 @@ const Template: Story<PopoverData> = (args) => {
         Try placement with screen responsive to see Popover in action!
       </p>
 
-      <Popover
-        {...args}
-        popoverOpenerProps={{ children: "Click me!" }}
-        popperProps={{ placement: args.placement }}
-      >
-        <div className="divide-y divide-skin-disabled">
-          <div>
-            <IconWithText icon={["fas", "dog"]} text="A doggo option" />
-            <IconWithText icon={["fas", "cat"]} text="A kat option" />
-          </div>
+      <LibPopover.Group>
+        <Popover
+          {...args}
+          popoverOpenerProps={{ children: "Click me!" }}
+          popperProps={{ placement: args.placement }}
+        >
+          <div className="divide-y divide-skin-disabled">
+            <div>
+              <IconWithText icon={["fas", "dog"]} text="A doggo option" />
+              <IconWithText icon={["fas", "cat"]} text="A kat option" />
+            </div>
 
-          <div>
-            <IconWithText icon={["fas", "hand-peace"]} text="A peace option" />
-          </div>
+            <div>
+              <IconWithText
+                icon={["fas", "hand-peace"]}
+                text="A peace option"
+              />
+            </div>
 
-          <div>
-            <IconWithText icon={["fas", "trash"]} text="Delete" />
+            <div>
+              <IconWithText icon={["fas", "trash"]} text="Delete" />
+            </div>
           </div>
-        </div>
-      </Popover>
+        </Popover>
+      </LibPopover.Group>
     </div>
   );
 };

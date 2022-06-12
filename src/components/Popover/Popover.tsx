@@ -7,7 +7,10 @@ import { Button, ButtonProps } from "../Button";
 import { COMPONENT_PREFIX } from "../resources/common.data";
 import "./Popover.scss";
 
-export interface PopoverProps<T extends React.ElementType = "div"> {
+export interface PopoverProps<
+  T extends React.ElementType = "div",
+  OpenerProps extends object = ButtonProps,
+> {
   popoverContainerAs?: T;
   popoverProps?: React.ComponentProps<T>;
 
@@ -23,7 +26,9 @@ export interface PopoverProps<T extends React.ElementType = "div"> {
       ) => React.ReactNode)
     | React.ReactNode;
 
-  popoverOpenerProps?: OmitStrict<ButtonProps, "as"> &
+  popoverOpenerProps?: (OpenerProps extends ButtonProps
+    ? OmitStrict<OpenerProps, "as">
+    : OpenerProps) &
     Parameters<typeof LibPopover.Button>[0];
 
   popoverPanelProps?: Parameters<typeof LibPopover.Panel>[0];
@@ -41,14 +46,17 @@ export interface PopoverProps<T extends React.ElementType = "div"> {
  * To group with other Popover, wrap the Popover in a Popover.Group from @headlessui/react
  * https://headlessui.dev/react/popover#grouping-related-popovers
  */
-export function Popover<ContainerAs extends React.ElementType = "div">({
+export function Popover<
+  ContainerAs extends React.ElementType = "div",
+  OpenerProps extends object = ButtonProps,
+>({
   popoverContainerAs,
   popoverProps,
   popoverOpenerProps,
   popoverPanelProps,
   popperProps,
   children,
-}: PopoverProps<ContainerAs>) {
+}: PopoverProps<ContainerAs, OpenerProps>) {
   return (
     // @ts-ignore
     <LibPopover

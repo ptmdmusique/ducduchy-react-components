@@ -25,7 +25,7 @@ const meta: Meta<MenuData> = {
     renderItem: storyDisabledOption,
     renderItemContent: storyDisabledOption,
     onItemChosen: storyDisabledOption,
-    itemContainerOnRightSide: { defaultValue: false, type: "boolean" },
+    itemContainerOnRightSide: { type: "boolean" },
   },
   parameters: {
     controls: { expanded: true },
@@ -45,9 +45,7 @@ const Template: Story<MenuData> = (args) => {
         onItemChosen={setChosenItem}
         menuOpenerProps={{ children: "Click Me!" }}
         renderItemContent={(item) => (
-          <div className="w-full py-2 px-4 text-skin-base">
-            {item.label}
-          </div>
+          <div className="w-full py-2 px-4 text-skin-base">{item.label}</div>
         )}
       />
 
