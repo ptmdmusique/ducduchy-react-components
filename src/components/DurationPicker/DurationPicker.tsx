@@ -9,11 +9,11 @@ import {
   useCallback,
   useEffect,
   useMemo,
-  useState,
+  useRef,
 } from "react";
 import {
   DEFAULT_DURATION_DISABLE,
-  DEFAULT_DURATION_PREFIX,
+  DEFAULT_DURATION_LOCALE_TEXT,
   Duration,
   durationToString,
   getDurationFromMs,
@@ -23,7 +23,11 @@ import {
 } from "../../utils/date";
 import { OmitStrict } from "../../utils/types";
 import { Button } from "../Button";
-import { MaskedInput, MaskedInputProps } from "../MaskedInput";
+import {
+  MaskedInput,
+  MaskedInputHandle,
+  MaskedInputProps,
+} from "../MaskedInput";
 import { Popover } from "../Popover";
 import { COMPONENT_PREFIX } from "../resources/common.data";
 import "./DurationPicker.scss";
@@ -106,7 +110,7 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
       onChange,
       value: _value,
       separatedBySpace = true,
-      defaultValue,
+      defaultValue: _defaultValue,
       dropdownItemProps,
       ...maskedInputProps
     },
@@ -125,6 +129,7 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
           newValue = durationToString(newDuration, localeText, {
             doDisabled: doDisabled ?? DEFAULT_DURATION_DISABLE,
             doPrepend0: true,
+            separatedBySpace,
           });
         }
 
@@ -133,15 +138,30 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
       [doDisabled, localeText],
     );
 
-    const [value, setValue] = useState(
-      getFinalValueString(_value ?? defaultValue ?? 0),
+    const inputRef = useRef<HTMLInputElement>(null);
+    const inputMaskHandleRef = useRef<MaskedInputHandle>(null);
+    useEffect(() => {
+      if (ref) {
+        if (typeof ref === "function") {
+          ref(inputRef.current);
+        } else {
+          ref.current = inputRef.current;
+        }
+      }
+    }, [inputRef.current]);
+
+    const value = useMemo(
+      () => (_value == undefined ? undefined : getFinalValueString(_value)),
+      [_value],
     );
 
-    useEffect(() => {
-      if (_value !== undefined) {
-        setValue(getFinalValueString(_value));
-      }
-    }, [_value]);
+    const defaultValue = useMemo(
+      () =>
+        _defaultValue == undefined
+          ? undefined
+          : getFinalValueString(_defaultValue),
+      [_defaultValue],
+    );
 
     const getIfDisabled = (type: PossibleDurationType) => {
       if (doDisabled) {
@@ -151,16 +171,17 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
       return DEFAULT_DURATION_DISABLE[type];
     };
 
-    const getLocaleText = (type: PossibleDurationType) =>
-      localeText?.[type] ?? DEFAULT_DURATION_PREFIX[type];
-
+    const getLocaleText = useCallback(
+      (type: PossibleDurationType) =>
+        localeText?.[type] ?? DEFAULT_DURATION_LOCALE_TEXT[type],
+      [localeText],
+    );
     const { mask, placeholder } = useMemo(() => {
       const maskMap: Partial<Record<`${MaskedType}{${string}}`, boolean>> = {};
       let placeholder = "";
       possibleDurationTypeList.forEach((type) => {
         const typeDisabled = getIfDisabled(type);
         const localeText = getLocaleText(type);
-        console.log("localeText:", localeText);
         maskMap[`dd--${type}{${localeText}}`] = !typeDisabled;
         if (!typeDisabled) {
           placeholder += `00${localeText} `;
@@ -183,7 +204,9 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
         inclusiveEnd = true,
         isItemValid,
       } = dropdownItemProps ?? {};
-      const curValueInMs = value ? getDurationInMsFromString(value) : null;
+      const curValueInMs = value
+        ? getDurationInMsFromString(value, localeText, doDisabled)
+        : null;
 
       const durationInMsList: number[] = [];
       let durationInMs = minDuration;
@@ -198,29 +221,8 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
       }
 
       const bubbleNewDuration = (durationInMs: number) => {
-        const newDurationString = durationToString(
-          getDurationFromMs(durationInMs, doDisabled),
-          localeText,
-        );
-
-        // Strip all locale text for unmasked value
-        const unmaskedValue = newDurationString
-          .replace(
-            new RegExp(
-              `${getLocaleText(possibleDurationTypeList[0])}|${getLocaleText(
-                possibleDurationTypeList[1],
-              )}|${getLocaleText(possibleDurationTypeList[2])}|${getLocaleText(
-                possibleDurationTypeList[3],
-              )}`,
-              "g",
-            ),
-            "",
-          )
-          .replaceAll(" ", "");
-
-        // Only set value for uncontrolled form
-        _value == null && setValue(getFinalValueString(durationInMs));
-        onChange?.(unmaskedValue, newDurationString, durationInMs);
+        const newDurationString = getFinalValueString(durationInMs);
+        inputMaskHandleRef.current?.setValue(newDurationString!);
       };
 
       return durationInMsList.map((durationInMs, index) => (
@@ -248,6 +250,19 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
       ));
     }, [dropdownItemProps, doDisabled, localeText, getFinalValueString, value]);
 
+    const maskOptions = useMemo(
+      () => ({
+        ...maskedInputProps.maskOptions,
+        mask,
+        lazy: false,
+        blocks: DEFAULT_BLOCKS,
+        eager: true,
+        autofix: true,
+        overwrite: true,
+      }),
+      [maskedInputProps.maskOptions, mask],
+    );
+
     // TODO: remove this LibPopover once the focus via Tab in Popover is fixed
     return (
       <LibPopover.Group>
@@ -256,27 +271,23 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
           popoverOpenerProps={{
             as: MaskedInput,
             ...maskedInputProps,
-            ref,
+            ref: inputRef,
+            handlerRef: inputMaskHandleRef,
             value,
+            defaultValue,
             className: cx(
               `${COMPONENT_PREFIX}-duration-picker__input`,
               maskedInputProps.className,
             ),
             placeholder: placeholder,
             // @ts-ignore
-            maskOptions: {
-              ...maskedInputProps.maskOptions,
-              mask,
-              lazy: false,
-              blocks: DEFAULT_BLOCKS,
-              eager: true,
-              autofix: true,
-              overwrite: true,
-            },
+            maskOptions,
             onChange: (unmaskedValue, maskedValue) => {
-              const durationInMs = getDurationInMsFromString(maskedValue);
-              // Only set value for uncontrolled form
-              _value == null && setValue(getFinalValueString(durationInMs));
+              const durationInMs = getDurationInMsFromString(
+                maskedValue,
+                localeText,
+                doDisabled,
+              );
               onChange?.(unmaskedValue, maskedValue, durationInMs);
             },
           }}

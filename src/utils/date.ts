@@ -66,8 +66,11 @@ const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 const MILLISECOND_PER_MINUTE = 1000 * 60;
 const MILLISECOND_PER_SECOND = 1000;
 
-export const DEFAULT_DURATION_PREFIX: Record<PossibleDurationType, string> = {
-  days: "d",
+export const DEFAULT_DURATION_LOCALE_TEXT: Record<
+  PossibleDurationType,
+  string
+> = {
+  days: ":d",
   hours: "h",
   minutes: "m",
   seconds: "s",
@@ -84,17 +87,6 @@ export const getMsFromDurationWithType = (
   durationType: PossibleDurationType,
   durationValue: number,
 ) => dayjs.duration({ [durationType]: durationValue }).asMilliseconds();
-
-const getIfDisabled = (
-  type: PossibleDurationType,
-  doDisabled?: Partial<DoDisabled>,
-) => {
-  if (doDisabled) {
-    return doDisabled[type];
-  }
-
-  return DEFAULT_DURATION_DISABLE[type];
-};
 
 /** Get duration object from millisecond */
 export const getDurationFromMs = (
@@ -136,13 +128,15 @@ export const durationToString = (
   localeText?: {
     [key in PossibleDurationType]?: string;
   },
-  options: { doPrepend0?: boolean; doDisabled?: Partial<DoDisabled> } = {
-    doPrepend0: true,
-  },
+  options: {
+    doPrepend0?: boolean;
+    doDisabled?: Partial<DoDisabled>;
+    separatedBySpace?: boolean;
+  } = { doPrepend0: true, separatedBySpace: true },
 ) => {
-  const { doPrepend0, doDisabled } = options;
+  const { doPrepend0, doDisabled, separatedBySpace } = options;
   const getLocaleText = (type: PossibleDurationType) =>
-    localeText?.[type] ?? DEFAULT_DURATION_PREFIX[type];
+    localeText?.[type] ?? DEFAULT_DURATION_LOCALE_TEXT[type];
 
   const translatedTextMap = {
     days: getLocaleText("days"),
@@ -170,16 +164,16 @@ export const durationToString = (
 
   const finalStr = [dayString, hourString, minuteString, secondString]
     .filter((str) => str)
-    .join(" ");
+    .join(separatedBySpace ? " " : "");
   return !finalStr.trim() ? `0${getLocaleText("seconds")}` : finalStr;
 };
 
 export const getDurationInMsFromString = (
   durationString: string,
-  localeText?: {
+  localeText: {
     [key in PossibleDurationType]?: string;
-  },
-  doDisabled?: Partial<DoDisabled>,
+  } = DEFAULT_DURATION_LOCALE_TEXT,
+  doDisabled: Partial<DoDisabled> = DEFAULT_DURATION_DISABLE,
 ) => {
   // Split duration string based on localeText and transform into duration in ms
   //  string might not be separated by space
@@ -188,10 +182,7 @@ export const getDurationInMsFromString = (
       return 0;
     }
 
-    const regex = new RegExp(
-      `(\\d+)${localeText?.[type] ?? DEFAULT_DURATION_PREFIX[type]}`,
-      "g",
-    );
+    const regex = new RegExp(`(\\d+)${localeText?.[type]}`, "g");
     const match = regex.exec(durationString);
     if (match) {
       const value = parseInt(match[1]);

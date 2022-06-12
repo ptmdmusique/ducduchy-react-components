@@ -1,23 +1,31 @@
 import cx from "classnames";
 import IMask from "imask";
-import { forwardRef, useEffect, useRef } from "react";
+import { forwardRef, Ref, useEffect, useImperativeHandle, useRef } from "react";
 import { OmitStrict } from "../../utils/types";
 import { Input, InputProps } from "../Input";
 import { COMPONENT_PREFIX } from "../resources/common.data";
 
+export interface MaskedInputHandle {
+  setValue: (value: string) => void;
+}
+
 export type MaskedInputProps = OmitStrict<InputProps, "onChange"> & {
   maskOptions: IMask.AnyMaskedOptions;
   onChange?: (unmaskedValue: string, maskedValue: string) => void;
+
+  handlerRef?: Ref<MaskedInputHandle>;
 };
 
 export const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
-  ({ maskOptions, onChange, ...inputProps }, ref) => {
+  ({ maskOptions, onChange, handlerRef, ...inputProps }, ref) => {
+    // Use useRef to prevent re-rendering of the component whenever `maskOptions` changes.
+    const opts = useRef(maskOptions);
     const inputRef = useRef<HTMLInputElement | null>(null);
     const iMaskRef = useRef<IMask.InputMask<IMask.AnyMaskedOptions>>();
 
     useEffect(() => {
       if (inputRef.current) {
-        const iMask = IMask(inputRef.current, maskOptions);
+        const iMask = IMask(inputRef.current, opts.current);
         iMask.on("accept", () => {
           onChange?.(iMask.unmaskedValue, iMask.value);
         });
@@ -28,7 +36,7 @@ export const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
           iMask.destroy();
         };
       }
-    }, [maskOptions, onChange]);
+    }, [onChange]);
 
     useEffect(() => {
       iMaskRef.current?.updateValue();
@@ -43,6 +51,15 @@ export const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
         }
       }
     }, [inputRef.current]);
+
+    useImperativeHandle(
+      handlerRef,
+      () => ({
+        setValue: (newVal) =>
+          iMaskRef.current && (iMaskRef.current.value = newVal),
+      }),
+      [],
+    );
 
     return (
       <Input

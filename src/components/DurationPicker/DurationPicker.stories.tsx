@@ -1,6 +1,6 @@
 import { Meta, Story } from "@storybook/react";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { DurationPicker, DurationPickerProps } from ".";
 import { Button } from "../Button";
@@ -75,7 +75,9 @@ WithForm.args = {
 };
 
 export const WithControlledForm: Story<DurationPickerProps> = (args) => {
-  const methods = useForm<{ durationPicker: number }>();
+  const methods = useForm<{ durationPicker: number }>({
+    defaultValues: { durationPicker: 0 },
+  });
   const durationInMs = methods.watch("durationPicker");
 
   return (
@@ -115,6 +117,8 @@ export const TimeOfDatePicker: Story<DurationPickerProps> = (args) => {
   const [maskedValue, setMaskedValue] = useState<string>();
   const [durationInMs, setDurationInMs] = useState<number>();
 
+  const localeText = useMemo(() => ({ hours: ":", minutes: " " }), []);
+
   return (
     <FormProvider {...methods}>
       <p>
@@ -141,11 +145,7 @@ export const TimeOfDatePicker: Story<DurationPickerProps> = (args) => {
             setMaskedValue(maskedValue);
             setDurationInMs(durationInMs);
           }}
-          doDisabled={{ days: true, seconds: true }}
-          localeText={{
-            // hours: ":",
-            minutes: "as",
-          }}
+          localeText={localeText}
           separatedBySpace={false}
           dropdownItemProps={{
             minDuration: 0,
