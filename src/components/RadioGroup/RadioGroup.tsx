@@ -1,9 +1,9 @@
 import { RadioGroup as HeadlessRadioGroup } from "@headlessui/react";
 import cx from "classnames";
-import React, { ReactNode, useEffect, useMemo, useState } from "react";
-import { Controller } from "react-hook-form";
+import { ReactNode, useEffect, useMemo, useState } from "react";
+import { Controller, FieldValues } from "react-hook-form";
 import { clamp } from "../../utils/math";
-import { StatusType } from "../resources/common.data";
+import { ColorType } from "../resources/common.data";
 import { FormValidationWithController } from "../resources/form/types";
 import "./RadioGroup.scss";
 
@@ -19,7 +19,7 @@ type GetFunction<D> = (props: {
 export interface RadioGroupProps<
   Data = unknown[],
   Value extends ValueType = any,
-  Form = any,
+  FormFields extends FieldValues = any,
 > {
   className?: string;
   itemClassName?: string;
@@ -39,12 +39,16 @@ export interface RadioGroupProps<
   getDescription?: GetFunction<Data>;
   leftLabel?: boolean;
 
-  formValidation?: FormValidationWithController<Form>;
+  formValidation?: FormValidationWithController<FormFields>;
 
-  status?: StatusType;
+  colorType?: ColorType;
 }
 
-export function RadioGroup<Data, Value extends ValueType, Form>({
+export function RadioGroup<
+  Data,
+  Value extends ValueType,
+  FormFields extends FieldValues = any,
+>({
   className,
   itemClassName,
   itemClassNameGetter,
@@ -61,8 +65,8 @@ export function RadioGroup<Data, Value extends ValueType, Form>({
   getDescription,
   leftLabel,
   formValidation,
-  status = "neutral",
-}: RadioGroupProps<Data, Value, Form>) {
+  colorType = "neutral",
+}: RadioGroupProps<Data, Value, FormFields>) {
   const [_selectedIndex, setSelectedIndex] = useState(
     (() => {
       let attemptDefaultIndex = clamp(
@@ -172,7 +176,7 @@ export function RadioGroup<Data, Value extends ValueType, Form>({
                       <div
                         className={cx(
                           "form-radio-group__radio",
-                          `form-radio-group__radio--${status}`,
+                          `form-radio-group__radio--${colorType}`,
                           { "form-radio-group__radio--checked": checked },
                           { "form-radio-group__radio--active": active },
                           { "form-radio-group__radio--disabled": disabled },
@@ -207,7 +211,6 @@ export function RadioGroup<Data, Value extends ValueType, Form>({
   // TODO: Figure out this ignore
   return (
     <Controller
-      // @ts-ignore
       name={name}
       rules={rules}
       control={control}

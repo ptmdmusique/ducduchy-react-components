@@ -1,23 +1,23 @@
 import cx from "classnames";
 import Icon from "../Icon/Icon";
-import { COMPONENT_PREFIX, StatusType } from "../resources/common.data";
+import { ColorType, COMPONENT_PREFIX } from "../resources/common.data";
 import "./Badge.scss";
 
 export interface BadgeProps {
-  status?: StatusType;
+  colorType?: ColorType;
   className?: string;
   type?: "outline" | "filled";
 
   icon?: [string, string];
   iconClassName?: string;
 
-  text: string;
+  text?: string;
 }
 
 export const Badge = ({
   icon,
   text,
-  status = "info",
+  colorType = "info",
   type = "filled",
   iconClassName,
   className,
@@ -26,7 +26,7 @@ export const Badge = ({
     <div
       className={cx(
         `${COMPONENT_PREFIX}-badge`,
-        `${COMPONENT_PREFIX}-badge--${status}`,
+        `${COMPONENT_PREFIX}-badge--${colorType}`,
         `${COMPONENT_PREFIX}-badge--${type}`,
         className,
       )}

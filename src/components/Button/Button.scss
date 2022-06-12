@@ -37,18 +37,14 @@
     @extend .dd-button;
     @apply text-skin-inverted;
     @apply bg-skin-fill;
-    &.dd-button--success {
-      @apply bg-skin-success;
+
+    $types: "primary", "secondary", "danger", "success", "warning", "info";
+    @each $type in $types {
+      &.dd-button--#{$type} {
+        @apply bg-skin-#{$type};
+      }
     }
-    &.dd-button--danger {
-      @apply bg-skin-danger;
-    }
-    &.dd-button--warning {
-      @apply bg-skin-warning;
-    }
-    &.dd-button--info {
-      @apply bg-skin-info;
-    }
+
     &:disabled {
       @apply bg-skin-disabled;
       @apply text-skin-base;
@@ -68,22 +64,7 @@
     @extend .dd-button;
     @apply border-skin-secondary;
     @apply text-skin-secondary;
-    &.dd-button--success {
-      @apply border-skin-success;
-      @apply text-skin-success;
-    }
-    &.dd-button--danger {
-      @apply border-skin-danger;
-      @apply text-skin-danger;
-    }
-    &.dd-button--warning {
-      @apply border-skin-warning;
-      @apply text-skin-warning;
-    }
-    &.dd-button--info {
-      @apply border-skin-info;
-      @apply text-skin-info;
-    }
+
     &:hover:not(:disabled),
     &:focus {
       @apply bg-skin-secondary bg-opacity-5;
@@ -91,43 +72,24 @@
     &:active {
       @apply bg-skin-secondary bg-opacity-10;
     }
-    &.dd-button--success {
-      &:hover:not(:disabled),
-      &:focus {
-        @apply bg-skin-success bg-opacity-5;
-      }
-      &:active {
-        @apply bg-skin-success bg-opacity-10;
-      }
-    }
-    &.dd-button--danger {
-      &:hover:not(:disabled),
-      &:focus {
-        @apply bg-skin-danger bg-opacity-5;
-      }
-      &:active {
-        @apply bg-skin-danger bg-opacity-10;
-      }
-    }
-    &.dd-button--warning {
-      &:hover:not(:disabled),
-      &:focus {
-        @apply bg-skin-warning bg-opacity-5;
-      }
-      &:active {
-        @apply bg-skin-warning bg-opacity-10;
-      }
-    }
-    &.dd-button--info {
-      &:hover:not(:disabled),
-      &:focus {
-        @apply bg-skin-info bg-opacity-5;
-      }
-      &:active {
-        @apply bg-skin-info bg-opacity-10;
+
+    $types: "primary", "secondary", "danger", "success", "warning", "info";
+    @each $type in $types {
+      &.dd-button--#{$type} {
+        @apply border-skin-#{$type};
+        @apply text-skin-#{$type};
+
+        &:hover:not(:disabled),
+        &:focus {
+          @apply bg-skin-#{$type} bg-opacity-5;
+        }
+        &:active {
+          @apply bg-skin-#{$type} bg-opacity-10;
+        }
       }
     }
   }
+
   &--plain {
     @extend .dd-button;
     @apply text-skin-base text-opacity-90;
@@ -142,45 +104,18 @@
     &:active {
       @apply bg-skin-base bg-opacity-10;
     }
-    &.dd-button--success {
-      @apply text-skin-success;
-      &:hover:not(:disabled),
-      &:focus {
-        @apply bg-skin-success bg-opacity-5;
-      }
-      &:active {
-        @apply bg-skin-success bg-opacity-10;
-      }
-    }
-    &.dd-button--danger {
-      @apply text-skin-danger;
-      &:hover:not(:disabled),
-      &:focus {
-        @apply bg-skin-danger bg-opacity-5;
-      }
-      &:active {
-        @apply bg-skin-danger bg-opacity-10;
-      }
-    }
 
-    &.dd-button--warning {
-      @apply text-skin-warning;
-      &:hover:not(:disabled),
-      &:focus {
-        @apply bg-skin-warning bg-opacity-5;
-      }
-      &:active {
-        @apply bg-skin-warning bg-opacity-10;
-      }
-    }
-    &.dd-button--info {
-      @apply text-skin-info;
-      &:hover:not(:disabled),
-      &:focus {
-        @apply bg-skin-info bg-opacity-5;
-      }
-      &:active {
-        @apply bg-skin-info bg-opacity-10;
+    $types: "primary", "secondary", "danger", "success", "warning", "info";
+    @each $type in $types {
+      &.dd-button--#{$type} {
+        @apply text-skin-#{$type};
+        &:hover:not(:disabled),
+        &:focus {
+          @apply bg-skin-#{$type} bg-opacity-5;
+        }
+        &:active {
+          @apply bg-skin-#{$type} bg-opacity-10;
+        }
       }
     }
   }

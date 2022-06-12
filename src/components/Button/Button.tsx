@@ -1,13 +1,13 @@
 import cx from "classnames";
 import React, { forwardRef } from "react";
 import Icon from "../Icon/Icon";
-import { COMPONENT_PREFIX, StatusType } from "../resources/common.data";
+import { ColorType, COMPONENT_PREFIX } from "../resources/common.data";
 import "./Button.scss";
 
 export interface ButtonProps extends React.HTMLProps<HTMLButtonElement> {
   type?: "button" | "submit" | "reset";
   borderType?: "outline" | "fill" | "plain";
-  colorType?: StatusType;
+  colorType?: ColorType;
   icon?: [string, string];
   iconClassName?: string;
   isLoading?: boolean;

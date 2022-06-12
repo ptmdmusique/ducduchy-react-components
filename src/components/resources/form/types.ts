@@ -1,10 +1,15 @@
 import { FocusEventHandler, ReactNode } from "react";
-import { Control, FieldPath, RegisterOptions } from "react-hook-form";
+import {
+  Control,
+  FieldPath,
+  FieldValues,
+  RegisterOptions
+} from "react-hook-form";
 
 export type OnChange = (checked: boolean) => void;
 export type OnBlur = FocusEventHandler<HTMLButtonElement>;
 
-export interface FormValidationWithController<T> {
+export interface FormValidationWithController<T extends FieldValues> {
   control: Control<T>;
   name: FieldPath<T>;
   rules?: RegisterOptions;

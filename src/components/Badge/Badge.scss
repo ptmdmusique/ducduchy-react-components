@@ -14,43 +14,26 @@
     @apply bg-skin-base bg-opacity-10;
     @apply text-skin-base;
 
-    &.dd-badge--success {
-      @apply bg-skin-success bg-opacity-5;
-      @apply text-skin-success;
-    }
-    &.dd-badge--danger {
-      @apply bg-skin-danger bg-opacity-10;
-      @apply text-skin-danger;
-    }
-    &.dd-badge--warning {
-      @apply bg-skin-warning bg-opacity-10;
-      @apply text-skin-warning;
-    }
-    &.dd-badge--info {
-      @apply bg-skin-secondary bg-opacity-10;
-      @apply text-skin-secondary;
+    $types: "primary", "secondary", "danger", "success", "warning", "info";
+    @each $type in $types {
+      &.dd-badge--#{$type} {
+        @apply bg-skin-#{$type} bg-opacity-10;
+        @apply text-skin-#{$type};
+      }
     }
   }
+
   &--outline {
     @apply border-skin-base;
     @apply text-skin-base;
     @apply border;
 
-    &.dd-badge--success {
-      @apply border-skin-success;
-      @apply text-skin-success;
-    }
-    &.dd-badge--danger {
-      @apply border-skin-danger;
-      @apply text-skin-danger;
-    }
-    &.dd-badge--warning {
-      @apply border-skin-warning;
-      @apply text-skin-warning;
-    }
-    &.dd-badge--info {
-      @apply border-skin-secondary;
-      @apply text-skin-secondary;
+    $types: "primary", "secondary", "danger", "success", "warning", "info";
+    @each $type in $types {
+      &.dd-badge--#{$type} {
+        @apply border-skin-#{$type};
+        @apply text-skin-#{$type};
+      }
     }
   }
 }

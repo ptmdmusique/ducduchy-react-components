@@ -1,7 +1,7 @@
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import {
   DateTimePicker as MUIDateTimePicker,
-  DateTimePickerProps as MUIDateTimePickerProps
+  DateTimePickerProps as MUIDateTimePickerProps,
 } from "@mui/x-date-pickers/DateTimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import cx from "classnames";
@@ -14,7 +14,7 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState
+  useState,
 } from "react";
 import { Controller } from "react-hook-form";
 import { useClickAway } from "react-use";
@@ -60,7 +60,7 @@ export type DateTimePickerProps = OmitStrict<
   locale?: keyof typeof localeDateMap;
 
   dateTimePickerProps?: OmitStrict<
-    Partial<MUIDateTimePickerProps>,
+    Partial<MUIDateTimePickerProps<Date, Date>>,
     "minDate" | "maxDate"
   >;
 
@@ -151,25 +151,26 @@ export const DateTimePicker = forwardRef<HTMLInputElement, DateTimePickerProps>(
           <MUIDateTimePicker
             value={baseValue}
             label={label}
-            minDate={formattedMinDate}
-            maxDate={formattedMaxDate}
+            minDate={formattedMinDate?.toDate()}
+            maxDate={formattedMaxDate?.toDate()}
             onChange={(newValue) => {
-              const dateValue = newValue ? (newValue as Dayjs).toDate() : null;
+              // const dateValue = newValue ? (newValue as Dayjs).toDate() : null;
 
-              setBaseValue(dateValue);
-              formOnChange?.(dateValue, "user-pick");
-              onChange?.(dateValue, "user-pick");
+              setBaseValue(newValue);
+              formOnChange?.(newValue, "user-pick");
+              onChange?.(newValue, "user-pick");
             }}
             open={isOpen}
             onClose={closeDropdown}
             onError={(_, curValue) => {
-              const dateValue = curValue ? (curValue as Dayjs).toDate() : null;
-              onChange?.(dateValue, "on-error");
+              console.log("curValue:", curValue);
+              // const dateValue = curValue ? (curValue as Dayjs).toDate() : null;
+              onChange?.(curValue, "on-error");
             }}
             onAccept={(newValue) => {
-              const dateValue = newValue ? (newValue as Dayjs).toDate() : null;
-              formOnChange?.(dateValue, "on-accepted");
-              onChange?.(dateValue, "on-accepted");
+              // const dateValue = newValue ? (newValue as Dayjs).toDate() : null;
+              formOnChange?.(newValue, "on-accepted");
+              onChange?.(newValue, "on-accepted");
             }}
             onOpen={openDropdown}
             disabled={disabled}

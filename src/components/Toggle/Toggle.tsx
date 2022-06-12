@@ -1,10 +1,10 @@
 import { Switch, Transition } from "@headlessui/react";
 import cx from "classnames";
 import { nanoid } from "nanoid";
-import React, { ReactNode, useEffect, useRef, useState } from "react";
-import { Controller } from "react-hook-form";
+import { ReactNode, useEffect, useRef, useState } from "react";
+import { Controller, FieldValues } from "react-hook-form";
 import { Icon } from "../Icon";
-import { COMPONENT_PREFIX, StatusType } from "../resources/common.data";
+import { ColorType, COMPONENT_PREFIX } from "../resources/common.data";
 import {
   FormValidationWithController,
   OnBlur,
@@ -12,7 +12,7 @@ import {
 } from "../resources/form/types";
 import "./Toggle.scss";
 
-export interface ToggleProps<F = any> {
+export interface ToggleProps<FormFields extends FieldValues = any> {
   className?: string;
   label?: ReactNode;
   labelLeft?: boolean;
@@ -21,13 +21,13 @@ export interface ToggleProps<F = any> {
   onBlur?: OnBlur;
   disabled?: boolean;
   onChange?: OnChange;
-  formValidation?: FormValidationWithController<F>;
+  formValidation?: FormValidationWithController<FormFields>;
   type?: "switch" | "checkbox";
-  status?: StatusType;
+  colorType?: ColorType;
   checkIcon?: [string, string];
 }
 
-export function Toggle<F>({
+export function Toggle<FormFields extends FieldValues = any>({
   className,
   label,
   labelLeft = false,
@@ -38,9 +38,9 @@ export function Toggle<F>({
   onChange,
   formValidation,
   type = "switch",
-  status = "neutral",
+  colorType = "neutral",
   checkIcon = ["fas", "check"],
-}: ToggleProps<F>) {
+}: ToggleProps<FormFields>) {
   const [enabled, setEnabled] = useState(checked ?? (defaultChecked || false));
   const idRef = useRef(`toggle---${nanoid()}`);
 
@@ -93,7 +93,7 @@ export function Toggle<F>({
             onBlur={onBlurWrapper}
             className={cx(
               `${COMPONENT_PREFIX}-toggle-${type}`,
-              `${COMPONENT_PREFIX}-toggle-${type}--${status}`,
+              `${COMPONENT_PREFIX}-toggle-${type}--${colorType}`,
               { [`${COMPONENT_PREFIX}-toggle-${type}--enabled`]: enabled },
               { [`${COMPONENT_PREFIX}-toggle-${type}--disabled`]: disabled },
             )}

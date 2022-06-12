@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { ReactNode, useEffect, useState } from "react";
 import { OnChangeDateCallback } from "react-calendar";
 import ReactDatePicker, {
