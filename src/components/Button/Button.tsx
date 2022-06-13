@@ -15,6 +15,7 @@ export interface ButtonProps extends React.HTMLProps<HTMLButtonElement> {
   withBackground?: boolean;
   loadingIcon?: [string, string];
   ref?: React.ForwardedRef<HTMLButtonElement>;
+  useFocusStyle?: boolean;
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -28,6 +29,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       isRounded,
       withBackground,
       loadingIcon,
+      useFocusStyle,
       ...buttonProps
     },
     ref,
@@ -42,6 +44,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           {
             [`${COMPONENT_PREFIX}-button--rounded`]: isRounded,
             [`${COMPONENT_PREFIX}-button--with-background`]: withBackground,
+            [`${COMPONENT_PREFIX}-button--use-focus-style`]: useFocusStyle,
           },
           buttonProps.className,
         )}

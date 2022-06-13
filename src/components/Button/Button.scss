@@ -52,7 +52,8 @@
     &:hover:not(:active) {
       @apply shadow-lg;
     }
-    &:focus {
+    &:focus,
+    &.dd-button--use-focus-style {
       @apply outline outline-skin-secondary outline-2 outline-offset-2;
     }
     &:active {
@@ -80,7 +81,8 @@
         @apply text-skin-#{$type};
 
         &:hover:not(:disabled),
-        &:focus {
+        &:focus,
+        &.dd-button--use-focus-style {
           @apply bg-skin-#{$type} bg-opacity-5;
         }
         &:active {
@@ -95,10 +97,12 @@
     @apply text-skin-base text-opacity-90;
     @apply py-2 px-6;
     &:hover:not(:disabled),
-    &:focus {
+    &:focus,
+    &.dd-button--use-focus-style {
       @apply bg-skin-base bg-opacity-5;
     }
-    &:focus {
+    &:focus,
+    &.dd-button--use-focus-style {
       @apply outline-none;
     }
     &:active {

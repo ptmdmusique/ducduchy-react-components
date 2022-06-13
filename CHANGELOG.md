@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - 💅 General style: added "primary" and "secondary" colors for multiple elements.
+- 🔘 `Button`: add `useFocusStyle` to control if we'll use focus style directly
+- 📜 `Menu`: add more fine-grain control over rendering menu items
 
 ### Changed
 

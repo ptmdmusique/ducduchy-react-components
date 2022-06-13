@@ -22,7 +22,7 @@ const meta: Meta<MenuData> = {
     menuProps: storyDisabledOption,
     menuItemList: storyDisabledOption,
     menuOpenerProps: storyDisabledOption,
-    renderItem: storyDisabledOption,
+    renderWholeItem: storyDisabledOption,
     renderItemContent: storyDisabledOption,
     onItemChosen: storyDisabledOption,
     itemContainerOnRightSide: { type: "boolean" },

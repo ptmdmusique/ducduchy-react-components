@@ -4,10 +4,13 @@
   &__item-container {
     @apply ring-1 ring-skin-inverted ring-opacity-5;
     @apply absolute left-0 origin-top-left;
-    @apply divide-y divide-skin-disabled;
     @apply rounded-md shadow-lg;
     @apply bg-skin-top;
     @apply w-56 mt-2;
+
+    &--use-divider {
+      @apply divide-y divide-skin-disabled;
+    }
 
     &:focus {
       @apply outline-none;
