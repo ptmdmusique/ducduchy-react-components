@@ -29,6 +29,7 @@ const meta: Meta<StoryRadioGroupProps> = {
     getValue: storyDisabledOption,
     getLabel: storyDisabledOption,
     className: storyDisabledOption,
+    radioGroupLabel: storyDisabledOption,
   },
   parameters: {
     controls: { expanded: true },

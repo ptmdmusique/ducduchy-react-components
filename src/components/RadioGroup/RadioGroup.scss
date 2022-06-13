@@ -12,24 +12,17 @@
     @apply rounded-full;
     @apply w-0 h-0;
   }
-  &--success {
-    @apply border-skin-success;
-    > .inner {
-      @apply bg-skin-success;
+
+  $types: "primary", "secondary", "danger", "success", "warning", "info";
+  @each $type in $types {
+    &--#{$type} {
+      @apply border-skin-#{$type};
+      > .inner {
+        @apply bg-skin-#{$type};
+      }
     }
   }
-  &--danger {
-    @apply border-skin-danger;
-    > .inner {
-      @apply bg-skin-danger;
-    }
-  }
-  &--warning {
-    @apply border-skin-warning;
-    > .inner {
-      @apply bg-skin-warning;
-    }
-  }
+
   &--checked {
     @apply filter grayscale-0;
     > .inner {
