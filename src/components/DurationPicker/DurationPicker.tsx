@@ -10,6 +10,7 @@ import {
   useEffect,
   useMemo,
   useRef,
+  useState,
 } from "react";
 import {
   DEFAULT_DURATION_DISABLE,
@@ -151,6 +152,7 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
       }
     }, [inputRef.current]);
 
+    // Split value from defaultValue to avoid total controlled form
     const value = useMemo(
       () => (_value == undefined ? undefined : getFinalValueString(_value)),
       [_value],
@@ -163,6 +165,12 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
           : getFinalValueString(_defaultValue),
       [_defaultValue],
     );
+
+    // Used to help with dropdown item focus
+    const [internalValue, setInternalValue] = useState(_value ?? _defaultValue);
+    useEffect(() => {
+      setInternalValue(_value ?? _defaultValue);
+    }, [_value, _defaultValue]);
 
     const getIfDisabled = (type: PossibleDurationType) => {
       if (doDisabled) {
@@ -196,18 +204,14 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
       return { mask: maskString, placeholder };
     }, [localeText, doDisabled]);
 
-    const dropDownItemList = useMemo(() => {
+    const durationInMsList = useMemo(() => {
       const {
         minDuration = 0,
         maxDuration = 8.64e7, // 1 day
         interval = 900000, // 15 minutes
-        formatItem,
         inclusiveEnd = true,
         isItemValid,
       } = dropdownItemProps ?? {};
-      const curValueInMs = value
-        ? getDurationInMsFromString(value, localeText, doDisabled)
-        : null;
 
       const durationInMsList: number[] = [];
       let durationInMs = minDuration;
@@ -221,6 +225,18 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
         durationInMs += interval;
       }
 
+      return durationInMsList;
+    }, [
+      dropdownItemProps?.minDuration,
+      dropdownItemProps?.maxDuration,
+      dropdownItemProps?.interval,
+      dropdownItemProps?.inclusiveEnd,
+      dropdownItemProps?.isItemValid,
+    ]);
+
+    const dropDownItemList = useMemo(() => {
+      const { formatItem } = dropdownItemProps ?? {};
+
       const bubbleNewDuration = (durationInMs: number) => {
         const newDurationString = getFinalValueString(durationInMs);
         inputMaskHandleRef.current?.setValue(newDurationString!);
@@ -232,8 +248,22 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
           borderType="plain"
           key={index}
           ref={(ref) => {
-            if (curValueInMs === durationInMs) {
+            if (internalValue === durationInMs) {
               ref?.focus();
+            } else if (internalValue !== undefined) {
+              if (
+                (index === 0 && internalValue < durationInMs) ||
+                (index === durationInMsList.length - 1 &&
+                  internalValue > durationInMs) ||
+                (internalValue > durationInMs &&
+                  internalValue < durationInMsList[index + 1])
+              ) {
+                ref?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center",
+                  inline: "center",
+                });
+              }
             }
           }}
           onFocus={(event) => {
@@ -249,7 +279,14 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
             getFinalValueString(durationInMs)}
         </Button>
       ));
-    }, [dropdownItemProps, doDisabled, localeText, getFinalValueString, value]);
+    }, [
+      dropdownItemProps?.formatItem,
+      doDisabled,
+      localeText,
+      getFinalValueString,
+      internalValue,
+      durationInMsList,
+    ]);
 
     const maskOptions = useMemo(
       () => ({
@@ -290,6 +327,7 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
                 doDisabled,
               );
               onChange?.(unmaskedValue, maskedValue, durationInMs);
+              setInternalValue(durationInMs);
             },
           }}
           popoverPanelProps={{
