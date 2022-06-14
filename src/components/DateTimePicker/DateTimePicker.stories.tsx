@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Meta, Story } from "@storybook/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
@@ -149,8 +150,8 @@ export const WithDateConstraints: Story<DateTimePickerProps> = (args) => (
   <DateTimePicker {...args} />
 );
 WithDateConstraints.args = {
-  minDate: new Date(2022, 1, 1),
-  maxDate: new Date(),
+  minDate: dayjs(new Date(2022, 1, 1)),
+  maxDate: dayjs(new Date()),
 };
 
 const getTomorrowDate = (date: Date) => {
