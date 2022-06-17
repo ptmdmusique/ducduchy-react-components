@@ -1,5 +1,5 @@
 import { Meta, Story } from "@storybook/react";
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "../Button";
 import { storyDisabledOption } from "../resources/story-common";
 import { Modal, ModalProps } from "./Modal";
@@ -131,6 +131,136 @@ export const WithDetailOnCloseControl: Story<ModalProps> = (args) => {
 };
 WithDetailOnCloseControl.args = {
   header: "What a dope header 👌",
+};
+
+export const WithMultipleModal: Story<ModalProps> = (args) => {
+  const [isFirstOpen, setIsFirstOpen] = useState(false);
+  const [isSecondOpen, setIsSecondOpen] = useState(false);
+  const [isFirstOpen2, setIsFirstOpen2] = useState(false);
+  const [isSecondOpen2, setIsSecondOpen2] = useState(false);
+
+  return (
+    <>
+      <div className="px-6 pb-4 text-base">
+        <p>
+          <strong>Notice</strong> how after the 2nd modal is opened, when you
+          click anywhere (even inside the modal), the 1st modal will be closed
+        </p>
+
+        <p className="mt-2">
+          This is by designed because those click count as "clicking outside"
+          relative to the 1st modal, which in turns emit the onClose event
+        </p>
+      </div>
+
+      <Button onClick={() => setIsFirstOpen(true)}>Open first modal</Button>
+
+      <Modal
+        {...args}
+        isOpen={isFirstOpen}
+        onClose={() => {
+          setIsFirstOpen(false);
+        }}
+        footer={
+          <>
+            <Button onClick={() => setIsSecondOpen(true)}>
+              Open second modal
+            </Button>
+          </>
+        }
+      >
+        <div className="px-6 py-4">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. A omnis
+          nisi, voluptate rem eaque odit provident repudiandae veritatis nihil
+          facilis beatae, ea quibusdam error maxime. Et nihil nam delectus esse
+          aliquam, impedit rerum beatae? Natus officiis dolore quia, ratione
+          minus dolor voluptas tempora placeat iusto, nisi vitae ipsa magnam ad?
+        </div>
+      </Modal>
+
+      <Modal
+        {...args}
+        isOpen={isSecondOpen}
+        onClose={() => {
+          setIsSecondOpen(false);
+        }}
+      >
+        <div className="px-6 py-4">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. A omnis
+          nisi, voluptate rem eaque odit provident repudiandae veritatis nihil
+          facilis beatae, ea quibusdam error maxime. Et nihil nam delectus esse
+          aliquam, impedit rerum beatae? Natus officiis dolore quia, ratione
+          minus dolor voluptas tempora placeat iusto, nisi vitae ipsa magnam ad?
+        </div>
+      </Modal>
+
+      <div className="px-6 pb-4 mt-6 text-base">
+        <p>
+          If you don't want that to happen, make sure to check if the 2nd modal
+          is opened or not when you receive the onClose event from the 1st modal
+        </p>
+
+        <p>
+          <strong>Note</strong> even this will still fail if the user click
+          outside of the 2nd modal
+        </p>
+      </div>
+
+      <Button onClick={() => setIsFirstOpen2(true)}>
+        Open first modal with strict check
+      </Button>
+
+      <Modal
+        {...args}
+        isOpen={isFirstOpen2}
+        onClose={() => {
+          if (!isSecondOpen2) {
+            // Only close if the 2nd one is not
+            setIsFirstOpen2(false);
+          }
+        }}
+        footer={
+          <>
+            <Button onClick={() => setIsSecondOpen2(true)}>
+              Open second modal
+            </Button>
+          </>
+        }
+      >
+        <div className="px-6 py-4">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. A omnis
+          nisi, voluptate rem eaque odit provident repudiandae veritatis nihil
+          facilis beatae, ea quibusdam error maxime. Et nihil nam delectus esse
+          aliquam, impedit rerum beatae? Natus officiis dolore quia, ratione
+          minus dolor voluptas tempora placeat iusto, nisi vitae ipsa magnam ad?
+        </div>
+      </Modal>
+
+      <Modal
+        {...args}
+        isOpen={isSecondOpen2}
+        onClose={() => {
+          setIsSecondOpen2(false);
+        }}
+      >
+        <div className="px-6 py-4">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit. A omnis
+          nisi, voluptate rem eaque odit provident repudiandae veritatis nihil
+          facilis beatae, ea quibusdam error maxime. Et nihil nam delectus esse
+          aliquam, impedit rerum beatae? Natus officiis dolore quia, ratione
+          minus dolor voluptas tempora placeat iusto, nisi vitae ipsa magnam ad?
+        </div>
+      </Modal>
+
+      <div className="px-6 pb-4 mt-6 text-base">
+        <p>
+          Overall, I don't recommend using nested modal because it makes UI even
+          more complex. Some alternatives are Tabs, navigate to new location,
+          multi-step flow inside a single modal etc
+        </p>
+      </div>
+    </>
+  );
 };
 
 // TODO: fix this

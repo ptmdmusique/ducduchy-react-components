@@ -39,6 +39,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {...buttonProps}
         ref={ref}
         className={cx(
+          `${COMPONENT_PREFIX}-button`,
           `${COMPONENT_PREFIX}-button--${borderType}`,
           `${COMPONENT_PREFIX}-button--${colorType}`,
           {
