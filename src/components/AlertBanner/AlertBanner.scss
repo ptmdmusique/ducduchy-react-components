@@ -1,0 +1,42 @@
+.dd-alert-banner {
+  @apply bg-skin-top;
+  @apply flex;
+  @apply py-4;
+
+  $types: "primary", "secondary", "danger", "success", "warning", "info";
+  @each $type in $types {
+    &.dd-alert-banner--#{$type} {
+      @apply border-skin-#{$type};
+
+      > .icon-container {
+        @apply text-skin-#{$type};
+      }
+    }
+  }
+
+  $placements: "t", "b", "l", "r";
+  @each $placement in $placements {
+    &.dd-alert-banner--border-#{$placement} {
+      @apply border-#{$placement}-2;
+    }
+  }
+
+  > .icon-container {
+    @apply flex justify-center items-center;
+    @apply px-4;
+  }
+
+  > .content {
+    .header-text {
+      @apply font-medium;
+    }
+  }
+
+  &--has-shadow {
+    @apply shadow-md;
+  }
+
+  &--rounded-corner {
+    @apply rounded;
+  }
+}

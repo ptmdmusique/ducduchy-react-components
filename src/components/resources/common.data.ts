@@ -1,4 +1,17 @@
-export type StatusType = "success" | "danger" | "warning" | "info" | "neutral";
-export type ColorType = "primary" | "secondary" | StatusType;
+export const statusTypeList = [
+  "success",
+  "danger",
+  "warning",
+  "info",
+  "neutral",
+] as const;
+export type StatusType = typeof statusTypeList[number];
+
+export const colorTypeList = [
+  "primary",
+  "secondary",
+  ...statusTypeList,
+] as const;
+export type ColorType = typeof colorTypeList[number];
 
 export const COMPONENT_PREFIX = "dd"; // Duc-Duchy :)
