@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.4.0] - 2022-06-16
 
+### Added
+
+- 🚩 `AlertBanner`: added AlertBanner, inspired by [Calcite's Alert](https://esri.github.io/calcite-components/?path=/story/components-alert--title-message-link)
+
 ### Fixed
 
 - 🔘 `Button`: added missing `dd-button` className
