@@ -196,19 +196,24 @@ export const WithMultipleModal: Story<ModalProps> = (args) => {
 
       <div className="px-6 pb-4 mt-6 text-base">
         <p>
-          If you don't want that to happen, make sure to check if the 2nd modal
-          is opened or not when you receive the onClose event from the 1st modal
+          If you don't want that to happen, make sure the 2nd modal is nested
+          (not sibling)
         </p>
 
         <p>
-          <strong>Note</strong> even this will still fail if the user click
-          outside of the 2nd modal
+          This is how HeadlessUI designs their Dialog which follows{" "}
+          <a
+            href="https://www.w3.org/TR/wai-aria-1.1/#dialog"
+            target="_blank"
+            className="text-skin-info hover:underline"
+          >
+            W3 spec
+          </a>{" "}
+          for the focus trap
         </p>
       </div>
 
-      <Button onClick={() => setIsFirstOpen2(true)}>
-        Open first modal with strict check
-      </Button>
+      <Button onClick={() => setIsFirstOpen2(true)}>Open first modal</Button>
 
       <Modal
         {...args}
@@ -234,31 +239,24 @@ export const WithMultipleModal: Story<ModalProps> = (args) => {
           aliquam, impedit rerum beatae? Natus officiis dolore quia, ratione
           minus dolor voluptas tempora placeat iusto, nisi vitae ipsa magnam ad?
         </div>
-      </Modal>
 
-      <Modal
-        {...args}
-        isOpen={isSecondOpen2}
-        onClose={() => {
-          setIsSecondOpen2(false);
-        }}
-      >
-        <div className="px-6 py-4">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. A omnis
-          nisi, voluptate rem eaque odit provident repudiandae veritatis nihil
-          facilis beatae, ea quibusdam error maxime. Et nihil nam delectus esse
-          aliquam, impedit rerum beatae? Natus officiis dolore quia, ratione
-          minus dolor voluptas tempora placeat iusto, nisi vitae ipsa magnam ad?
-        </div>
+        <Modal
+          {...args}
+          isOpen={isSecondOpen2}
+          onClose={() => {
+            setIsSecondOpen2(false);
+          }}
+        >
+          <div className="px-6 py-4">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. A omnis
+            nisi, voluptate rem eaque odit provident repudiandae veritatis nihil
+            facilis beatae, ea quibusdam error maxime. Et nihil nam delectus
+            esse aliquam, impedit rerum beatae? Natus officiis dolore quia,
+            ratione minus dolor voluptas tempora placeat iusto, nisi vitae ipsa
+            magnam ad?
+          </div>
+        </Modal>
       </Modal>
-
-      <div className="px-6 pb-4 mt-6 text-base">
-        <p>
-          Overall, I don't recommend using nested modal because it makes UI even
-          more complex. Some alternatives are Tabs, navigate to new location,
-          multi-step flow inside a single modal etc
-        </p>
-      </div>
     </>
   );
 };
