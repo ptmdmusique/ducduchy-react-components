@@ -83,13 +83,7 @@ export function Toggle<FormFields extends FieldValues = any>({
 
     return (
       <Switch.Group>
-        <div
-          className={cx(
-            `${COMPONENT_PREFIX}-toggle`,
-            "toggle-container",
-            className,
-          )}
-        >
+        <div className={cx(`${COMPONENT_PREFIX}-toggle`, className)}>
           {label && labelLeft && renderLabel()}
           {/* @ts-ignore */}
           <Switch

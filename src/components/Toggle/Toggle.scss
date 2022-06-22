@@ -68,13 +68,13 @@
   }
 }
 
-.toggle-container {
+.dd-toggle {
   @apply flex items-center;
 
   &:focus-within {
-    > .toggle-checkbox,
-    > .toggle-switch {
-      @apply outline outline-skin-secondary outline-2 outline-offset-1;
+    > .dd-toggle-checkbox,
+    > .dd-toggle-switch {
+      @apply outline outline-skin-secondary outline-2 outline-offset-2;
     }
   }
 
