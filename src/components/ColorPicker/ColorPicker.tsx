@@ -213,6 +213,8 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
                   <div
                     className={cx("freq-used-color-container", {
                       "freq-used-color-container--alone": hidePicker,
+                      "freq-used-color-container--alone--single":
+                        hidePicker && frequentlyUsedColorList.length === 1,
                     })}
                   >
                     {frequentlyUsedColorList.map((color) => {
