@@ -1,0 +1,13 @@
+.dd-tooltip {
+  @apply bg-skin-top;
+  @apply z-50;
+
+  &--preset-1 {
+    // Preline for \n in i18n
+    @apply whitespace-pre-line;
+    @apply font-medium;
+    @apply rounded-md;
+    @apply shadow-md;
+    @apply px-4 py-1;
+  }
+}
