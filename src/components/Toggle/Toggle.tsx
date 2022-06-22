@@ -1,8 +1,9 @@
 import { Switch, Transition } from "@headlessui/react";
 import cx from "classnames";
 import { nanoid } from "nanoid";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { HTMLProps, ReactNode, useEffect, useRef, useState } from "react";
 import { Controller, FieldValues } from "react-hook-form";
+import { OmitStrict } from "../../utils/types";
 import { Icon } from "../Icon";
 import { ColorType, COMPONENT_PREFIX } from "../resources/common.data";
 import {
@@ -12,7 +13,11 @@ import {
 } from "../resources/form/types";
 import "./Toggle.scss";
 
-export interface ToggleProps<FormFields extends FieldValues = any> {
+export interface ToggleProps<FormFields extends FieldValues = any>
+  extends OmitStrict<
+    HTMLProps<HTMLButtonElement>,
+    "label" | "onChange" | "children" | "as"
+  > {
   className?: string;
   label?: ReactNode;
   labelLeft?: boolean;
@@ -40,6 +45,7 @@ export function Toggle<FormFields extends FieldValues = any>({
   type = "switch",
   colorType = "neutral",
   checkIcon = ["fas", "check"],
+  ...buttonProps
 }: ToggleProps<FormFields>) {
   const [enabled, setEnabled] = useState(checked ?? (defaultChecked || false));
   const idRef = useRef(`toggle---${nanoid()}`);
@@ -85,8 +91,9 @@ export function Toggle<FormFields extends FieldValues = any>({
           )}
         >
           {label && labelLeft && renderLabel()}
-
+          {/* @ts-ignore */}
           <Switch
+            {...buttonProps}
             id={idRef.current}
             checked={checked ?? enabled}
             onChange={onChangeWrapper}
@@ -116,7 +123,6 @@ export function Toggle<FormFields extends FieldValues = any>({
               </Transition>
             )}
           </Switch>
-
           {label && !labelLeft && renderLabel()}
         </div>
       </Switch.Group>
