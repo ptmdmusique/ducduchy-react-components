@@ -1,6 +1,6 @@
 {
   "name": "ducduchy-react-components",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "license": "MIT",
   "author": "Duc Phan",
   "main": "dist/index.js",
@@ -141,6 +141,7 @@
     "react-datetime-picker": "^3.5.0",
     "react-hook-form": "^7.23.0",
     "react-imask": "^6.4.2",
+    "react-popper": "^2.3.0",
     "react-range": "^1.8.12",
     "react-select": "^5.2.2",
     "react-time-picker": "^4.5.0",
