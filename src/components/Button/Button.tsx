@@ -10,6 +10,7 @@ export interface ButtonProps extends React.HTMLProps<HTMLButtonElement> {
   colorType?: ColorType;
   icon?: [string, string];
   iconClassName?: string;
+  iconPlacement?: "left" | "right";
   isLoading?: boolean;
   isRounded?: boolean;
   withBackground?: boolean;
@@ -24,6 +25,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       borderType = "fill",
       icon,
       colorType = "normal",
+      iconPlacement = "left",
       iconClassName,
       isLoading,
       isRounded,
@@ -50,6 +52,8 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           buttonProps.className,
         )}
       >
+        {iconPlacement === "right" && buttonProps.children}
+
         {isLoading ? (
           <Icon
             icon={loadingIcon ?? ["fas", "spinner"]}
@@ -70,7 +74,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
               className={cx(
                 `fa-fw ${COMPONENT_PREFIX}-button-icon`,
                 {
-                  [`${COMPONENT_PREFIX}-button-icon--with-children`]:
+                  [`${COMPONENT_PREFIX}-button-icon--with-children--${iconPlacement}`]:
                     !!buttonProps.children,
                 },
                 iconClassName,
@@ -79,7 +83,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           )
         )}
 
-        {buttonProps.children}
+        {iconPlacement === "left" && buttonProps.children}
       </button>
     );
   },
