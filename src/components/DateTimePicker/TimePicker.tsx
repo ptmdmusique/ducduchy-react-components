@@ -1,7 +1,8 @@
 import dayjs from "dayjs";
 import { forwardRef } from "react";
 import { DurationPicker, DurationPickerProps } from "../DurationPicker";
-import "./TimePicker.scss";
+import cx from "classnames";
+import { COMPONENT_PREFIX } from "../resources/common.data";
 
 /** The " " is to used so that the DurationPicker can regex the duration correctly */
 const localeText = { hours: ":", minutes: " " } as const;
@@ -15,6 +16,7 @@ export const TimePicker = forwardRef<HTMLInputElement, DurationPickerProps>(
         ref={ref}
         separatedBySpace={false}
         {...props}
+        className={cx(`${COMPONENT_PREFIX}-time-picker`, props.className)}
         localeText={{ ...localeText, ...props.localeText }}
         dropdownItemProps={{
           ...props.dropdownItemProps,

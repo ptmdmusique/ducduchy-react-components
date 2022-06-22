@@ -1,6 +1,6 @@
+import { Float } from "@headlessui-float/react";
 import { Popover as LibPopover } from "@headlessui/react";
 import cx from "classnames";
-import { Float } from "headlessui-float-react";
 import React from "react";
 import { OmitStrict } from "../../utils/types";
 import { Button, ButtonProps } from "../Button";

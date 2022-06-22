@@ -1,5 +1,4 @@
 import { Meta, Story } from "@storybook/react";
-import DatePicker from "react-date-picker";
 import { FormProvider, useForm, useFormState } from "react-hook-form";
 import { MaskedInput, MaskedInputProps } from ".";
 import { storyDisabledOption } from "../resources/story-common";
@@ -29,7 +28,7 @@ export const TelephoneNumber: Story<MaskedInputProps> = (args) => {
         <MaskedInput maskOptions={{ mask: "+{1} (000) 000-0000" }} />
       </div>
 
-      <div>
+      <div className="mb-4">
         <p>
           Eager mode. Notice how pre-defined chars are shown when the char
           before that is typed while the other example require you to type the
@@ -37,6 +36,14 @@ export const TelephoneNumber: Story<MaskedInputProps> = (args) => {
         </p>
         <MaskedInput
           maskOptions={{ mask: "+{1} (000) 000-0000", eager: true }}
+        />
+      </div>
+
+      <div>
+        <p>With default value. Make sure to use unmaskedValue</p>
+        <MaskedInput
+          maskOptions={{ mask: "+{1} (000) 000-0000", eager: true }}
+          defaultValue="9999999999"
         />
       </div>
     </div>
