@@ -32,6 +32,7 @@ import {
 import { Popover } from "../Popover";
 import { COMPONENT_PREFIX } from "../resources/common.data";
 import "./DurationPicker.scss";
+
 dayjs.extend(duration);
 
 type MaskedType = `dd--${PossibleDurationType}`;
@@ -66,7 +67,102 @@ const DEFAULT_BLOCKS: Record<MaskedType, AnyMaskedOptions> = {
   },
 };
 
-/** // TODO: fix controlled form  */
+// interface DropdownItemProps {
+//   disabled: boolean;
+//   active: boolean;
+//   index: number;
+
+//   durationInMs: number;
+//   internalValue: number | undefined;
+//   durationInMsList: number[];
+
+//   onNewDuration: (durationInMs: number) => void;
+//   formatItem?: (duration: Duration, durationInMs: number) => ReactNode;
+//   getFinalValueString: (durationInMs: number | undefined) => string | undefined;
+// }
+// const DropdownItem = forwardRef<HTMLButtonElement, DropdownItemProps>(
+//   (
+//     {
+//       active,
+//       disabled,
+//       index,
+//       durationInMs,
+//       internalValue,
+//       durationInMsList,
+//       onNewDuration,
+//       formatItem,
+//       getFinalValueString,
+//     },
+//     forwardRefRef,
+//   ) => {
+//     const ref = useRef<HTMLButtonElement>(null);
+//     const scrollIntoView = () => {
+//       const cta = ref.current;
+//       if (cta) {
+//         setTimeout(() => {
+//           // cta.focus();
+//           // cta.scrollIntoView({
+//           //   behavior: "smooth",
+//           //   block: "center",
+//           // });
+//         }, 10);
+//       }
+//     };
+
+//     useLayoutEffect(() => {
+//       if (ref.current) {
+//         if (internalValue === durationInMs) {
+//           scrollIntoView();
+//         } else if (internalValue !== undefined) {
+//           if (
+//             // Try to move to the closest item
+//             (index === 0 && internalValue < durationInMs) ||
+//             (index === durationInMsList.length - 1 &&
+//               internalValue > durationInMs) ||
+//             (internalValue > durationInMs &&
+//               internalValue < durationInMsList[index + 1])
+//           ) {
+//             scrollIntoView();
+//           }
+//         }
+//       }
+
+//       if (forwardRefRef) {
+//         if (typeof forwardRefRef === "function") {
+//           forwardRefRef(ref.current);
+//         } else {
+//           forwardRefRef.current = ref.current;
+//         }
+//       }
+//     }, [ref.current]);
+
+//     useEffect(() => {
+//       if (active) {
+//         console.log("active:", index, active);
+//         scrollIntoView();
+//         onNewDuration(durationInMs);
+//       }
+//     }, [active]);
+
+//     return (
+//       <Button
+//         className={cx(`${COMPONENT_PREFIX}-duration-item`)}
+//         borderType="plain"
+//         disabled={disabled}
+//         useFocusStyle={active}
+//         ref={ref}
+//         onClick={() => {
+//           scrollIntoView();
+//           onNewDuration(durationInMs);
+//         }}
+//       >
+//         {formatItem?.(getDurationFromMs(durationInMs), durationInMs) ??
+//           getFinalValueString(durationInMs)}
+//       </Button>
+//     );
+//   },
+// );
+
 export interface DurationPickerProps
   extends Partial<
     OmitStrict<MaskedInputProps, "onChange" | "value" | "defaultValue">
@@ -88,6 +184,11 @@ export interface DurationPickerProps
 
   value?: number;
   defaultValue?: number;
+
+  /** Should we close the popover on item click */
+  closeOnClick?: boolean;
+  /** Should we close the popover on item focus */
+  closeOnFocus?: boolean;
 
   separatedBySpace?: boolean;
 
@@ -114,6 +215,8 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
       separatedBySpace = true,
       defaultValue: _defaultValue,
       dropdownItemProps,
+      closeOnClick = true,
+      closeOnFocus,
       ...maskedInputProps
     },
     ref,
@@ -234,15 +337,19 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
       dropdownItemProps?.isItemValid,
     ]);
 
-    const dropDownItemList = useMemo(() => {
+    const renderDropdownItem = (
+      durationInMs: number,
+      index: number,
+      close: () => void,
+    ) => {
       const { formatItem } = dropdownItemProps ?? {};
 
-      const bubbleNewDuration = (durationInMs: number) => {
+      const bubbleNewDurationInMs = () => {
         const newDurationString = getFinalValueString(durationInMs);
         inputMaskHandleRef.current?.setValue(newDurationString!);
       };
 
-      return durationInMsList.map((durationInMs, index) => (
+      return (
         <Button
           className={`${COMPONENT_PREFIX}-duration-item`}
           borderType="plain"
@@ -272,21 +379,25 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
               block: "center",
               inline: "center",
             });
-            bubbleNewDuration(durationInMs);
+
+            bubbleNewDurationInMs();
+
+            closeOnFocus && close();
+          }}
+          // onMouseDown instead of onClick because onFocus is executed before
+          // onClick so it will stop onClick being called if we use event.target.scrollIntoView
+          // in onFocus
+          // https://stackoverflow.com/questions/57756002/react-prevent-onclick-firing-when-onfocus-fires
+          onMouseDown={() => {
+            bubbleNewDurationInMs();
+            closeOnClick && close();
           }}
         >
           {formatItem?.(getDurationFromMs(durationInMs), durationInMs) ??
             getFinalValueString(durationInMs)}
         </Button>
-      ));
-    }, [
-      dropdownItemProps?.formatItem,
-      doDisabled,
-      localeText,
-      getFinalValueString,
-      internalValue,
-      durationInMsList,
-    ]);
+      );
+    };
 
     const maskOptions = useMemo(
       () => ({
@@ -334,8 +445,70 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
             className: `${COMPONENT_PREFIX}-duration-picker__panel`,
           }}
         >
-          {dropDownItemList}
+          {(_, close) =>
+            durationInMsList.map((durationInMs, index) =>
+              renderDropdownItem(durationInMs, index, close),
+            )
+          }
         </Popover>
+
+        {/* <Menu<number, "div", MaskedInputProps>
+          menuOpenerProps={{
+            as: MaskedInput,
+            ...maskedInputProps,
+            ref: inputRef,
+            handlerRef: inputMaskHandleRef,
+            value,
+            defaultValue,
+            className: cx(
+              `${COMPONENT_PREFIX}-duration-picker__input`,
+              maskedInputProps.className,
+            ),
+            placeholder,
+            // @ts-ignore
+            maskOptions,
+            onChange: (unmaskedValue, maskedValue) => {
+              const durationInMs = getDurationInMsFromString(
+                maskedValue,
+                localeText,
+                doDisabled,
+              );
+              onChange?.(unmaskedValue, maskedValue, durationInMs);
+              setInternalValue(durationInMs);
+            },
+          }}
+          // popoverPanelProps={{
+          //   className: `${COMPONENT_PREFIX}-duration-picker__panel`,
+          // }}
+          useDivider={false}
+          menuItemsProps={{
+            className: `${COMPONENT_PREFIX}-duration-picker__panel`,
+          }}
+          menuItemList={durationInMsList}
+          renderItem={(durationInMs, index, { active, disabled }) => {
+            const { formatItem } = dropdownItemProps ?? {};
+
+            return (
+              <DropdownItem
+                key={index}
+                active={active}
+                disabled={disabled}
+                index={index}
+                internalValue={internalValue}
+                durationInMs={durationInMs}
+                durationInMsList={durationInMsList}
+                formatItem={formatItem}
+                getFinalValueString={getFinalValueString}
+                onNewDuration={(durationInMs) => {
+                  const newDurationString = getFinalValueString(durationInMs);
+                  inputMaskHandleRef.current?.setValue(newDurationString!);
+                }}
+              />
+            );
+          }}
+        >
+
+        </Menu> */}
       </LibPopover.Group>
     );
   },
