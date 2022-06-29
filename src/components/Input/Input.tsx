@@ -14,6 +14,7 @@ import {
 import { Control, useWatch } from "react-hook-form";
 import { debounce } from "../../utils/lodash/debounce";
 import { FadeTransition } from "../animation/CustomTransition";
+import { Button } from "../Button";
 import Icon from "../Icon/Icon";
 import { COMPONENT_PREFIX } from "../resources/common.data";
 import { FormAdornment } from "../resources/form/types";
@@ -132,7 +133,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       }
 
       const iconCN = cx("fa-fw adornment-icon", {
-        "adornment-icon-left": left,
+        "adornment-icon--left": left,
       });
 
       let onClick = trailingAdornmentOnClick;
@@ -141,13 +142,23 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       }
 
       if (checkIsIcon(adornment)) {
-        const renderIcon = () => <Icon icon={adornment} className={iconCN} />;
         return onClick ? (
-          <button className="adornment-wrapper" type="button" onClick={onClick}>
-            {renderIcon()}
-          </button>
+          <div
+            className={cx("adornment-wrapper", {
+              "adornment-wrapper--left": left,
+            })}
+          >
+            <Button
+              className="adornment-button"
+              borderType="plain"
+              type="button"
+              onClick={onClick}
+              iconClassName="fa-fw adornment-icon"
+              icon={adornment}
+            />
+          </div>
         ) : (
-          renderIcon()
+          <Icon icon={adornment} className={iconCN} />
         );
       }
 
@@ -205,7 +216,6 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             { "input-container--read-only": inputProps?.readOnly },
           )}
         >
-          {renderAdornment(trailingAdornment)}
           {renderAdornment(leadingAdornment, true)}
 
           <label htmlFor={myId.current}>{label}</label>
@@ -216,6 +226,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             ref={inputRef}
             onChange={onInputChange}
           />
+
+          {renderAdornment(trailingAdornment)}
 
           {formControl && (
             <UseFormWatcher

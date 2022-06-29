@@ -48,7 +48,13 @@ WithAdornments.args = {
   placeholder: "John Doe",
   caption: <div className="input-stories-caption">Here is a caption</div>,
   trailingAdornment: ["fas", "dog"],
+  trailingAdornmentOnClick() {
+    alert("You clicked the dog!");
+  },
   leadingAdornment: ["fas", "hand-peace"],
+  leadingAdornmentOnClick() {
+    alert("You clicked the hand-peace!");
+  },
 };
 
 Default.args = {};
