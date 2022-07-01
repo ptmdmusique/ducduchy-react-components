@@ -36,6 +36,15 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref,
   ) => {
+    const _iconClassName = cx(
+      `fa-fw ${COMPONENT_PREFIX}-button-icon`,
+      {
+        [`${COMPONENT_PREFIX}-button-icon--with-children--${iconPlacement}`]:
+          !!buttonProps.children,
+      },
+      iconClassName,
+    );
+
     return (
       <button
         {...buttonProps}
@@ -57,30 +66,11 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
         {isLoading ? (
           <Icon
             icon={loadingIcon ?? ["fas", "spinner"]}
-            className={cx(
-              `fa-fw ${COMPONENT_PREFIX}-button-icon`,
-              {
-                [`${COMPONENT_PREFIX}-button-icon--with-children`]:
-                  !!buttonProps.children,
-              },
-              iconClassName,
-            )}
+            className={_iconClassName}
             spin
           />
         ) : (
-          icon && (
-            <Icon
-              icon={icon}
-              className={cx(
-                `fa-fw ${COMPONENT_PREFIX}-button-icon`,
-                {
-                  [`${COMPONENT_PREFIX}-button-icon--with-children--${iconPlacement}`]:
-                    !!buttonProps.children,
-                },
-                iconClassName,
-              )}
-            />
-          )
+          icon && <Icon icon={icon} className={_iconClassName} />
         )}
 
         {iconPlacement === "left" && buttonProps.children}
