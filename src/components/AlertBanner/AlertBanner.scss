@@ -1,10 +1,11 @@
+@import "../assets/styles/variable-common.scss";
+
 .dd-alert-banner {
   @apply bg-skin-top;
   @apply flex;
   @apply py-4;
 
-  $types: "primary", "secondary", "danger", "success", "warning", "info";
-  @each $type in $types {
+  @each $type in $color-types {
     &.dd-alert-banner--#{$type} {
       @apply border-skin-#{$type};
 

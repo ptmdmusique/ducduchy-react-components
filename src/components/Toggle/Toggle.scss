@@ -1,3 +1,5 @@
+@import "../assets/styles/variable-common.scss";
+
 .dd-toggle-checkbox {
   @apply relative flex items-center justify-center;
   @apply border-skin-secondary;
@@ -22,8 +24,7 @@
     @apply filter grayscale;
   }
 
-  $types: "primary", "secondary", "danger", "success", "warning", "info";
-  @each $type in $types {
+  @each $type in $color-types {
     &--#{$type} {
       @apply border-skin-#{$type};
       > .icon {
@@ -60,8 +61,7 @@
     @apply bg-skin-disabled;
   }
 
-  $types: "primary", "secondary", "danger", "success", "warning", "info";
-  @each $type in $types {
+  @each $type in $color-types {
     &--#{$type} {
       @apply bg-skin-#{$type};
     }

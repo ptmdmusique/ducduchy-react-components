@@ -1,3 +1,5 @@
+@import "../assets/styles/variable-common.scss";
+
 .form-radio-group__radio {
   @apply flex justify-center items-center;
   @apply border-skin-secondary border-2;
@@ -13,8 +15,7 @@
     @apply w-0 h-0;
   }
 
-  $types: "primary", "secondary", "danger", "success", "warning", "info";
-  @each $type in $types {
+  @each $type in $color-types {
     &--#{$type} {
       @apply border-skin-#{$type};
       > .inner {

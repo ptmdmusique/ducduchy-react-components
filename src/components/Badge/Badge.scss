@@ -1,3 +1,5 @@
+@import "../assets/styles/variable-common.scss";
+
 .dd-badge {
   @apply flex justify-center items-center;
   @apply rounded-lg;
@@ -14,8 +16,7 @@
     @apply bg-skin-base bg-opacity-10;
     @apply text-skin-base;
 
-    $types: "primary", "secondary", "danger", "success", "warning", "info";
-    @each $type in $types {
+    @each $type in $color-types {
       &.dd-badge--#{$type} {
         @apply bg-skin-#{$type} bg-opacity-10;
         @apply text-skin-#{$type};
@@ -28,8 +29,7 @@
     @apply text-skin-base;
     @apply border;
 
-    $types: "primary", "secondary", "danger", "success", "warning", "info";
-    @each $type in $types {
+    @each $type in $color-types {
       &.dd-badge--#{$type} {
         @apply border-skin-#{$type};
         @apply text-skin-#{$type};
