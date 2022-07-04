@@ -1,0 +1,94 @@
+@import "../assets/styles/variable-common.scss";
+
+.dd-multi-step-tab-group {
+  > .dd-multi-step-tab-group__tab-list {
+    @apply flex;
+
+    @apply w-full justify-between;
+
+    > .step-content {
+      &--bubble-step {
+        @apply flex flex-col justify-center items-center;
+
+        > .bubble {
+          @apply flex justify-center items-center;
+          @apply filter grayscale;
+          @apply duration-200;
+          @apply rounded-full;
+          @apply font-medium;
+          @apply border-2;
+          @apply w-8 h-8;
+          @apply p-0;
+
+          @each $type in $color-types {
+            &.bubble--#{$type} {
+              @apply border-skin-#{$type};
+              @apply text-skin-#{$type};
+            }
+          }
+
+          &--selected {
+            @apply grayscale-0;
+          }
+        }
+
+        > .content {
+          @apply filter grayscale;
+          @apply font-medium;
+          @apply mt-2;
+
+          @each $type in $color-types {
+            &.content--#{$type} {
+              @apply text-skin-#{$type};
+            }
+          }
+
+          &--selected {
+            @apply grayscale-0;
+          }
+        }
+      }
+    }
+
+    > .step-indicator {
+      @apply bg-skin-disabled;
+      @apply overflow-hidden;
+      @apply rounded-md;
+      @apply flex-grow;
+      @apply mx-4 mt-3;
+      @apply h-1;
+
+      > .step-indicator__line {
+        @apply duration-200;
+        @apply h-full w-0;
+
+        @each $type in $color-types {
+          &.step-indicator__line--#{$type} {
+            @apply bg-skin-#{$type};
+          }
+        }
+
+        &--active {
+          @apply w-full;
+        }
+      }
+    }
+  }
+
+  > .dd-multi-step-tab-group__panel-list {
+    > .tab-group__tab-panel {
+      animation-name: fadeIn;
+      animation-duration: theme("transitionDuration.500");
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

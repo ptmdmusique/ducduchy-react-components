@@ -116,9 +116,8 @@ export const ControlledIndex: Story<TabGroupProps> = (args) => {
       <TabGroup
         {...args}
         selectedIndex={selectedIndex}
-        tabGroupProps={{
-          className: "text-skin-base bg-skin-top rounded-md",
-        }}
+        onChange={setSelectedIndex}
+        tabGroupProps={{ className: "text-skin-base bg-skin-top rounded-md" }}
         tabListProps={{ className: "flex" }}
         numberOfTabs={Math.min(panelList.length, contentList.length)}
         renderTab={(index) => (

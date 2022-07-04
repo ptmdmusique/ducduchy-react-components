@@ -22,10 +22,16 @@ export interface TabGroupProps {
   onChange?: (index: number) => void;
 
   tabActiveIndicatorProps?: ComponentProps<"div">;
-  tabActiveIndicatorType?: "pill" | "underline";
+  tabActiveIndicatorType?: "pill" | "underline" | "custom";
+
+  renderIndicator?: boolean;
 
   numberOfTabs: number;
-  renderTab: (index: number, selected: boolean) => ReactNode;
+
+  /** Render the entire tab and have total control over accessibility */
+  renderWholeTab?: (index: number, selected: boolean) => ReactNode;
+  renderTab?: (index: number, selected: boolean) => ReactNode;
+
   getTabProps?: (index: number, selected: boolean) => ExtractProps<typeof Tab>;
   renderTabPanel: (index: number, selected: boolean) => ReactNode;
   getTabPanelProps?: (
@@ -39,6 +45,7 @@ export interface TabGroupProps {
 }
 
 // TODO: fix bug where tab and tab panel still got switch even in controller mode
+// https://github.com/tailwindlabs/headlessui/issues/1509#issuecomment-1171905348
 export const TabGroup = forwardRef<HTMLDivElement, TabGroupProps>(
   (
     {
@@ -46,8 +53,10 @@ export const TabGroup = forwardRef<HTMLDivElement, TabGroupProps>(
       defaultSelectedIndex,
       onChange,
       tabActiveIndicatorProps,
-      tabActiveIndicatorType,
+      tabActiveIndicatorType = "underline",
+      renderIndicator = true,
       numberOfTabs,
+      renderWholeTab,
       renderTab,
       renderTabPanel,
       tabGroupProps,
@@ -58,11 +67,6 @@ export const TabGroup = forwardRef<HTMLDivElement, TabGroupProps>(
     },
     ref,
   ) => {
-    const renderArr = useMemo(
-      () => Array.from<any>(Array(numberOfTabs)),
-      [numberOfTabs],
-    );
-
     const tabListRef = useRef<HTMLDivElement>(null);
     // TODO: support vertical tab
     const [indicatorInfo, setIndicatorInfo] = useState({ left: 0, width: 0 });
@@ -72,21 +76,80 @@ export const TabGroup = forwardRef<HTMLDivElement, TabGroupProps>(
     );
 
     useEffect(() => {
+      calculateIndicatorInfo(
+        getIndex(_selectedIndex ?? defaultSelectedIndex ?? 0, numberOfTabs),
+      );
+    }, []);
+
+    const calculateIndicatorInfo = (curSelectedIndex: number) => {
+      const tabList = tabListRef.current;
+      if (tabList && renderIndicator) {
+        // First spot is reserved for the indicator
+        const activeChild = tabList.children[curSelectedIndex + 1];
+        const { left: childLeft, width } = activeChild.getBoundingClientRect();
+        const { left: listLeft } = tabList.getBoundingClientRect();
+        setIndicatorInfo({ left: childLeft - listLeft, width });
+      }
+    };
+
+    useEffect(() => {
       if (_selectedIndex != null) {
-        setSelectedIndex(getIndex(_selectedIndex, numberOfTabs));
+        const newIndex = getIndex(_selectedIndex, numberOfTabs);
+        setSelectedIndex(newIndex);
+        calculateIndicatorInfo(newIndex);
       }
     }, [_selectedIndex, numberOfTabs]);
 
-    useEffect(() => {
-      const tabList = tabListRef.current;
-      if (tabList) {
-        // First spot is reserved for the indicator
-        const activeChild = tabList.children[selectedIndex + 1];
-        const { left: childLef, width } = activeChild.getBoundingClientRect();
-        const { left: listLef } = tabList.getBoundingClientRect();
-        setIndicatorInfo({ left: childLef - listLef, width });
-      }
-    }, [selectedIndex]);
+    const renderArr = useMemo(
+      () => Array.from<any>(Array(numberOfTabs)),
+      [numberOfTabs],
+    );
+
+    const tabList = useMemo(
+      () =>
+        renderArr.map((_, index) => {
+          const selected = index === selectedIndex;
+          return (
+            renderWholeTab?.(index, selected) ?? (
+              <Tab
+                {...getTabProps?.(index, selected)}
+                as="button"
+                key={index}
+                className={cx(
+                  "tab-group__tab",
+                  `tab-group__tab--${tabActiveIndicatorType}`,
+                  { "tab-group__tab--selected": selected },
+                  getTabProps?.(index, selected)?.className,
+                )}
+              >
+                {({ selected }) => renderTab?.(index, selected)}
+              </Tab>
+            )
+          );
+        }),
+      [selectedIndex, renderArr, tabActiveIndicatorType],
+    );
+
+    const panelList = useMemo(
+      () =>
+        renderArr.map((_, index) => {
+          const isSelected = index === selectedIndex;
+          return (
+            <Tab.Panel
+              {...getTabPanelProps?.(index, isSelected)}
+              key={index}
+              className={cx(
+                "tab-group__tab-panel",
+                { "tab-group__tab-panel--selected": isSelected },
+                getTabPanelProps?.(index, isSelected)?.className,
+              )}
+            >
+              {renderTabPanel(index, isSelected)}
+            </Tab.Panel>
+          );
+        }),
+      [renderArr, selectedIndex],
+    );
 
     return (
       <Tab.Group
@@ -97,11 +160,14 @@ export const TabGroup = forwardRef<HTMLDivElement, TabGroupProps>(
           tabGroupProps?.className,
         )}
         ref={ref}
-        selectedIndex={selectedIndex}
+        selectedIndex={_selectedIndex}
         onChange={(newIndex: number) => {
           // Only update the state if selectedIndex is not specified
-          _selectedIndex == null &&
+          if (_selectedIndex == null) {
+            calculateIndicatorInfo(newIndex);
             setSelectedIndex(getIndex(newIndex, numberOfTabs));
+          }
+
           onChange?.(newIndex);
         }}
       >
@@ -111,55 +177,26 @@ export const TabGroup = forwardRef<HTMLDivElement, TabGroupProps>(
           ref={tabListRef}
           className={cx("tab-group__tab-list", tabListProps?.className)}
         >
-          <div
-            {...tabActiveIndicatorProps}
-            className={cx(
-              "tab-group__tab-active-indicator",
-              `tab-group__tab-active-indicator--${tabActiveIndicatorType}`,
-              tabActiveIndicatorProps?.className,
-            )}
-            style={indicatorInfo}
-          />
+          {renderIndicator && (
+            <div
+              {...tabActiveIndicatorProps}
+              className={cx(
+                "tab-group__tab-active-indicator",
+                `tab-group__tab-active-indicator--${tabActiveIndicatorType}`,
+                tabActiveIndicatorProps?.className,
+              )}
+              style={indicatorInfo}
+            />
+          )}
 
-          {renderArr.map((_, index) => (
-            <Tab
-              {...getTabProps?.(index, index === selectedIndex)}
-              as="button"
-              key={index}
-              className={({ selected }) =>
-                cx(
-                  "tab-group__tab",
-                  `tab-group__tab--${tabActiveIndicatorType}`,
-                  { "tab-group__tab--selected": selected },
-                  getTabProps?.(index, selected)?.className,
-                )
-              }
-            >
-              {({ selected }) => renderTab(index, selected)}
-            </Tab>
-          ))}
+          {tabList}
         </Tab.List>
 
         <Tab.Panels
           {...tabPanelsProps}
           className={cx("tab-group__tab-panels", tabPanelsProps?.className)}
         >
-          {renderArr.map((_, index) => {
-            const isSelected = index === selectedIndex;
-            return (
-              <Tab.Panel
-                {...getTabPanelProps?.(index, isSelected)}
-                key={index}
-                className={cx(
-                  "tab-group__tab-panel",
-                  { "tab-group__tab-panel--selected": isSelected },
-                  getTabPanelProps?.(index, isSelected)?.className,
-                )}
-              >
-                {renderTabPanel(index, isSelected)}
-              </Tab.Panel>
-            );
-          })}
+          {panelList}
         </Tab.Panels>
       </Tab.Group>
     );

@@ -3,10 +3,6 @@
     @apply relative;
 
     > .tab-group__tab {
-      @apply border-b-2 border-skin-disabled border-opacity-40;
-      @apply duration-200;
-      @apply py-2;
-
       &:focus {
         outline: none;
       }
@@ -19,8 +15,15 @@
         @apply text-skin-secondary;
       }
 
+      &--underline {
+        @apply border-b-2 border-skin-disabled border-opacity-40;
+        @apply duration-200;
+        @apply py-2;
+      }
+
       &--pill {
         @apply relative;
+        @apply py-2;
 
         &.tab-group__tab--selected {
           @apply text-skin-inverted;
