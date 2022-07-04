@@ -14,7 +14,7 @@ export type MultiStepTabGroupProps = {
   selectedIndex: number;
   onChange?: (index: number) => void;
 
-  colorType: ColorType;
+  colorType?: ColorType;
   className?: string;
 
   numberOfTabs: number;

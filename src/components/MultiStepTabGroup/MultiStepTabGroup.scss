@@ -4,8 +4,6 @@
   > .dd-multi-step-tab-group__tab-list {
     @apply flex;
 
-    @apply w-full justify-between;
-
     > .step-content {
       &--bubble-step {
         @apply flex flex-col justify-center items-center;
