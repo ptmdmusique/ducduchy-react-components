@@ -24,11 +24,11 @@ export const TimePicker = forwardRef<HTMLInputElement, DurationPickerProps>(
           maxDuration: 86400000,
           interval: 900000,
           inclusiveEnd: false,
-          formatItem: (_, durationInMs) => {
-            return dayjs()
-              .startOf("day")
-              .add(durationInMs, "ms")
-              .format("hh:mm a");
+          formatItem: (duration, durationInMs) => {
+            return (
+              props.dropdownItemProps?.formatItem?.(duration, durationInMs) ??
+              dayjs().startOf("day").add(durationInMs, "ms").format("hh:mm a")
+            );
           },
         }}
         onChange={(unmaskedValue, maskedValue, durationInMs) => {

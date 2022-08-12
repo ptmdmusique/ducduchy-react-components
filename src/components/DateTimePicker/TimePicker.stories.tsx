@@ -1,4 +1,5 @@
 import { Meta, Story } from "@storybook/react";
+import dayjs, { duration } from "dayjs";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { storyDisabledOption } from "../resources/story-common";
@@ -76,4 +77,16 @@ const TemplateWithForm: Story<TimePickerProps> = (args) => {
 export const WithForm = TemplateWithForm.bind({});
 WithForm.args = {
   label: "Meeting time",
+};
+
+export const WithSameDateFormat: Story<TimePickerProps> = (args) => {
+  return (
+    <TimePicker
+      {...args}
+      dropdownItemProps={{
+        formatItem: (_, durationInMs) =>
+          dayjs().startOf("day").add(durationInMs, "ms").format("HH:mm"),
+      }}
+    />
+  );
 };
