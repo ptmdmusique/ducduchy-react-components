@@ -65,9 +65,9 @@ const Template: Story<DateTimePickerProps> = (args) => {
     </div>
   );
 };
-export const Default = Template.bind({});
+const Default = Template.bind({});
 
-export const WithForm: Story<DateTimePickerProps> = (args) => {
+const WithForm: Story<DateTimePickerProps> = (args) => {
   const methods = useForm<{ dateTimePicker: string }>();
   return (
     <FormProvider {...methods}>
@@ -84,7 +84,7 @@ WithForm.args = {
   label: "Meeting time",
 };
 
-export const WithLocale: Story<DateTimePickerProps> = (args) => {
+const WithLocale: Story<DateTimePickerProps> = (args) => {
   const [locale, setLocale] = useState<"vi" | "en">("en");
 
   return (
@@ -106,7 +106,7 @@ export const WithLocale: Story<DateTimePickerProps> = (args) => {
 const randomDate = (start: Date, end: Date) =>
   new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 
-export const WithReactHookFormSetValue: Story<DateTimePickerProps> = (args) => {
+const WithReactHookFormSetValue: Story<DateTimePickerProps> = (args) => {
   const methods = useForm<{ dateTimeISO: string | undefined }>({
     defaultValues: { dateTimeISO: new Date().toISOString() },
   });
@@ -146,7 +146,7 @@ WithReactHookFormSetValue.args = {
   dateFormat: "DD/MM/YYYY HH:mm",
 };
 
-export const WithDateConstraints: Story<DateTimePickerProps> = (args) => (
+const WithDateConstraints: Story<DateTimePickerProps> = (args) => (
   <DateTimePicker {...args} />
 );
 WithDateConstraints.args = {
@@ -160,7 +160,7 @@ const getTomorrowDate = (date: Date) => {
   return tomorrow;
 };
 
-export const WithSyncPicker: Story<DateTimePickerProps> = (args) => {
+const WithSyncPicker: Story<DateTimePickerProps> = (args) => {
   const [startDate, setStartDate] = useState<null | Date>(new Date());
   const [endDate, setEndDate] = useState<null | Date>(
     getTomorrowDate(new Date()),
@@ -196,7 +196,7 @@ export const WithSyncPicker: Story<DateTimePickerProps> = (args) => {
   );
 };
 
-export const WithModal: Story<DateTimePickerProps> = (args) => {
+const WithModal: Story<DateTimePickerProps> = (args) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (

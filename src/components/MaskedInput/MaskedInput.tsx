@@ -1,16 +1,24 @@
 import cx from "classnames";
-import IMask from "imask";
-import { forwardRef, Ref, useEffect, useImperativeHandle, useRef } from "react";
+import IMask, { AnyMaskedOptions, InputMask } from "imask";
+import {
+  forwardRef,
+  Ref,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+} from "react";
 import { OmitStrict } from "../../utils/types";
 import { Input, InputProps } from "../Input";
 import { COMPONENT_PREFIX } from "../resources/common.data";
 
 export interface MaskedInputHandle {
   setValue: (value: string) => void;
+  setUnmaskedValue: (value: string) => void;
 }
 
 export type MaskedInputProps = OmitStrict<InputProps, "onChange"> & {
-  maskOptions: IMask.AnyMaskedOptions;
+  maskOptions: AnyMaskedOptions;
   onChange?: (unmaskedValue: string, maskedValue: string) => void;
 
   handlerRef?: Ref<MaskedInputHandle>;
@@ -19,13 +27,13 @@ export type MaskedInputProps = OmitStrict<InputProps, "onChange"> & {
 export const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
   ({ maskOptions, onChange, handlerRef, ...inputProps }, ref) => {
     // Use useRef to prevent re-rendering of the component whenever `maskOptions` changes.
-    const opts = useRef(maskOptions);
+    const opts = useMemo(() => maskOptions, [maskOptions]);
     const inputRef = useRef<HTMLInputElement | null>(null);
-    const iMaskRef = useRef<IMask.InputMask<IMask.AnyMaskedOptions>>();
+    const iMaskRef = useRef<InputMask<AnyMaskedOptions>>();
 
     useEffect(() => {
       if (inputRef.current) {
-        const iMask = IMask(inputRef.current, opts.current);
+        const iMask = IMask(inputRef.current, opts);
         iMask.on("accept", () => {
           onChange?.(iMask.unmaskedValue, iMask.value);
         });
@@ -37,6 +45,12 @@ export const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
         };
       }
     }, [onChange]);
+
+    useEffect(() => {
+      if (iMaskRef.current) {
+        iMaskRef.current.updateOptions(opts);
+      }
+    }, [opts]);
 
     useEffect(() => {
       iMaskRef.current?.updateValue();
@@ -57,6 +71,8 @@ export const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
       () => ({
         setValue: (newVal) =>
           iMaskRef.current && (iMaskRef.current.value = newVal),
+        setUnmaskedValue: (newVal) =>
+          iMaskRef.current && (iMaskRef.current.unmaskedValue = newVal),
       }),
       [],
     );

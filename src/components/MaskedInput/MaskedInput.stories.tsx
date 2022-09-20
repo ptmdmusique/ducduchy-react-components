@@ -71,6 +71,7 @@ export const WithForm: Story<MaskedInputProps> = (args) => {
           type="tel"
           {...methods.register("phoneNumber")}
           onChange={(unmaskedValue, maskedValue) => {
+            console.log('maskedValue:', maskedValue)
             methods.setValue("phoneNumber", maskedValue);
           }}
         />

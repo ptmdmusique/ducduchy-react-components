@@ -19,6 +19,7 @@ import {
   durationToString,
   getDurationFromMs,
   getDurationInMsFromString,
+  LocaleTextMap,
   PossibleDurationType,
   possibleDurationTypeList,
 } from "../../utils/date";
@@ -165,15 +166,23 @@ const DEFAULT_BLOCKS: Record<MaskedType, AnyMaskedOptions> = {
 
 export interface DurationPickerProps
   extends Partial<
-    OmitStrict<MaskedInputProps, "onChange" | "value" | "defaultValue">
+    OmitStrict<
+      MaskedInputProps,
+      "onChange" | "value" | "defaultValue" | "maskOptions"
+    >
   > {
-  localeText?: {
-    [key in PossibleDurationType]?: string;
-  };
+  maskOptions?: Partial<MaskedInputProps["maskOptions"]>;
+
+  localeTextMap?: LocaleTextMap;
+  maskLocaleTextMap?: LocaleTextMap;
+
   /** Do we NOT use day/hour/minute/second? */
   doDisabled?: {
     [key in PossibleDurationType]?: boolean;
   };
+
+  /** Used to determine the display value on the masked input */
+  parseDurationInMsToString?: (durationInMs: number) => string;
 
   /** Use 3rd parameter to get duration in milliseconds */
   onChange?: (
@@ -192,6 +201,11 @@ export interface DurationPickerProps
 
   separatedBySpace?: boolean;
 
+  /** @internal
+   * Reserved for TimePicker where AM PM mode is customizable
+   */
+  usingAmPm?: boolean;
+
   dropdownItemProps?: {
     minDuration?: number;
     maxDuration?: number;
@@ -208,15 +222,18 @@ export interface DurationPickerProps
 export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
   (
     {
-      localeText,
+      localeTextMap,
+      maskLocaleTextMap = localeTextMap,
       doDisabled,
       onChange,
       value: _value,
       separatedBySpace = true,
       defaultValue: _defaultValue,
       dropdownItemProps,
+      parseDurationInMsToString,
       closeOnClick = true,
       closeOnFocus,
+      usingAmPm,
       ...maskedInputProps
     },
     ref,
@@ -231,7 +248,7 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
             doDisabled ?? DEFAULT_DURATION_DISABLE,
           );
 
-          newValue = durationToString(newDuration, localeText, {
+          newValue = durationToString(newDuration, localeTextMap, {
             doDisabled: doDisabled ?? DEFAULT_DURATION_DISABLE,
             doPrepend0: true,
             separatedBySpace,
@@ -240,7 +257,7 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
 
         return newValue;
       },
-      [doDisabled, localeText],
+      [doDisabled, localeTextMap],
     );
 
     const inputRef = useRef<HTMLInputElement>(null);
@@ -257,7 +274,10 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
 
     // Split value from defaultValue to avoid total controlled form
     const value = useMemo(
-      () => (_value == undefined ? undefined : getFinalValueString(_value)),
+      () =>
+        _value == undefined
+          ? undefined
+          : (parseDurationInMsToString ?? getFinalValueString)(_value),
       [_value],
     );
 
@@ -283,18 +303,19 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
       return DEFAULT_DURATION_DISABLE[type];
     };
 
-    const getLocaleText = useCallback(
-      (type: PossibleDurationType) =>
-        localeText?.[type] ?? DEFAULT_DURATION_LOCALE_TEXT[type],
-      [localeText],
-    );
     const { mask, placeholder } = useMemo(() => {
       const maskMap: Partial<Record<`${MaskedType}{${string}}`, boolean>> = {};
       let placeholder = "";
       possibleDurationTypeList.forEach((type) => {
         const typeDisabled = getIfDisabled(type);
-        const localeText = getLocaleText(type);
-        maskMap[`dd--${type}{${localeText}}`] = !typeDisabled;
+
+        const maskLocaleText =
+          maskLocaleTextMap?.[type] ?? DEFAULT_DURATION_LOCALE_TEXT[type];
+        const localeText =
+          localeTextMap?.[type] ?? DEFAULT_DURATION_LOCALE_TEXT[type];
+
+        maskMap[`dd--${type}{${maskLocaleText}}`] = !typeDisabled;
+
         if (!typeDisabled) {
           placeholder += `00${localeText} `;
         }
@@ -305,7 +326,7 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
         .join(separatedBySpace ? " " : "");
 
       return { mask: maskString, placeholder };
-    }, [localeText, doDisabled]);
+    }, [localeTextMap, doDisabled]);
 
     const durationInMsList = useMemo(() => {
       const {
@@ -345,7 +366,10 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
       const { formatItem } = dropdownItemProps ?? {};
 
       const bubbleNewDurationInMs = () => {
-        const newDurationString = getFinalValueString(durationInMs);
+        const newDurationString = (
+          parseDurationInMsToString ?? getFinalValueString
+        )(durationInMs);
+
         inputMaskHandleRef.current?.setValue(newDurationString!);
       };
 
@@ -428,15 +452,17 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
               `${COMPONENT_PREFIX}-duration-picker__input`,
               maskedInputProps.className,
             ),
-            placeholder: placeholder,
+            placeholder,
             // @ts-ignore
             maskOptions,
             onChange: (unmaskedValue, maskedValue) => {
               const durationInMs = getDurationInMsFromString(
                 maskedValue,
-                localeText,
+                localeTextMap,
                 doDisabled,
+                usingAmPm,
               );
+
               onChange?.(unmaskedValue, maskedValue, durationInMs);
               setInternalValue(durationInMs);
             },

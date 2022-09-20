@@ -61,6 +61,10 @@ export type DoDisabled = {
   [key in PossibleDurationType]: boolean;
 };
 
+export type LocaleTextMap = {
+  [key in PossibleDurationType]?: string | RegExp;
+};
+
 const MILLISECOND_PER_DAY = 1000 * 60 * 60 * 24;
 const MILLISECOND_PER_HOUR = 1000 * 60 * 60;
 const MILLISECOND_PER_MINUTE = 1000 * 60;
@@ -125,9 +129,7 @@ export const getDurationFromMs = (
 
 export const durationToString = (
   duration: Duration,
-  localeText?: {
-    [key in PossibleDurationType]?: string;
-  },
+  localeTextMap?: LocaleTextMap,
   options: {
     doPrepend0?: boolean;
     doDisabled?: Partial<DoDisabled>;
@@ -136,7 +138,7 @@ export const durationToString = (
 ) => {
   const { doPrepend0, doDisabled, separatedBySpace } = options;
   const getLocaleText = (type: PossibleDurationType) =>
-    localeText?.[type] ?? DEFAULT_DURATION_LOCALE_TEXT[type];
+    localeTextMap?.[type] ?? DEFAULT_DURATION_LOCALE_TEXT[type];
 
   const translatedTextMap = {
     days: getLocaleText("days"),
@@ -170,28 +172,41 @@ export const durationToString = (
 
 export const getDurationInMsFromString = (
   durationString: string,
-  localeText: {
-    [key in PossibleDurationType]?: string;
-  } = DEFAULT_DURATION_LOCALE_TEXT,
+  localeTextMap: LocaleTextMap = DEFAULT_DURATION_LOCALE_TEXT,
   doDisabled: Partial<DoDisabled> = DEFAULT_DURATION_DISABLE,
+  usingAmPm = false,
 ) => {
   // Split duration string based on localeText and transform into duration in ms
   //  string might not be separated by space
+  const isPm = durationString.includes("pm") && usingAmPm;
+  console.log("durationString:", durationString);
+
   const regexResult = possibleDurationTypeList.map((type) => {
     if (doDisabled?.[type]) {
       return 0;
     }
 
-    const regex = new RegExp(`(\\d+)${localeText?.[type]}`, "g");
+    const regex = new RegExp(`(\\d+)${localeTextMap?.[type]}`, "g");
     const match = regex.exec(durationString);
     if (match) {
-      const value = parseInt(match[1]);
-      const ms = getMsFromDurationWithType(type, value);
-      return ms;
+      let value = parseInt(match[1]);
+      console.log("isPm:", isPm);
+      console.log("type:", type);
+      if (isPm && type === "hours") {
+        value += 12;
+      }
+      console.log("value:", value);
+
+      return getMsFromDurationWithType(type, value);
     }
 
     return 0;
   });
 
   return regexResult.reduce((acc, ms) => acc + ms, 0);
+};
+
+export const getIsAMFromDurationInMs = (durationInMs: number) => {
+  const duration = dayjs.duration(durationInMs);
+  return duration.as("hours") < 12;
 };

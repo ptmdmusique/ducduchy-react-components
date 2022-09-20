@@ -14,7 +14,7 @@ const meta: Meta<DurationPickerProps> = {
     className: storyDisabledOption,
     onChange: storyDisabledOption,
     caption: storyDisabledOption,
-    localeText: storyDisabledOption,
+    localeTextMap: storyDisabledOption,
     doDisabled: storyDisabledOption,
     captionIcon: storyDisabledOption,
     label: storyDisabledOption,
