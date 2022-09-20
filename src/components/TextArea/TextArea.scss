@@ -1,0 +1,192 @@
+@import "../assets/styles/form-common.scss";
+
+.dd-text-area {
+  > .text-area-container {
+    @extend .form-bg--filled;
+    @apply duration-200;
+    @apply rounded-t-md;
+    @apply relative;
+    height: fit-content;
+    width: fit-content;
+
+    > label {
+      @extend .label;
+    }
+
+    > text-area {
+      @apply text-skin-base;
+      @apply bg-transparent;
+      @apply pt-5 px-4 pb-1;
+      @apply w-full h-full;
+      @apply duration-200;
+      &:disabled {
+        @apply cursor-not-allowed;
+      }
+    }
+
+    &::before {
+      @extend .form-border;
+      @apply duration-100;
+    }
+
+    // --- Focus within
+    &:focus-within {
+      > input {
+        outline: none;
+      }
+
+      &:not(.text-area--error):not(.text-area--read-only) {
+        &::before {
+          @extend .form-border--active;
+        }
+        > label {
+          @extend .label--active;
+        }
+      }
+      &--read-only::before {
+        @extend .form-border--read-only;
+      }
+    }
+
+    &--fill:focus-within > label {
+      @extend .label-float;
+    }
+
+    &--plain:focus-within {
+      > label {
+        @extend .label-float--plain;
+      }
+    }
+
+    &--outline:focus-within {
+      > label {
+        @extend .label-float--outline;
+      }
+    }
+
+    &:hover,
+    &:focus-within {
+      @apply bg-opacity-50;
+    }
+
+    // --- Has content
+    &--has-content {
+      &.text-area--fill > label {
+        @extend .label-float;
+      }
+
+      &.text-area--plain {
+        > label {
+          @extend .label-float--plain;
+        }
+      }
+
+      &.text-area--outline {
+        > label {
+          @extend .label-float--outline;
+        }
+      }
+    }
+
+    // --- Type specific
+    &--fill {
+      &::before {
+        @apply border-b;
+      }
+      &:focus-within::before {
+        @apply border-b-2;
+      }
+      > input {
+        @apply pb-[6px] pt-3;
+      }
+    }
+
+    &--plain {
+      @apply border-b border-skin-base border-opacity-10;
+      @apply bg-transparent;
+      @apply h-auto;
+
+      > input {
+        @apply p-0 px-2;
+      }
+
+      > .adornment-icon-left,
+      > .label {
+        @apply left-2;
+      }
+
+      &::before {
+        @apply duration-100;
+        @apply mt-6;
+      }
+      &:not(.text-area--has-content)::before {
+        @apply border-b border-transparent;
+      }
+      &:hover::before,
+      &.text-area--error::before {
+        @apply border-b border-skin-base border-opacity-40;
+      }
+      &:focus-within {
+        &::before {
+          @apply border-b-2;
+        }
+        &.text-area--error::before {
+          @apply border-skin-danger;
+        }
+        &:not(.text-area--error)::before {
+          @apply border-skin-secondary;
+        }
+      }
+    }
+
+    &--outline {
+      @extend .form-bg--outline;
+      @apply rounded-b-md;
+      > input {
+        @apply py-3;
+      }
+      &::before {
+        @apply rounded-md;
+        @apply border;
+      }
+      &:focus-within::before {
+        @apply border-2;
+      }
+    }
+
+    // --- Error
+    &--error {
+      &::before {
+        @extend .form-border--error;
+      }
+      > label {
+        @extend .label--error;
+      }
+    }
+  }
+
+  > .caption-container {
+    @apply text-left text-xs;
+    @apply font-semibold;
+    @apply w-full;
+    @apply px-4;
+    @apply flex;
+    @apply mt-1;
+
+    &::before {
+      @apply inline-block;
+      @apply w-0 h-4;
+      content: "";
+    }
+    &--error {
+      @extend .label--error;
+    }
+    > .icon {
+      @apply mr-1;
+    }
+  }
+
+  > .text-area--plain + .caption-container {
+    @apply px-0;
+  }
+}

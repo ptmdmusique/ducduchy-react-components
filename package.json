@@ -145,6 +145,7 @@
     "react-popper": "^2.3.0",
     "react-range": "^1.8.12",
     "react-select": "^5.2.2",
+    "react-textarea-autosize": "^8.3.4",
     "react-time-picker": "^4.5.0",
     "react-use": "^17.3.2",
     "rollup-plugin-sass": "^1.2.10"

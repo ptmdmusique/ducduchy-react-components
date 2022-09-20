@@ -9,27 +9,23 @@ import {
   useEffect,
   useLayoutEffect,
   useRef,
-  useState
+  useState,
 } from "react";
 import { Control, useWatch } from "react-hook-form";
+import TextareaAutosize from "react-textarea-autosize";
 import { debounce } from "../../utils/lodash/debounce";
 import { FadeTransition } from "../animation/CustomTransition";
-import { Button } from "../Button";
 import Icon from "../Icon/Icon";
 import { BorderType, COMPONENT_PREFIX } from "../resources/common.data";
-import { FormAdornment } from "../resources/form/types";
-import "./Input.scss";
+import "./TextArea.scss";
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface TextAreaProps
+  extends InputHTMLAttributes<HTMLTextAreaElement> {
   borderType?: BorderType;
   caption?: ReactNode;
   captionIcon?: [string, string];
   state?: "normal" | "error";
   label?: ReactNode;
-  leadingAdornment?: FormAdornment;
-  leadingAdornmentOnClick?: () => void;
-  trailingAdornment?: FormAdornment;
-  trailingAdornmentOnClick?: () => void;
 
   hasContent?: boolean;
 
@@ -42,20 +38,12 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   formControl?: Control<any>;
 }
 
-const checkIsIcon = (prop: FormAdornment): prop is [string, string] => {
-  return (
-    Array.isArray(prop) &&
-    prop.length === 2 &&
-    prop.every((entry) => typeof entry === "string")
-  );
-};
-
 const UseFormWatcher = ({
   control,
   name,
   onChange,
 }: {
-  control: InputProps["formControl"];
+  control: TextAreaProps["formControl"];
   name: string;
   onChange: (value: any) => void;
 }) => {
@@ -67,7 +55,7 @@ const UseFormWatcher = ({
   return null;
 };
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(
+export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   (
     {
       borderType = "outline",
@@ -75,22 +63,18 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       captionIcon,
       state,
       label,
-      leadingAdornment,
-      leadingAdornmentOnClick,
-      trailingAdornment,
-      trailingAdornmentOnClick,
       hasContent: propHasContent,
       debounceParam,
       className,
       formControl,
-      ...inputProps
+      ...textAreaProps
     },
     ref,
   ) => {
-    const myId = useRef(inputProps?.id ?? `input---${nanoid()}`);
+    const myId = useRef(textAreaProps?.id ?? `input---${nanoid()}`);
     const hasError = state === "error";
 
-    const inputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLTextAreaElement>(null);
     useEffect(() => {
       if (ref) {
         if (typeof ref === "function") {
@@ -102,8 +86,8 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     }, [inputRef.current]);
 
     const debounceRef = useRef(
-      debounce((event: ChangeEvent<HTMLInputElement>) => {
-        inputProps?.onChange?.(event);
+      debounce((event: ChangeEvent<HTMLTextAreaElement>) => {
+        textAreaProps?.onChange?.(event);
       }, debounceParam?.debounceTime ?? 0),
     );
 
@@ -111,13 +95,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     const checkInputPropsHasContent = useCallback(
       () =>
         !!propHasContent ||
-        !!inputProps?.value ||
-        !!inputProps?.defaultValue ||
-        !!inputProps?.placeholder,
+        !!textAreaProps?.value ||
+        !!textAreaProps?.defaultValue ||
+        !!textAreaProps?.placeholder,
       [
-        inputProps?.value,
-        inputProps?.placeholder,
-        inputProps?.defaultValue,
+        textAreaProps?.value,
+        textAreaProps?.placeholder,
+        textAreaProps?.defaultValue,
         propHasContent,
       ],
     );
@@ -127,51 +111,13 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       }
     }, [propHasContent]);
 
-    const renderAdornment = (adornment?: FormAdornment, left = false) => {
-      if (!adornment) {
-        return null;
-      }
-
-      const iconCN = cx("fa-fw adornment-icon", {
-        "adornment-icon--left": left,
-      });
-
-      let onClick = trailingAdornmentOnClick;
-      if (left) {
-        onClick = leadingAdornmentOnClick;
-      }
-
-      if (checkIsIcon(adornment)) {
-        return onClick ? (
-          <div
-            className={cx("adornment-wrapper", {
-              "adornment-wrapper--left": left,
-            })}
-          >
-            <Button
-              className="adornment-button"
-              borderType="plain"
-              type="button"
-              onClick={onClick}
-              iconClassName="fa-fw adornment-icon"
-              icon={adornment}
-            />
-          </div>
-        ) : (
-          <Icon icon={adornment} className={iconCN} />
-        );
-      }
-
-      return <div className={iconCN}>{adornment}</div>;
-    };
-
     const handleWatchValueChange = (value: any) => {
       setHasContent(!!value || checkInputPropsHasContent());
     };
 
-    const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const onInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
       setHasContent(
-        !!inputProps?.placeholder ||
+        !!textAreaProps?.placeholder ||
           checkInputPropsHasContent() ||
           !!event.target.value,
       );
@@ -204,35 +150,35 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
     }, [debounceParam]);
 
     return (
-      <div className={cx(`${COMPONENT_PREFIX}-input`, className)}>
+      <div className={cx(`${COMPONENT_PREFIX}-text-area`, className)}>
         <div
           className={cx(
-            "input-container",
-            `input-container--${borderType}`,
-            { "input-container--error": hasError },
-            { "input-container--has-content": hasContent },
-            { "input-container--with-leading-icon": leadingAdornment },
-            { "input-container--with-trailing-icon": trailingAdornment },
-            { "input-container--read-only": inputProps?.readOnly },
+            "text-area-container",
+            `text-area-container--${borderType}`,
+            { "text-area-container--error": hasError },
+            { "text-area-container--has-content": hasContent },
+            { "text-area-container--read-only": textAreaProps?.readOnly },
           )}
         >
-          {renderAdornment(leadingAdornment, true)}
-
           <label htmlFor={myId.current}>{label}</label>
 
-          <input
-            {...inputProps}
+          <TextareaAutosize
+            {...textAreaProps}
             id={myId.current}
             ref={inputRef}
             onChange={onInputChange}
           />
-
-          {renderAdornment(trailingAdornment)}
+          {/* <textarea
+            {...textAreaProps}
+            id={myId.current}
+            ref={inputRef}
+            onChange={onInputChange}
+          /> */}
 
           {formControl && (
             <UseFormWatcher
               control={formControl}
-              name={inputProps.name ?? ""}
+              name={textAreaProps.name ?? ""}
               onChange={handleWatchValueChange}
             />
           )}
