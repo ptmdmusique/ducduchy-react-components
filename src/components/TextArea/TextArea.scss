@@ -13,12 +13,12 @@
       @extend .label;
     }
 
-    > text-area {
+    > textarea {
       @apply text-skin-base;
       @apply bg-transparent;
-      @apply pt-5 px-4 pb-1;
-      @apply w-full h-full;
-      @apply duration-200;
+      @apply px-4 pb-1;
+      transition: background-color 0.2s;
+
       &:disabled {
         @apply cursor-not-allowed;
       }
@@ -31,11 +31,11 @@
 
     // --- Focus within
     &:focus-within {
-      > input {
+      > textarea {
         outline: none;
       }
 
-      &:not(.text-area--error):not(.text-area--read-only) {
+      &:not(.text-area-container--error):not(.text-area-container--read-only) {
         &::before {
           @extend .form-border--active;
         }
@@ -48,20 +48,15 @@
       }
     }
 
-    &--fill:focus-within > label {
-      @extend .label-float;
-    }
-
-    &--plain:focus-within {
-      > label {
-        @extend .label-float--plain;
+    &--fill,
+    &--plain {
+      &:focus-within > label {
+        @extend .label-float-scale-only;
       }
     }
 
-    &--outline:focus-within {
-      > label {
-        @extend .label-float--outline;
-      }
+    &--outline:focus-within > label {
+      @extend .label-float-scale-only--outline;
     }
 
     &:hover,
@@ -71,20 +66,15 @@
 
     // --- Has content
     &--has-content {
-      &.text-area--fill > label {
-        @extend .label-float;
-      }
-
-      &.text-area--plain {
+      &.text-area-container--fill,
+      &.text-area-container--plain {
         > label {
-          @extend .label-float--plain;
+          @extend .label-float-scale-only;
         }
       }
 
-      &.text-area--outline {
-        > label {
-          @extend .label-float--outline;
-        }
+      &.text-area-container--outline > label {
+        @extend .label-float-scale-only--outline;
       }
     }
 
@@ -96,7 +86,8 @@
       &:focus-within::before {
         @apply border-b-2;
       }
-      > input {
+
+      > textarea {
         @apply pb-[6px] pt-3;
       }
     }
@@ -106,7 +97,7 @@
       @apply bg-transparent;
       @apply h-auto;
 
-      > input {
+      > textarea {
         @apply p-0 px-2;
       }
 
@@ -119,21 +110,21 @@
         @apply duration-100;
         @apply mt-6;
       }
-      &:not(.text-area--has-content)::before {
+      &:not(.text-area-container--has-content)::before {
         @apply border-b border-transparent;
       }
       &:hover::before,
-      &.text-area--error::before {
+      &.text-area-container--error::before {
         @apply border-b border-skin-base border-opacity-40;
       }
       &:focus-within {
         &::before {
           @apply border-b-2;
         }
-        &.text-area--error::before {
+        &.text-area-container--error::before {
           @apply border-skin-danger;
         }
-        &:not(.text-area--error)::before {
+        &:not(.text-area-container--error)::before {
           @apply border-skin-secondary;
         }
       }
@@ -142,7 +133,7 @@
     &--outline {
       @extend .form-bg--outline;
       @apply rounded-b-md;
-      > input {
+      > textarea {
         @apply py-3;
       }
       &::before {
@@ -186,7 +177,7 @@
     }
   }
 
-  > .text-area--plain + .caption-container {
+  > .text-area-container--plain + .caption-container {
     @apply px-0;
   }
 }

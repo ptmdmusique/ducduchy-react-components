@@ -3,7 +3,6 @@ import { nanoid } from "nanoid";
 import {
   ChangeEvent,
   forwardRef,
-  InputHTMLAttributes,
   ReactNode,
   useCallback,
   useEffect,
@@ -12,15 +11,18 @@ import {
   useState,
 } from "react";
 import { Control, useWatch } from "react-hook-form";
-import TextareaAutosize from "react-textarea-autosize";
+import TextareaAutosize, {
+  TextareaAutosizeProps,
+} from "react-textarea-autosize";
 import { debounce } from "../../utils/lodash/debounce";
+import { OmitStrict } from "../../utils/types";
 import { FadeTransition } from "../animation/CustomTransition";
 import Icon from "../Icon/Icon";
 import { BorderType, COMPONENT_PREFIX } from "../resources/common.data";
 import "./TextArea.scss";
 
 export interface TextAreaProps
-  extends InputHTMLAttributes<HTMLTextAreaElement> {
+  extends OmitStrict<TextareaAutosizeProps, "label"> {
   borderType?: BorderType;
   caption?: ReactNode;
   captionIcon?: [string, string];
@@ -36,6 +38,9 @@ export interface TextAreaProps
   };
 
   formControl?: Control<any>;
+
+  // Textarea specific
+  resize?: React.CSSProperties["resize"];
 }
 
 const UseFormWatcher = ({
@@ -67,6 +72,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       debounceParam,
       className,
       formControl,
+      resize = "both",
       ...textAreaProps
     },
     ref,
@@ -163,17 +169,14 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           <label htmlFor={myId.current}>{label}</label>
 
           <TextareaAutosize
+            resize="horizontal"
             {...textAreaProps}
             id={myId.current}
+            // @ts-ignore
             ref={inputRef}
             onChange={onInputChange}
+            style={{ resize }}
           />
-          {/* <textarea
-            {...textAreaProps}
-            id={myId.current}
-            ref={inputRef}
-            onChange={onInputChange}
-          /> */}
 
           {formControl && (
             <UseFormWatcher
