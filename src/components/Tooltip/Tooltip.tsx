@@ -49,6 +49,10 @@ export interface TooltipProps {
   className?: string;
   /** https://popper.js.org/docs/v2/modifiers/offset/ */
   offset?: [number, number];
+
+  /** Will be overriden if inModal is set to true */
+  zIndex?: number;
+  inModal?: boolean;
 }
 export const Tooltip: FC<TooltipProps> = ({
   containerId,
@@ -61,6 +65,8 @@ export const Tooltip: FC<TooltipProps> = ({
   stylePreset = "preset-1",
   className,
   offset = [0, 20],
+  zIndex,
+  inModal = false,
 }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
@@ -129,7 +135,7 @@ export const Tooltip: FC<TooltipProps> = ({
           className={cx(`${COMPONENT_PREFIX}-tooltip`, className, {
             [`${COMPONENT_PREFIX}-tooltip--${stylePreset}`]: stylePreset,
           })}
-          style={styles.popper}
+          style={{ ...styles.popper, zIndex: inModal ? 51 : zIndex }}
           {...attributes.popper}
         >
           {children}

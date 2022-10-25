@@ -1,6 +1,6 @@
 import cx from "classnames";
 import React, { forwardRef } from "react";
-import Icon from "../Icon/Icon";
+import Icon, { IconProps } from "../Icon/Icon";
 import {
   BorderType,
   ColorType,
@@ -12,13 +12,13 @@ export interface ButtonProps extends React.HTMLProps<HTMLButtonElement> {
   type?: "button" | "submit" | "reset";
   borderType?: BorderType;
   colorType?: ColorType;
-  icon?: [string, string];
+  icon?: IconProps["icon"];
   iconClassName?: string;
   iconPlacement?: "left" | "right";
   isLoading?: boolean;
   isRounded?: boolean;
   withBackground?: boolean;
-  loadingIcon?: [string, string];
+  loadingIcon?: IconProps["icon"];
   ref?: React.ForwardedRef<HTMLButtonElement>;
   useFocusStyle?: boolean;
 }

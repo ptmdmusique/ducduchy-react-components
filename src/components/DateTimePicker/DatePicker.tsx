@@ -24,10 +24,10 @@ export type DatePickerProps<Form = any> = OmitStrict<
     formValidation?: FormValidationWithController<Form>;
     onChange?: (date: Date, event: React.ChangeEvent<HTMLInputElement>) => void;
     caption?: ReactNode;
-    captionIcon?: [string, string];
+    captionIcon?: IconProps["icon"];
     state?: "normal" | "error";
-    calendarLeadingIcon?: [string, string];
-    clearDateIcon?: [string, string];
+    calendarLeadingIcon?: IconProps["icon"];
+    clearDateIcon?: IconProps["icon"];
     displayDateFormat?: string;
   };
 

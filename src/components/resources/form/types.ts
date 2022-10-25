@@ -5,6 +5,7 @@ import {
   FieldValues,
   RegisterOptions
 } from "react-hook-form";
+import { IconProps } from "../../Icon";
 
 export type OnChange = (checked: boolean) => void;
 export type OnBlur = FocusEventHandler<HTMLButtonElement>;
@@ -15,4 +16,4 @@ export interface FormValidationWithController<T extends FieldValues> {
   rules?: RegisterOptions;
 }
 
-export type FormAdornment = ReactNode | [string, string];
+export type FormAdornment = ReactNode | IconProps["icon"];

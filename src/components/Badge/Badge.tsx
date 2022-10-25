@@ -1,5 +1,5 @@
 import cx from "classnames";
-import Icon from "../Icon/Icon";
+import Icon, { IconProps } from "../Icon/Icon";
 import { ColorType, COMPONENT_PREFIX } from "../resources/common.data";
 import "./Badge.scss";
 
@@ -8,7 +8,7 @@ export interface BadgeProps {
   className?: string;
   type?: "outline" | "filled";
 
-  icon?: [string, string];
+  icon?: IconProps["icon"];
   iconClassName?: string;
 
   text?: string;
