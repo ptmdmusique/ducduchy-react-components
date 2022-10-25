@@ -102,105 +102,33 @@ export const MultiStepTabGroup = forwardRef<
             </Fragment>
           );
         }),
-      [selectedIndex, renderArr, numberOfTabs],
+      [
+        selectedIndex,
+        renderArr,
+        numberOfTabs,
+        getTabContent,
+        getBubbleContent,
+        onChange,
+      ],
     );
 
     const panelList = useMemo(
       () =>
         renderArr.map((_, index) => {
+          const tabPanelProps = getTabPanelProps?.(index);
+
           return (
             <div
-              {...getTabPanelProps?.(index)}
+              {...tabPanelProps}
               key={index}
-              className={cx(
-                "tab-group__tab-panel",
-                getTabPanelProps?.(index)?.className,
-              )}
+              className={cx("tab-group__tab-panel", tabPanelProps?.className)}
             >
               {renderTabPanel(index)}
             </div>
           );
         }),
-      [renderArr, selectedIndex],
+      [renderArr, getTabPanelProps, renderTabPanel],
     );
-
-    // return (
-    //   <TabGroup
-    //     {...props}
-    //     ref={ref}
-    //     // TODO: Relax conditions when https://github.com/tailwindlabs/headlessui/issues/1509#issuecomment-1171905348 is done
-    //     tabGroupProps={{
-    //       ...props.tabGroupProps,
-    //       manual: true,
-    //       className: cx(
-    //         `${COMPONENT_PREFIX}-multi-step-tab-group`,
-    //         props.tabGroupProps?.className,
-    //       ),
-    //     }}
-    //     tabActiveIndicatorType="custom"
-    //     renderIndicator={false}
-    //     renderWholeTab={(index, selected) => {
-    //       const tabProps = props.getTabProps?.(index, selected);
-    //       return (
-    //         <Tab
-    //           {...tabProps}
-    //           key={index}
-    //           className={cx(
-    //             `${COMPONENT_PREFIX}-multi-step-tab-group__tab`,
-    //             tabProps?.className,
-    //           )}
-    //           // TODO: Relax conditions when https://github.com/tailwindlabs/headlessui/issues/1509#issuecomment-1171905348 is done
-    //           // @ts-ignore
-    //           disabled
-    //           as="div"
-    //         >
-    //           <div
-    //             className={cx("step-content", `step-content--${contentPreset}`)}
-    //           >
-    //             {contentPreset == null ? (
-    //               getTabContent?.(index, selected)
-    //             ) : (
-    //               <>
-    //                 <Button
-    //                   className={cx("bubble", `bubble--${colorType}`, {
-    //                     "bubble--selected": index <= props.selectedIndex,
-    //                   })}
-    //                   borderType="plain"
-    //                   onClick={() => props.onChange?.(index)}
-    //                 >
-    //                   {getBubbleContent?.(index, selected) ?? index + 1}
-    //                 </Button>
-
-    //                 <div
-    //                   className={cx("content", `content--${colorType}`, {
-    //                     "content--selected": index <= props.selectedIndex,
-    //                   })}
-    //                 >
-    //                   {getTabContent?.(index, selected)}
-    //                 </div>
-    //               </>
-    //             )}
-    //           </div>
-
-    //           {index !== props.numberOfTabs - 1 && (
-    //             <div className="step-indicator">
-    //               <div
-    //                 className={cx(
-    //                   "step-indicator__line",
-    //                   `step-indicator__line--${colorType}`,
-    //                   {
-    //                     "step-indicator__line--active":
-    //                       index < props.selectedIndex,
-    //                   },
-    //                 )}
-    //               />
-    //             </div>
-    //           )}
-    //         </Tab>
-    //       );
-    //     }}
-    //   />
-    // );
 
     return (
       <div
