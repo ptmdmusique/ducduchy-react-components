@@ -3,7 +3,7 @@ import React from "react";
 import { Controller } from "react-hook-form";
 import { GroupBase, PropsValue } from "react-select";
 import { FadeTransition } from "../animation/CustomTransition";
-import { Icon } from "../Icon";
+import { Icon, IconProps } from "../Icon";
 import { COMPONENT_PREFIX } from "../resources/common.data";
 import { FormValidationWithController } from "../resources/form/types";
 import {
@@ -34,10 +34,10 @@ export interface ListboxBaseProps<
 
   borderType?: ListboxBorderType;
   caption?: React.ReactNode;
-  captionIcon?: [string, string];
+  captionIcon?: IconProps["icon"];
   state?: "normal" | "error";
 
-  dropdownIndicatorIcon?: [string, string];
+  dropdownIndicatorIcon?: IconProps["icon"];
 
   isMulti?: IsMulti;
 

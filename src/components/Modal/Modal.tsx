@@ -3,7 +3,7 @@ import cx from "classnames";
 import { AnimatePresence, motion, Variants } from "framer-motion";
 import { FC, ReactNode, useMemo, useRef } from "react";
 import { useWindowSize } from "react-use";
-import { Icon } from "../Icon";
+import { Icon, IconProps } from "../Icon";
 import {
   getModalIntuitiveAnimation,
   modalVariantMap,
@@ -20,7 +20,7 @@ export interface ModalProps {
   onClose?: (triggeredOn: OnCloseTriggerdOn) => void;
 
   showCloseButton?: boolean;
-  closeButtonIcon?: [string, string];
+  closeButtonIcon?: IconProps["icon"];
 
   className?: string;
   headerClassName?: string;

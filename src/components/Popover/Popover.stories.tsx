@@ -1,6 +1,6 @@
 import { Placement } from "@floating-ui/react-dom";
 import { Meta, Story } from "@storybook/react";
-import { Icon } from "../Icon";
+import { Icon, IconProps } from "../Icon";
 import { storyDisabledOption } from "../resources/story-common";
 import { Popover, PopoverProps } from "./Popover";
 import { Popover as LibPopover } from "@headlessui/react";
@@ -52,7 +52,7 @@ const IconWithText = ({
   text,
 }: {
   text: string;
-  icon: [string, string];
+  icon: IconProps["icon"];
 }) => {
   return (
     <button className="flex items-center py-2 px-4 w-64 focus:outline-none focus:bg-skin-disabled hover:bg-skin-disabled hover:cursor-pointer">

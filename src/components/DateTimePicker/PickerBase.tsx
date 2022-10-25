@@ -1,5 +1,6 @@
 import React, { ReactNode } from "react";
 import { Controller } from "react-hook-form";
+import { IconProps } from "../Icon";
 import { Input } from "../Input";
 import { FormValidationWithController } from "../resources/form/types";
 import "./DatePicker.scss";
@@ -9,10 +10,10 @@ export interface PickerBaseProps<Form = any> {
   label?: string;
   formValidation?: FormValidationWithController<Form>;
   caption?: ReactNode;
-  captionIcon?: [string, string];
+  captionIcon?: IconProps["icon"];
   state?: "normal" | "error";
-  calendarLeadingIcon?: [string, string];
-  clearDateIcon?: [string, string];
+  calendarLeadingIcon?: IconProps["icon"];
+  clearDateIcon?: IconProps["icon"];
 
   toggleDropdown?: () => void;
   clearValue?: () => void;
