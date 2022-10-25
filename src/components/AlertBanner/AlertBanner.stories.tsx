@@ -70,3 +70,23 @@ Default.args = {
   header: "This is a header",
   description: "What a description",
 };
+
+export const NoIcon: Story<AlertBannerProps> = (args) => {
+  return (
+    <div className="text-skin-base">
+      <AlertBanner
+        colorType="info"
+        header="No icon"
+        description="No icon description"
+      />
+
+      <br className="my-2" />
+
+      <AlertBanner
+        colorType="info"
+        header="No icon"
+        description="No icon description No icon description No icon description No icon description No icon description No icon description No icon description No icon description No icon description"
+      />
+    </div>
+  );
+};
