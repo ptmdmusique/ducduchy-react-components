@@ -25,6 +25,9 @@ export type MultiStepTabGroupProps = {
 
   contentPreset?: "bubble-step" | null;
   getBubbleContent?: (index: number, selected: boolean) => ReactNode;
+
+  /** Prevent onChange to bubble if the same selected index is clicked again */
+  preventSelectIfSelected?: boolean;
 };
 
 export const MultiStepTabGroup = forwardRef<
@@ -43,6 +46,7 @@ export const MultiStepTabGroup = forwardRef<
       renderTabPanel,
       colorType = "secondary",
       contentPreset = "bubble-step",
+      preventSelectIfSelected = true,
     },
     ref,
   ) => {
@@ -70,7 +74,10 @@ export const MultiStepTabGroup = forwardRef<
                         "bubble--selected": index <= selectedIndex,
                       })}
                       borderType="plain"
-                      onClick={() => onChange?.(index)}
+                      onClick={() =>
+                        (!preventSelectIfSelected || index !== selectedIndex) &&
+                        onChange?.(index)
+                      }
                     >
                       {getBubbleContent?.(index, selected) ?? index + 1}
                     </Button>
