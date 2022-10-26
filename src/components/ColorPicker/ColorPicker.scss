@@ -1,6 +1,10 @@
 .dd-color-picker {
   @apply flex items-center;
 
+  .adornment-icon.adornment-icon--left {
+    @apply opacity-100;
+  }
+
   .color-indicator {
     @apply w-full h-full;
     @apply rounded-md;
