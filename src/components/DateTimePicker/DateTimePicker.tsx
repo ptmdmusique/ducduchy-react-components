@@ -51,10 +51,10 @@ export type DateTimePickerProps = OmitStrict<
   dateFormat?: string;
   label?: string;
   caption?: ReactNode;
-  captionIcon?: [string, string];
+  captionIcon?: IconProps["icon"];
   state?: "normal" | "error";
-  calendarLeadingIcon?: [string, string];
-  clearDateIcon?: [string, string];
+  calendarLeadingIcon?: IconProps["icon"];
+  clearDateIcon?: IconProps["icon"];
 
   closeOnClickAway?: boolean;
 

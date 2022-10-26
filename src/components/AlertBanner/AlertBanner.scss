@@ -28,6 +28,10 @@
   }
 
   > .content {
+    &:first-child {
+      @apply px-4;
+    }
+
     .header-text {
       @apply font-medium;
     }

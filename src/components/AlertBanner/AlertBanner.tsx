@@ -1,6 +1,6 @@
 import cx from "classnames";
 import { ReactNode } from "react";
-import { Icon } from "../Icon";
+import { Icon, IconProps } from "../Icon";
 import { ColorType, COMPONENT_PREFIX } from "../resources/common.data";
 import "./AlertBanner.scss";
 
@@ -16,7 +16,7 @@ export interface AlertBannerProps {
   header?: ReactNode;
   /** Use a plain string description if you want to use the pre-styled option */
   description?: ReactNode;
-  icon?: [string, string];
+  icon?: IconProps["icon"];
 
   hasShadow?: boolean;
   roundedCorner?: boolean;

@@ -15,7 +15,7 @@ import { Control, useWatch } from "react-hook-form";
 import { debounce } from "../../utils/lodash/debounce";
 import { FadeTransition } from "../animation/CustomTransition";
 import { Button } from "../Button";
-import Icon from "../Icon/Icon";
+import Icon, { IconProps } from "../Icon/Icon";
 import { BorderType, COMPONENT_PREFIX } from "../resources/common.data";
 import { FormAdornment } from "../resources/form/types";
 import "./Input.scss";
@@ -23,7 +23,7 @@ import "./Input.scss";
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   borderType?: BorderType;
   caption?: ReactNode;
-  captionIcon?: [string, string];
+  captionIcon?: IconProps["icon"];
   state?: "normal" | "error";
   label?: ReactNode;
   leadingAdornment?: FormAdornment;
@@ -42,7 +42,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   formControl?: Control<any>;
 }
 
-const checkIsIcon = (prop: FormAdornment): prop is [string, string] => {
+const checkIsIcon = (prop: FormAdornment): prop is IconProps["icon"] => {
   return (
     Array.isArray(prop) &&
     prop.length === 2 &&

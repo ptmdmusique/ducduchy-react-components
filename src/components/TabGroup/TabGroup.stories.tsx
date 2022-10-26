@@ -1,7 +1,7 @@
 import { Meta, Story } from "@storybook/react";
 import { useEffect, useState } from "react";
 import { Button } from "../Button";
-import { Icon } from "../Icon";
+import { Icon, IconProps } from "../Icon";
 import { storyDisabledOption } from "../resources/story-common";
 import { TabGroup, TabGroupProps } from "./TabGroup";
 
@@ -27,7 +27,7 @@ const meta: Meta<TabGroupProps> = {
 
 export default meta;
 
-const panelList: { icon: [string, string]; title: string }[] = [
+const panelList: { icon: IconProps["icon"]; title: string }[] = [
   {
     icon: ["fas", "dog"],
     title: "Dog list",

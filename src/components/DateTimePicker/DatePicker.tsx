@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React, { ReactNode, useEffect, useState } from "react";
 import { OnChangeDateCallback } from "react-calendar";
 import ReactDatePicker, {
@@ -10,6 +9,7 @@ import {
   getDatePlaceholder,
 } from "../../utils/date";
 import { OmitStrict } from "../../utils/types";
+import { IconProps } from "../Icon";
 import { COMPONENT_PREFIX } from "../resources/common.data";
 import { FormValidationWithController } from "../resources/form/types";
 import "./DatePicker.scss";
@@ -24,10 +24,10 @@ export type DatePickerProps<Form = any> = OmitStrict<
     formValidation?: FormValidationWithController<Form>;
     onChange?: (date: Date, event: React.ChangeEvent<HTMLInputElement>) => void;
     caption?: ReactNode;
-    captionIcon?: [string, string];
+    captionIcon?: IconProps["icon"];
     state?: "normal" | "error";
-    calendarLeadingIcon?: [string, string];
-    clearDateIcon?: [string, string];
+    calendarLeadingIcon?: IconProps["icon"];
+    clearDateIcon?: IconProps["icon"];
     displayDateFormat?: string;
   };
 
@@ -47,6 +47,8 @@ export function DatePicker<Form>({
   ...datePickerProps
 }: DatePickerProps<Form>) {
   const [value, setValue] = useState<Date | Date[] | string>(
+    // TODO: fix this
+    // @ts-ignore
     datePickerProps.value ?? defaultValue ?? new Date(),
   );
 
@@ -54,6 +56,8 @@ export function DatePicker<Form>({
 
   useEffect(() => {
     if (datePickerProps.value) {
+      // TODO: fix this
+      // @ts-ignore
       setValue(datePickerProps.value);
     }
   }, [datePickerProps.value]);
@@ -116,6 +120,8 @@ export function DatePicker<Form>({
               closeDropdown();
             }}
             isOpen={dropdownOpen}
+            // TODO: fix this
+            // @ts-ignore
             value={typeof value !== "string" ? value : undefined}
             onChange={onChangeWrapper}
             disabled={disabled}

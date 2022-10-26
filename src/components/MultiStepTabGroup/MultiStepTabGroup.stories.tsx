@@ -1,6 +1,7 @@
 import { Meta, Story } from "@storybook/react";
 import { useState } from "react";
 import { Button } from "../Button";
+import { IconProps } from "../Icon";
 import { Modal } from "../Modal";
 import { storyDisabledOption } from "../resources/story-common";
 import { MultiStepTabGroup, MultiStepTabGroupProps } from "./MultiStepTabGroup";
@@ -24,7 +25,7 @@ const meta: Meta<MultiStepTabGroupProps> = {
 
 export default meta;
 
-const panelList: { icon: [string, string]; title: string }[] = [
+const panelList: { icon: IconProps["icon"]; title: string }[] = [
   { icon: ["fas", "dog"], title: "Dog list" },
   { icon: ["fas", "cat"], title: "Cat list" },
   { icon: ["fas", "heart"], title: "Favorite list" },

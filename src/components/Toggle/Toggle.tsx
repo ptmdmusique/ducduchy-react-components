@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 import { HTMLProps, ReactNode, useEffect, useRef, useState } from "react";
 import { Controller, FieldValues } from "react-hook-form";
 import { OmitStrict } from "../../utils/types";
-import { Icon } from "../Icon";
+import { Icon, IconProps } from "../Icon";
 import { ColorType, COMPONENT_PREFIX } from "../resources/common.data";
 import {
   FormValidationWithController,
@@ -29,7 +29,7 @@ export interface ToggleProps<FormFields extends FieldValues = any>
   formValidation?: FormValidationWithController<FormFields>;
   type?: "switch" | "checkbox";
   colorType?: ColorType;
-  checkIcon?: [string, string];
+  checkIcon?: IconProps["icon"];
 }
 
 export function Toggle<FormFields extends FieldValues = any>({
