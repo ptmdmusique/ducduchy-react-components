@@ -1,4 +1,5 @@
 import cx from "classnames";
+import { FieldValues } from "react-hook-form";
 import Select, {
   CommonProps as CommonSelectProps,
   GroupBase,
@@ -15,24 +16,25 @@ import {
 } from "./common";
 import { ListboxBase, ListboxBaseProps } from "./ListboxBase";
 
-export type ListboxProps<Data, IsMulti extends boolean = boolean, Form = any> =
-  OmitStrict<
-    Partial<
-      // TODO: handle this any
-      CommonSelectProps<ListboxOption<Data>, IsMulti, any> &
-        SelectProps<
-          ListboxOption<Data>,
-          IsMulti,
-          GroupBase<ListboxOption<Data>>
-        >
-    >,
-    "onChange"
-  > &
-    ListboxBaseProps<Data, IsMulti, Form>;
+export type ListboxProps<
+  Data,
+  IsMulti extends boolean = boolean,
+  Form extends FieldValues = any,
+> = OmitStrict<
+  Partial<
+    // TODO: handle this any
+    CommonSelectProps<ListboxOption<Data>, IsMulti, any> &
+      SelectProps<ListboxOption<Data>, IsMulti, GroupBase<ListboxOption<Data>>>
+  >,
+  "onChange"
+> &
+  ListboxBaseProps<Data, IsMulti, Form>;
 
-export function Listbox<Data, IsMulti extends boolean = false, Form = any>(
-  props: ListboxProps<Data, IsMulti, Form>,
-) {
+export function Listbox<
+  Data,
+  IsMulti extends boolean = false,
+  Form extends FieldValues = any,
+>(props: ListboxProps<Data, IsMulti, Form>) {
   const {
     label,
     optionList,
