@@ -9,7 +9,8 @@ export interface MaskedInputHandle {
   setValue: (value: string) => void;
 }
 
-export type MaskedInputProps = OmitStrict<InputProps, "onChange"> & {
+// ! somehow "nonce" become a required prop for InputProps
+export type MaskedInputProps = OmitStrict<InputProps, "onChange" | "nonce"> & {
   maskOptions: IMask.AnyMaskedOptions;
   onChange?: (unmaskedValue: string, maskedValue: string) => void;
 
