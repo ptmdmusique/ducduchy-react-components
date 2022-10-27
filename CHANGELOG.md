@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- 🟢🔴🔵 `ColorPicker`: make leading adornment always fully visible (100% opacity even when unfocused) to preserve the preview color
+- 🟢🔴🔵 `ColorPicker`: make leading adornment always fully visible (100% opacity even when unfocused) to preserve the preview color - contributed by @WillowWisp
 
 ## [1.6.8] - 2022-10-25
 
