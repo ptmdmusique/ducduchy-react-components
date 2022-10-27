@@ -1,4 +1,5 @@
 import cx from "classnames";
+import { FieldValues } from "react-hook-form";
 import { GroupBase } from "react-select";
 import CreatableSelect, { CreatableProps } from "react-select/creatable";
 import { OmitStrict } from "../../utils/types";
@@ -15,7 +16,7 @@ import { ListboxBase, ListboxBaseProps } from "./ListboxBase";
 export type CreatableListboxProps<
   Data,
   IsMulti extends boolean = boolean,
-  Form = any,
+  Form extends FieldValues = any,
 > = OmitStrict<
   Partial<
     CreatableProps<ListboxOption<Data>, IsMulti, GroupBase<ListboxOption<Data>>>
@@ -27,7 +28,7 @@ export type CreatableListboxProps<
 export function CreatableListbox<
   Data,
   IsMulti extends boolean = false,
-  Form = any,
+  Form extends FieldValues = any,
 >(props: CreatableListboxProps<Data, IsMulti, Form>) {
   const {
     label,

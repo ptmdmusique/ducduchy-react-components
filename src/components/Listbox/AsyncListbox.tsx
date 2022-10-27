@@ -1,4 +1,5 @@
 import cx from "classnames";
+import { FieldValues } from "react-hook-form";
 import { GroupBase } from "react-select";
 import AsyncSelect, { AsyncProps } from "react-select/async";
 import { OmitStrict } from "../../utils/types";
@@ -15,7 +16,7 @@ import { ListboxBase, ListboxBaseProps } from "./ListboxBase";
 export type AsyncListboxProps<
   Data,
   IsMulti extends boolean = boolean,
-  Form = any,
+  Form extends FieldValues = any,
 > = OmitStrict<
   Partial<
     AsyncProps<ListboxOption<Data>, IsMulti, GroupBase<ListboxOption<Data>>>
@@ -24,9 +25,11 @@ export type AsyncListboxProps<
 > &
   ListboxBaseProps<Data, IsMulti, Form>;
 
-export function AsyncListbox<Data, IsMulti extends boolean = false, Form = any>(
-  props: AsyncListboxProps<Data, IsMulti, Form>,
-) {
+export function AsyncListbox<
+  Data,
+  IsMulti extends boolean = false,
+  Form extends FieldValues = any,
+>(props: AsyncListboxProps<Data, IsMulti, Form>) {
   const {
     label,
     optionList,

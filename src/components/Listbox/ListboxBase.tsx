@@ -1,6 +1,6 @@
 import cx from "classnames";
 import React from "react";
-import { Controller } from "react-hook-form";
+import { Controller, FieldValues } from "react-hook-form";
 import { GroupBase, PropsValue } from "react-select";
 import { FadeTransition } from "../animation/CustomTransition";
 import { Icon, IconProps } from "../Icon";
@@ -10,7 +10,7 @@ import {
   getListboxValue,
   ListboxBorderType,
   ListboxOnChange,
-  ListboxOption
+  ListboxOption,
 } from "./common";
 import "./ListboxBase.scss";
 
@@ -19,7 +19,7 @@ type OptionType<D> = D | GroupBase<D>;
 export interface ListboxBaseProps<
   Data,
   IsMulti extends boolean = boolean,
-  Form = any,
+  Form extends FieldValues = any,
 > {
   className?: string;
 
@@ -44,7 +44,11 @@ export interface ListboxBaseProps<
   defaultValue?: PropsValue<ListboxOption<Data>>;
 }
 
-export function ListboxBase<Data, IsMulti extends boolean = false, Form = any>({
+export function ListboxBase<
+  Data,
+  IsMulti extends boolean = false,
+  Form extends FieldValues = any,
+>({
   label,
   disabled,
   formValidation,

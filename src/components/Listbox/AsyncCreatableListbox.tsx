@@ -1,4 +1,5 @@
 import cx from "classnames";
+import { FieldValues } from "react-hook-form";
 import { GroupBase } from "react-select";
 import AsyncCreatableSelect, {
   AsyncCreatableProps,
@@ -17,7 +18,7 @@ import { ListboxBase, ListboxBaseProps } from "./ListboxBase";
 export type AsyncCreatableListboxProps<
   Data,
   IsMulti extends boolean = boolean,
-  Form = any,
+  Form extends FieldValues = any,
 > = OmitStrict<
   Partial<
     AsyncCreatableProps<
@@ -33,7 +34,7 @@ export type AsyncCreatableListboxProps<
 export function AsyncCreatableListbox<
   Data,
   IsMulti extends boolean = false,
-  Form = any,
+  Form extends FieldValues = any,
 >(props: AsyncCreatableListboxProps<Data, IsMulti, Form>) {
   const {
     label,

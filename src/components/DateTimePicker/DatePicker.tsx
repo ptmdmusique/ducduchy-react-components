@@ -3,6 +3,7 @@ import { OnChangeDateCallback } from "react-calendar";
 import ReactDatePicker, {
   DatePickerProps as ReactDatePickerProps,
 } from "react-date-picker";
+import { FieldValues } from "react-hook-form";
 import {
   formatDate,
   formatDateRange,
@@ -15,7 +16,7 @@ import { FormValidationWithController } from "../resources/form/types";
 import "./DatePicker.scss";
 import { PickerBase, PickerBaseProps } from "./PickerBase";
 
-export type DatePickerProps<Form = any> = OmitStrict<
+export type DatePickerProps<Form extends FieldValues = any> = OmitStrict<
   PickerBaseProps<Form>,
   "value"
 > &
@@ -31,7 +32,7 @@ export type DatePickerProps<Form = any> = OmitStrict<
     displayDateFormat?: string;
   };
 
-export function DatePicker<Form>({
+export function DatePicker<Form extends FieldValues>({
   label,
   formValidation,
   onChange,

@@ -1,12 +1,12 @@
 import React, { ReactNode } from "react";
-import { Controller } from "react-hook-form";
+import { Controller, FieldValues } from "react-hook-form";
 import { IconProps } from "../Icon";
 import { Input } from "../Input";
 import { FormValidationWithController } from "../resources/form/types";
 import "./DatePicker.scss";
 
 type OnChange = (newDate: Date) => void;
-export interface PickerBaseProps<Form = any> {
+export interface PickerBaseProps<Form extends FieldValues = any> {
   label?: string;
   formValidation?: FormValidationWithController<Form>;
   caption?: ReactNode;
@@ -22,7 +22,7 @@ export interface PickerBaseProps<Form = any> {
   disabled?: boolean;
 }
 
-export function PickerBase<Form>({
+export function PickerBase<Form extends FieldValues>({
   label,
   formValidation,
   caption,
