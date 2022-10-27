@@ -127,28 +127,36 @@ export const TabGroup = forwardRef<HTMLDivElement, TabGroupProps>(
             )
           );
         }),
-      [selectedIndex, renderArr, tabActiveIndicatorType],
+      [
+        selectedIndex,
+        renderArr,
+        tabActiveIndicatorType,
+        getTabProps,
+        renderTab,
+        renderWholeTab,
+      ],
     );
 
     const panelList = useMemo(
       () =>
         renderArr.map((_, index) => {
           const isSelected = index === selectedIndex;
+          const tabPanelProps = getTabPanelProps?.(index, isSelected);
           return (
             <Tab.Panel
-              {...getTabPanelProps?.(index, isSelected)}
+              {...tabPanelProps}
               key={index}
               className={cx(
                 "tab-group__tab-panel",
                 { "tab-group__tab-panel--selected": isSelected },
-                getTabPanelProps?.(index, isSelected)?.className,
+                tabPanelProps?.className,
               )}
             >
               {renderTabPanel(index, isSelected)}
             </Tab.Panel>
           );
         }),
-      [renderArr, selectedIndex],
+      [renderArr, selectedIndex, getTabPanelProps, renderTabPanel],
     );
 
     return (
