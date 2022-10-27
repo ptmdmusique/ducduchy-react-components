@@ -1,4 +1,5 @@
 const path = require("path");
+const webpack = require('webpack');
 
 module.exports = {
   core: {
@@ -47,6 +48,19 @@ module.exports = {
 
     sassRule.use.splice(sassLoaderIndex, 0, postCSSLoader);
 
-    return config;
+    return {
+      ...config,
+      // https://github.com/storybookjs/storybook/issues/18276#issuecomment-1137101774
+      plugins: [
+        ...config.plugins.filter(
+          (plugin) => plugin.constructor.name !== "IgnorePlugin",
+        ),
+        new webpack.IgnorePlugin({
+          resourceRegExp: /react-dom\/client$/,
+          contextRegExp:
+            /(app\/react|app\\react|@storybook\/react|@storybook\\react)/,
+        }),
+      ],
+    };
   },
 };
