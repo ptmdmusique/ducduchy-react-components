@@ -16,7 +16,7 @@ $theme-light: (
   --default: "rgb(0, 0, 0)",
   --exquisite: "rgb(131, 6, 193)",
   --disabled: "rgb(235, 235, 235)",
-);
+) !default;
 
 $theme-dark: (
   --text-base: "rgb(238, 237, 237)",
@@ -36,7 +36,7 @@ $theme-dark: (
   --default: "rgb(232, 230, 227)",
   --exquisite: "rgb(211, 131, 251)",
   --disabled: "rgb(115, 117, 132)",
-);
+) !default;
 
 /// Replace `$search` with `$replace` in `$string`
 /// @author Kitty Giraudel
