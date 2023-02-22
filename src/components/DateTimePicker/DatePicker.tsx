@@ -1,5 +1,6 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import { OnChangeDateCallback } from "react-calendar";
+import Calendar, { OnChangeDateCallback } from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 import ReactDatePicker, {
   DatePickerProps as ReactDatePickerProps,
 } from "react-date-picker";
@@ -30,6 +31,9 @@ export type DatePickerProps<Form extends FieldValues = any> = OmitStrict<
     calendarLeadingIcon?: IconProps["icon"];
     clearDateIcon?: IconProps["icon"];
     displayDateFormat?: string;
+
+    /* Display the picker inline. Always shown */
+    inline?: boolean;
   };
 
 export function DatePicker<Form extends FieldValues>({
@@ -45,6 +49,7 @@ export function DatePicker<Form extends FieldValues>({
   calendarLeadingIcon = ["fas", "calendar-alt"],
   clearDateIcon = ["fas", "times"],
   displayDateFormat,
+  inline,
   ...datePickerProps
 }: DatePickerProps<Form>) {
   const [value, setValue] = useState<Date | Date[] | string>(
@@ -72,6 +77,8 @@ export function DatePicker<Form extends FieldValues>({
     }
   };
 
+  const CalendarComponent = inline ? Calendar : ReactDatePicker;
+
   return (
     <PickerBase
       className={`${COMPONENT_PREFIX}-date-picker`}
@@ -85,6 +92,7 @@ export function DatePicker<Form extends FieldValues>({
       caption={caption}
       captionIcon={captionIcon}
       label={label}
+      useInput={!inline}
       value={
         typeof value !== "string"
           ? formatDate(
@@ -106,7 +114,7 @@ export function DatePicker<Form extends FieldValues>({
         };
 
         return (
-          <ReactDatePicker
+          <CalendarComponent
             {...datePickerProps}
             onCalendarOpen={() => {
               if (disabled) {
@@ -117,6 +125,10 @@ export function DatePicker<Form extends FieldValues>({
               openDropdown();
             }}
             onCalendarClose={() => {
+              if (inline) {
+                return;
+              }
+
               datePickerProps.onCalendarClose?.();
               closeDropdown();
             }}

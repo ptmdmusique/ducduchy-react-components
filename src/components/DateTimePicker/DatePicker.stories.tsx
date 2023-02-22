@@ -41,3 +41,29 @@ export const WithForm = TemplateWithForm.bind({});
 WithForm.args = {
   label: "Date of Birth",
 };
+
+export const InlineDatePicker: Story<DatePickerProps> = (args) => {
+  const methods = useForm();
+  return (
+    <DatePicker
+      {...args}
+      formValidation={{ control: methods.control, name: "datePicker" }}
+      inline
+    />
+  );
+};
+
+export const InlineDatePickerWithForm: Story<DatePickerProps> = (args) => {
+  const methods = useForm();
+  return (
+    <FormProvider {...methods}>
+      <StorybookCommonWithForm>
+        <DatePicker
+          {...args}
+          formValidation={{ control: methods.control, name: "datePicker" }}
+          inline
+        />
+      </StorybookCommonWithForm>
+    </FormProvider>
+  );
+};

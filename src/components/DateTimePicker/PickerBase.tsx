@@ -20,6 +20,7 @@ export interface PickerBaseProps<Form extends FieldValues = any> {
   value?: string;
 
   disabled?: boolean;
+  useInput?: boolean;
 }
 
 export function PickerBase<Form extends FieldValues>({
@@ -36,6 +37,7 @@ export function PickerBase<Form extends FieldValues>({
   children,
   disabled,
   className,
+  useInput = true,
 }: PickerBaseProps<Form> & {
   children: (formOnChange?: OnChange) => React.ReactNode;
   className: string;
@@ -45,19 +47,21 @@ export function PickerBase<Form extends FieldValues>({
       <div className={className}>
         {children(formOnChange)}
 
-        <Input
-          label={label}
-          onClick={toggleDropdown}
-          value={value}
-          trailingAdornment={clearDateIcon}
-          trailingAdornmentOnClick={clearValue}
-          leadingAdornment={calendarLeadingIcon}
-          disabled={disabled}
-          readOnly={disabled}
-          state={state}
-          caption={caption}
-          captionIcon={captionIcon}
-        />
+        {useInput && (
+          <Input
+            label={label}
+            onClick={toggleDropdown}
+            value={value}
+            trailingAdornment={clearDateIcon}
+            trailingAdornmentOnClick={clearValue}
+            leadingAdornment={calendarLeadingIcon}
+            disabled={disabled}
+            readOnly={disabled}
+            state={state}
+            caption={caption}
+            captionIcon={captionIcon}
+          />
+        )}
       </div>
     );
   };
