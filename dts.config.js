@@ -15,7 +15,7 @@ module.exports = {
             resolve({ code: result.css.toString() });
           }),
         config: { path: "./postcss.config.js" },
-        sourceMap: true,
+        sourceMap: false,
         extract: true,
         extensions: [".sass", ".css"],
       }),
