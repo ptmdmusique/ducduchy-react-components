@@ -1,8 +1,7 @@
 import { Meta, Story } from "@storybook/react";
-import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { storyDisabledOption } from "../resources/story-common";
 import { StorybookCommonWithForm } from "../resources/StorybookCommonWithForm";
+import { storyDisabledOption } from "../resources/story-common";
 import { RadioGroup, RadioGroupProps } from "./RadioGroup";
 
 const radioGroupData = [
@@ -12,7 +11,7 @@ const radioGroupData = [
   { data: "🦜 Bird" },
 ];
 
-type Data = typeof radioGroupData[number];
+type Data = (typeof radioGroupData)[number];
 type StoryRadioGroupProps = RadioGroupProps<Data, string>;
 
 const meta: Meta<StoryRadioGroupProps> = {
@@ -45,7 +44,7 @@ export const Default = Template.bind({});
 Default.args = {
   dataList: radioGroupData,
   getValue: ({ data }) => data,
-  getLabel: ({ data }) => data.data,
+  getLabel: ({ data }) => <div>{data.data}</div>,
   checkOptionDisable: ({ disabled }) => disabled,
 };
 
@@ -53,7 +52,7 @@ export const WithGroupLabel = Template.bind({});
 WithGroupLabel.args = {
   dataList: radioGroupData,
   getValue: ({ data }) => data,
-  getLabel: ({ data }) => data.data,
+  getLabel: ({ data }) => <div>{data.data}</div>,
   checkOptionDisable: ({ disabled }) => disabled,
   radioGroupLabel: (
     <div className="text-lg font-semibold text-skin-exquisite">
@@ -81,6 +80,6 @@ export const WithForm = TemplateWithForm.bind({});
 WithForm.args = {
   dataList: radioGroupData,
   getValue: ({ data }) => data,
-  getLabel: ({ data }) => data.data,
+  getLabel: ({ data }) => <div>{data.data}</div>,
   checkOptionDisable: ({ disabled }) => disabled,
 };

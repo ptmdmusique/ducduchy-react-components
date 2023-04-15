@@ -1,20 +1,19 @@
 import { Transition } from "@headlessui/react";
-import { FC, Fragment } from "react";
+import React, { Fragment, PropsWithChildren } from "react";
 import { headlessTransitionData } from "../resources/animation";
-import React from "react";
 
-type TransitionProp = FC<{
+type TransitionProp = PropsWithChildren<{
   show: boolean;
   as?: React.ElementType<any>;
   className?: string;
 }>;
 
-export const FadeTransition: TransitionProp = ({
+export const FadeTransition = ({
   show,
   children,
   className,
   as = Fragment,
-}) => (
+}: TransitionProp) => (
   <Transition
     as={as}
     show={show}
@@ -25,12 +24,12 @@ export const FadeTransition: TransitionProp = ({
   </Transition>
 );
 
-export const FadeAndSlideTransition: TransitionProp = ({
+export const FadeAndSlideTransition = ({
   show,
   children,
   as = Fragment,
   className,
-}) => (
+}: TransitionProp) => (
   <Transition
     as={as}
     show={show}

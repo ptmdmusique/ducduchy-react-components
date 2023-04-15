@@ -1,8 +1,4 @@
-import "@storybook/addon-console";
-const { addDecorator } = require("@storybook/react");
-const { jsxDecorator } = require("storybook-addon-jsx");
-
-addDecorator(jsxDecorator);
+// import "@storybook/addon-console";
 
 // https://storybook.js.org/docs/react/writing-stories/parameters#global-parameters
 export const parameters = {
@@ -16,3 +12,6 @@ export const parameters = {
     ],
   },
 };
+
+import React from "react";
+window.React = React;

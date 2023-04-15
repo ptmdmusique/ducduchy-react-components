@@ -1,10 +1,6 @@
 const path = require("path");
-const webpack = require('webpack');
-
+const webpack = require("webpack");
 module.exports = {
-  core: {
-    builder: "webpack5",
-  },
   stories: [
     "../stories/**/*.stories.@(ts|tsx|js|jsx)",
     "../src/**/*.stories.@(ts|tsx|js|jsx)",
@@ -22,14 +18,15 @@ module.exports = {
         },
       },
     },
-
     "storybook-addon-themes",
     "storybook-addon-jsx",
+    "@storybook/addon-mdx-gfm",
   ],
   // https://storybook.js.org/docs/react/configure/typescript#mainjs-configuration
   typescript: {
     check: true, // type-check stories during Storybook build
   },
+
   webpackFinal: async (config) => {
     // To finally fix issue with scss syntax "Unknown word"
     // https://github.com/storybookjs/presets/issues/131#issuecomment-932282725
@@ -45,9 +42,9 @@ module.exports = {
     const postCSSLoader = cssRule.use.find(
       ({ loader }) => loader && loader.includes("postcss-loader"),
     );
-
     sassRule.use.splice(sassLoaderIndex, 0, postCSSLoader);
 
+    config.externals = ["react-dom"];
     return {
       ...config,
       // https://github.com/storybookjs/storybook/issues/18276#issuecomment-1137101774
@@ -62,5 +59,12 @@ module.exports = {
         }),
       ],
     };
+  },
+  framework: {
+    name: "@storybook/react-webpack5",
+    options: {},
+  },
+  docs: {
+    autodocs: true,
   },
 };

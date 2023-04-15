@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
+import { createPortal } from "react-dom";
 
 interface PortalProp {
   children: React.ReactNode;
@@ -12,5 +12,5 @@ export const Portal = ({ children, containerId }: PortalProp) => {
     setContainer(document.getElementById(containerId));
   }, [containerId]);
 
-  return container && ReactDOM.createPortal(children, container);
+  return container && createPortal(children, container);
 };

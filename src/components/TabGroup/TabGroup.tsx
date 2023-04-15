@@ -3,7 +3,7 @@ import cx from "classnames";
 import {
   ComponentProps,
   forwardRef,
-  ReactNode,
+  ReactElement,
   useEffect,
   useMemo,
   useRef,
@@ -29,11 +29,11 @@ export interface TabGroupProps {
   numberOfTabs: number;
 
   /** Render the entire tab and have total control over accessibility */
-  renderWholeTab?: (index: number, selected: boolean) => ReactNode;
-  renderTab?: (index: number, selected: boolean) => ReactNode;
+  renderWholeTab?: (index: number, selected: boolean) => ReactElement;
+  renderTab?: (index: number, selected: boolean) => ReactElement;
 
   getTabProps?: (index: number, selected: boolean) => ExtractProps<typeof Tab>;
-  renderTabPanel: (index: number, selected: boolean) => ReactNode;
+  renderTabPanel: (index: number, selected: boolean) => ReactElement;
   getTabPanelProps?: (
     index: number,
     selected: boolean,
@@ -100,7 +100,7 @@ export const TabGroup = forwardRef<HTMLDivElement, TabGroupProps>(
       }
     }, [_selectedIndex, numberOfTabs]);
 
-    const renderArr = useMemo(
+    const renderArr = useMemo<any[]>(
       () => Array.from<any>(Array(numberOfTabs)),
       [numberOfTabs],
     );
@@ -122,7 +122,9 @@ export const TabGroup = forwardRef<HTMLDivElement, TabGroupProps>(
                   getTabProps?.(index, selected)?.className,
                 )}
               >
-                {({ selected }) => renderTab?.(index, selected)}
+                {({ selected }) =>
+                  renderTab?.(index, selected) ?? <div>{index}</div>
+                }
               </Tab>
             )
           );

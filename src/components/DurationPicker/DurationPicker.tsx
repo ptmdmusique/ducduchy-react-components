@@ -240,10 +240,10 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
 
         return newValue;
       },
-      [doDisabled, localeText],
+      [doDisabled, localeText, separatedBySpace],
     );
 
-    const inputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLInputElement | null>(null);
     const inputMaskHandleRef = useRef<MaskedInputHandle>(null);
     useEffect(() => {
       if (ref) {
@@ -253,20 +253,18 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
           ref.current = inputRef.current;
         }
       }
-    }, [inputRef.current]);
+    }, [inputRef.current, ref]);
 
     // Split value from defaultValue to avoid total controlled form
     const value = useMemo(
-      () => (_value == undefined ? undefined : getFinalValueString(_value)),
-      [_value],
+      () => (_value == null ? undefined : getFinalValueString(_value)),
+      [_value, getFinalValueString],
     );
 
     const defaultValue = useMemo(
       () =>
-        _defaultValue == undefined
-          ? undefined
-          : getFinalValueString(_defaultValue),
-      [_defaultValue],
+        _defaultValue == null ? undefined : getFinalValueString(_defaultValue),
+      [_defaultValue, getFinalValueString],
     );
 
     // Used to help with dropdown item focus
@@ -275,13 +273,16 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
       setInternalValue(_value ?? _defaultValue);
     }, [_value, _defaultValue]);
 
-    const getIfDisabled = (type: PossibleDurationType) => {
-      if (doDisabled) {
-        return doDisabled[type];
-      }
+    const getIfDisabled = useCallback(
+      (type: PossibleDurationType) => {
+        if (doDisabled) {
+          return doDisabled[type];
+        }
 
-      return DEFAULT_DURATION_DISABLE[type];
-    };
+        return DEFAULT_DURATION_DISABLE[type];
+      },
+      [doDisabled],
+    );
 
     const getLocaleText = useCallback(
       (type: PossibleDurationType) =>
@@ -305,16 +306,14 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
         .join(separatedBySpace ? " " : "");
 
       return { mask: maskString, placeholder };
-    }, [localeText, doDisabled]);
+    }, [separatedBySpace, getIfDisabled, getLocaleText]);
 
     const durationInMsList = useMemo(() => {
-      const {
-        minDuration = 0,
-        maxDuration = 8.64e7, // 1 day
-        interval = 900000, // 15 minutes
-        inclusiveEnd = true,
-        isItemValid,
-      } = dropdownItemProps ?? {};
+      const minDuration = dropdownItemProps?.minDuration ?? 0;
+      const maxDuration = dropdownItemProps?.maxDuration ?? 8.64e7; // 1 day
+      const interval = dropdownItemProps?.interval ?? 900000; // 15 minutes
+      const inclusiveEnd = dropdownItemProps?.inclusiveEnd ?? true;
+      const isItemValid = dropdownItemProps?.isItemValid;
 
       const durationInMsList: number[] = [];
       let durationInMs = minDuration;
@@ -420,6 +419,7 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
           popoverOpenerProps={{
             as: MaskedInput,
             ...maskedInputProps,
+            // @ts-ignore
             ref: inputRef,
             handlerRef: inputMaskHandleRef,
             value,
@@ -431,7 +431,7 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
             placeholder: placeholder,
             // @ts-ignore
             maskOptions,
-            onChange: (unmaskedValue, maskedValue) => {
+            onChange: (unmaskedValue: string, maskedValue: string) => {
               const durationInMs = getDurationInMsFromString(
                 maskedValue,
                 localeText,

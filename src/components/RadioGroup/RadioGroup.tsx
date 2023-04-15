@@ -1,6 +1,6 @@
 import { RadioGroup as HeadlessRadioGroup } from "@headlessui/react";
 import cx from "classnames";
-import { ReactNode, useEffect, useMemo, useState } from "react";
+import { ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
 import { Controller, FieldValues } from "react-hook-form";
 import { clamp } from "../../utils/math";
 import { ColorType } from "../resources/common.data";
@@ -14,7 +14,7 @@ type GetFunction<D> = (props: {
   checked: boolean;
   active: boolean;
   disabled: boolean;
-}) => ReactNode;
+}) => ReactElement;
 
 export interface RadioGroupProps<
   Data = unknown[],

@@ -89,7 +89,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           ref.current = inputRef.current;
         }
       }
-    }, [inputRef.current]);
+    }, [inputRef.current, ref]);
 
     const debounceRef = useRef(
       debounce((event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -140,7 +140,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       setTimeout(() => {
         setHasContent(checkInputPropsHasContent() || !!inputRef.current?.value);
       }, 1);
-    }, []);
+    }, [checkInputPropsHasContent]);
 
     useEffect(() => {
       const debouncer = debounceRef.current;

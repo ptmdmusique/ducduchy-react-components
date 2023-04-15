@@ -1,6 +1,12 @@
 import { Transition } from "@headlessui/react";
 import cx from "classnames";
-import { FC, Fragment, RefObject, useEffect, useState } from "react";
+import {
+  Fragment,
+  PropsWithChildren,
+  RefObject,
+  useEffect,
+  useState,
+} from "react";
 import { usePopper } from "react-popper";
 import { Portal } from "../Portal/Portal";
 import { headlessTransitionData } from "../resources/animation";
@@ -8,18 +14,18 @@ import { COMPONENT_PREFIX, ROOT_ID } from "../resources/common.data";
 import "./Tooltip.scss";
 
 // TODO: move this out
-type TransitionProp = FC<{
+type TransitionProp = PropsWithChildren<{
   show: boolean;
   as?: React.ElementType<any>;
   className?: string;
 }>;
 
-export const FadeTransition: TransitionProp = ({
+export const FadeTransition = ({
   show,
   children,
   className,
   as = Fragment,
-}) => (
+}: TransitionProp) => (
   <Transition
     as={as}
     show={show}
@@ -54,7 +60,7 @@ export interface TooltipProps {
   zIndex?: number;
   inModal?: boolean;
 }
-export const Tooltip: FC<TooltipProps> = ({
+export const Tooltip = ({
   containerId,
   refElement,
   openOn = defaultOpenOn,
@@ -67,7 +73,7 @@ export const Tooltip: FC<TooltipProps> = ({
   offset = [0, 20],
   zIndex,
   inModal = false,
-}) => {
+}: PropsWithChildren<TooltipProps>) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   const [popperElement, setPopperElement] = useState<HTMLDivElement | null>();

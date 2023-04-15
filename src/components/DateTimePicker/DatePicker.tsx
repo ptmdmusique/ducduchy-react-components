@@ -1,9 +1,7 @@
 import React, { ReactNode, useEffect, useState } from "react";
-import Calendar, { OnChangeDateCallback } from "react-calendar";
+import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
-import ReactDatePicker, {
-  DatePickerProps as ReactDatePickerProps,
-} from "react-date-picker";
+import ReactDatePicker from "react-date-picker";
 import { FieldValues } from "react-hook-form";
 import {
   formatDate,
@@ -17,6 +15,8 @@ import { FormValidationWithController } from "../resources/form/types";
 import "./DatePicker.scss";
 import { PickerBase, PickerBaseProps } from "./PickerBase";
 
+type ReactDatePickerProps = Parameters<typeof ReactDatePicker>[0];
+
 export type DatePickerProps<Form extends FieldValues = any> = OmitStrict<
   PickerBaseProps<Form>,
   "value"
@@ -24,7 +24,10 @@ export type DatePickerProps<Form extends FieldValues = any> = OmitStrict<
   ReactDatePickerProps & {
     label?: string;
     formValidation?: FormValidationWithController<Form>;
-    onChange?: (date: Date, event: React.ChangeEvent<HTMLInputElement>) => void;
+    onChange?: (
+      date: Date | null,
+      event?: React.ChangeEvent<HTMLInputElement>,
+    ) => void;
     caption?: ReactNode;
     captionIcon?: IconProps["icon"];
     state?: "normal" | "error";
@@ -105,12 +108,20 @@ export function DatePicker<Form extends FieldValues>({
       }
     >
       {(formOnChange) => {
-        const onChangeWrapper: OnChangeDateCallback = (newDate, event) => {
+        const onChangeWrapper = (
+          date: Date | [Date | null, Date | null] | null,
+        ) => {
           closeDropdown();
 
+          if (Array.isArray(date)) {
+            // TODO: handle this case
+            return;
+          }
+
+          const newDate = date ?? new Date();
           setValue(newDate);
           formOnChange?.(newDate);
-          onChange?.(newDate, event);
+          onChange?.(newDate);
         };
 
         return (
