@@ -8,7 +8,6 @@ import {
   formatDateRange,
   getDatePlaceholder,
 } from "../../utils/date";
-import { OmitStrict } from "../../utils/types";
 import { IconProps } from "../Icon";
 import { COMPONENT_PREFIX } from "../resources/common.data";
 import { FormValidationWithController } from "../resources/form/types";
@@ -17,27 +16,26 @@ import { PickerBase, PickerBaseProps } from "./PickerBase";
 
 type ReactDatePickerProps = Parameters<typeof ReactDatePicker>[0];
 
-export type DatePickerProps<Form extends FieldValues = any> = OmitStrict<
-  PickerBaseProps<Form>,
-  "value"
-> &
-  ReactDatePickerProps & {
-    label?: string;
-    formValidation?: FormValidationWithController<Form>;
-    onChange?: (
-      date: Date | null,
-      event?: React.ChangeEvent<HTMLInputElement>,
-    ) => void;
-    caption?: ReactNode;
-    captionIcon?: IconProps["icon"];
-    state?: "normal" | "error";
-    calendarLeadingIcon?: IconProps["icon"];
-    clearDateIcon?: IconProps["icon"];
-    displayDateFormat?: string;
+export type DatePickerProps<Form extends FieldValues = any> =
+  PickerBaseProps<Form> &
+    ReactDatePickerProps & {
+      defaultValue?: string;
+      label?: string;
+      formValidation?: FormValidationWithController<Form>;
+      onChange?: (
+        date: Date | null,
+        event?: React.ChangeEvent<HTMLInputElement>,
+      ) => void;
+      caption?: ReactNode;
+      captionIcon?: IconProps["icon"];
+      state?: "normal" | "error";
+      calendarLeadingIcon?: IconProps["icon"];
+      clearDateIcon?: IconProps["icon"];
+      displayDateFormat?: string;
 
-    /* Display the picker inline. Always shown */
-    inline?: boolean;
-  };
+      /* Display the picker inline. Always shown */
+      inline?: boolean;
+    };
 
 export function DatePicker<Form extends FieldValues>({
   label,
