@@ -10,6 +10,7 @@ function withOpacity(variableName) {
 
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx,sass,scss}"],
+  darkMode: ["class", '[class="theme-dark"]'],
   theme: {
     extend: {
       screens: {

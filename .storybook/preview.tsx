@@ -1,5 +1,14 @@
-import type { Preview } from "@storybook/react";
 import { withThemeByDataAttribute } from "@storybook/addon-styling";
+import {
+  Controls,
+  Description,
+  Primary,
+  Stories,
+  Subtitle,
+  Title,
+} from "@storybook/blocks";
+import type { Preview } from "@storybook/react";
+import React from "react";
 
 const preview: Preview = {
   parameters: {
@@ -9,6 +18,29 @@ const preview: Preview = {
         color: /(background|color)$/i,
         date: /Date$/,
       },
+    },
+    docs: {
+      page: () => (
+        <>
+          <style>
+            {`
+              .docs-story {
+                background-color: rgb(var(--background));
+              }
+            `}
+          </style>
+
+          <Title />
+          <Subtitle />
+
+          <Description />
+
+          <Primary />
+          <Controls />
+
+          <Stories />
+        </>
+      ),
     },
   },
 };
