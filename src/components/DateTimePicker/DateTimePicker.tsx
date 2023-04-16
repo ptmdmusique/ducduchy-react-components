@@ -10,8 +10,8 @@ import dayjs, { Dayjs } from "dayjs";
 import "dayjs/locale/en";
 import "dayjs/locale/vi";
 import {
-  forwardRef,
   ReactNode,
+  forwardRef,
   useEffect,
   useMemo,
   useRef,
@@ -21,6 +21,7 @@ import { Controller } from "react-hook-form";
 import { useClickAway } from "react-use";
 import { formatDate, getDateTimePlaceholder } from "../../utils/date";
 import { OmitStrict } from "../../utils/types";
+import { IconProps } from "../Icon";
 import { Input, InputProps } from "../Input";
 import { COMPONENT_PREFIX } from "../resources/common.data";
 import { FormValidationWithController } from "../resources/form/types";

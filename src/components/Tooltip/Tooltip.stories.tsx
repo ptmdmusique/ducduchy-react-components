@@ -1,4 +1,4 @@
-import { Meta, Story } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { useRef } from "react";
 import { Tooltip, TooltipProps } from ".";
 import { Button } from "../Button";
@@ -24,13 +24,13 @@ const meta: Meta<TooltipProps> = {
 
 export default meta;
 
-export const Default: Story<TooltipProps> = (args) => {
+export const Default: StoryFn<TooltipProps> = (args) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const buttonRef2 = useRef<HTMLButtonElement>(null);
   const buttonRef3 = useRef<HTMLButtonElement>(null);
 
   return (
-    <div className="text-skin-base">
+    <div className="text-skin-base" id="root">
       <Button ref={buttonRef}>Hover over me!</Button>
 
       <Tooltip
@@ -64,60 +64,63 @@ export const Default: Story<TooltipProps> = (args) => {
   );
 };
 
-export const InAModal: Story<TooltipProps> = (args) => {
+export const InAModal: StoryFn<TooltipProps> = (args) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const buttonRef2 = useRef<HTMLButtonElement>(null);
   const buttonRef3 = useRef<HTMLButtonElement>(null);
 
   return (
-    <Modal isOpen={true} bodyClassName="py-16 px-4 text-skin-base">
-      <p className="mb-2">
-        Tooltip without z-index set will be behind the modal
-      </p>
-      <Button ref={buttonRef} className="mb-16">
-        Hover over me!
-      </Button>
+    <div id="root">
+      <Modal isOpen={true} bodyClassName="py-16 px-4 text-skin-base">
+        <p className="mb-2">
+          Tooltip without z-index set will be behind the modal
+        </p>
+        <Button ref={buttonRef} className="mb-16">
+          Hover over me!
+        </Button>
 
-      <Tooltip
-        offset={[0, 10]}
-        stylePreset="preset-1"
-        {...args}
-        refElement={buttonRef}
-      >
-        <p>This is a tooltip with preset styling ╰(*°▽°*)╯</p>
-      </Tooltip>
+        <Tooltip
+          offset={[0, 10]}
+          stylePreset="preset-1"
+          {...args}
+          refElement={buttonRef}
+        >
+          <p>This is a tooltip with preset styling ╰(*°▽°*)╯</p>
+        </Tooltip>
 
-      <p className="mb-2">You can use `inModal` prop</p>
-      <Button ref={buttonRef2} className="mb-16">
-        Hover over me!
-      </Button>
+        <p className="mb-2">You can use `inModal` prop</p>
+        <Button ref={buttonRef2} className="mb-16">
+          Hover over me!
+        </Button>
 
-      <Tooltip
-        offset={[0, 10]}
-        stylePreset="preset-1"
-        {...args}
-        refElement={buttonRef2}
-        inModal
-      >
-        <p>This is a tooltip with preset styling ╰(*°▽°*)╯</p>
-      </Tooltip>
+        <Tooltip
+          offset={[0, 10]}
+          stylePreset="preset-1"
+          {...args}
+          refElement={buttonRef2}
+          inModal
+        >
+          <p>This is a tooltip with preset styling ╰(*°▽°*)╯</p>
+        </Tooltip>
 
-      <p className="mb-2">
-        Or manually set the z-index to be higher than the modal (don't go too wild!)
-      </p>
-      <Button ref={buttonRef3} className="mb-16">
-        Hover over me!
-      </Button>
+        <p className="mb-2">
+          Or manually set the z-index to be higher than the modal (don't go too
+          wild!)
+        </p>
+        <Button ref={buttonRef3} className="mb-16">
+          Hover over me!
+        </Button>
 
-      <Tooltip
-        offset={[0, 10]}
-        stylePreset="preset-1"
-        {...args}
-        refElement={buttonRef3}
-        zIndex={1000}
-      >
-        <p>This is a tooltip with preset styling ╰(*°▽°*)╯</p>
-      </Tooltip>
-    </Modal>
+        <Tooltip
+          offset={[0, 10]}
+          stylePreset="preset-1"
+          {...args}
+          refElement={buttonRef3}
+          zIndex={1000}
+        >
+          <p>This is a tooltip with preset styling ╰(*°▽°*)╯</p>
+        </Tooltip>
+      </Modal>
+    </div>
   );
 };

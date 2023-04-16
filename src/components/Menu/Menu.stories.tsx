@@ -1,4 +1,4 @@
-import { Meta, Story } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { useState } from "react";
 import { storyDisabledOption } from "../resources/story-common";
 import { Menu, MenuProps } from "./Menu";
@@ -9,7 +9,7 @@ const menuItemList = [
   { label: "🐶 Dog", value: "my value 3" },
   { label: "🐱 Cat", value: "my value 4" },
 ] as const;
-type ItemType = typeof menuItemList[number];
+type ItemType = (typeof menuItemList)[number];
 
 type MenuData = MenuProps<ItemType>;
 
@@ -34,7 +34,7 @@ const meta: Meta<MenuData> = {
 
 export default meta;
 
-const Template: Story<MenuData> = (args) => {
+const Template: StoryFn<MenuData> = (args) => {
   const [chosenItem, setChosenItem] = useState<ItemType | null>(null);
 
   return (

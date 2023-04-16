@@ -1,10 +1,8 @@
-import React, { FC, ReactNode, useState } from "react";
+import { PropsWithChildren, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { Button } from "../Button";
 
-export const StorybookCommonWithForm: FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+export const StorybookCommonWithForm = ({ children }: PropsWithChildren) => {
   const [submittedValue, setSubmittedValue] = useState<{
     [key: string]: string;
   } | null>(null);

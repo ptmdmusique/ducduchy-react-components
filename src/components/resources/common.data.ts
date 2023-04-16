@@ -5,14 +5,14 @@ export const statusTypeList = [
   "info",
   "neutral",
 ] as const;
-export type StatusType = typeof statusTypeList[number];
+export type StatusType = (typeof statusTypeList)[number];
 
 export const colorTypeList = [
   "primary",
   "secondary",
   ...statusTypeList,
 ] as const;
-export type ColorType = typeof colorTypeList[number];
+export type ColorType = (typeof colorTypeList)[number];
 
 export const COMPONENT_PREFIX = "dd"; // Duc-Duchy :)
 

@@ -1,8 +1,8 @@
-import { Meta, Story } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { FormProvider, useForm, useFormState } from "react-hook-form";
 import { MaskedInput, MaskedInputProps } from ".";
-import { storyDisabledOption } from "../resources/story-common";
 import { StorybookCommonWithForm } from "../resources/StorybookCommonWithForm";
+import { storyDisabledOption } from "../resources/story-common";
 
 const meta: Meta<MaskedInputProps> = {
   title: "Components/Form/Masked Input",
@@ -20,7 +20,7 @@ const meta: Meta<MaskedInputProps> = {
 
 export default meta;
 
-export const TelephoneNumber: Story<MaskedInputProps> = (args) => {
+export const TelephoneNumber: StoryFn<MaskedInputProps> = (args) => {
   return (
     <div className="text-skin-base">
       <div className="mb-4">
@@ -50,7 +50,7 @@ export const TelephoneNumber: Story<MaskedInputProps> = (args) => {
   );
 };
 
-export const WithForm: Story<MaskedInputProps> = (args) => {
+export const WithForm: StoryFn<MaskedInputProps> = (args) => {
   const methods = useForm<{ phoneNumber: string }>();
   const { errors } = useFormState({ control: methods.control });
 
@@ -70,7 +70,7 @@ export const WithForm: Story<MaskedInputProps> = (args) => {
           caption={errors["phoneNumber"]?.message}
           type="tel"
           {...methods.register("phoneNumber")}
-          onChange={(unmaskedValue, maskedValue) => {
+          onChange={(_, maskedValue) => {
             methods.setValue("phoneNumber", maskedValue);
           }}
         />

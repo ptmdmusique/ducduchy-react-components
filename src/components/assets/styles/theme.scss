@@ -77,6 +77,6 @@ $theme-dark: (
 }
 
 $key: display;
-body {
+html {
   @include extract-color-map($theme-light);
 }

@@ -1,6 +1,6 @@
 import { Menu as LibMenu } from "@headlessui/react";
 import cx from "classnames";
-import React, { Fragment } from "react";
+import React, { Fragment, ReactElement } from "react";
 import { OmitStrict } from "../../utils/types";
 import { Button, ButtonProps } from "../Button";
 import { COMPONENT_PREFIX } from "../resources/common.data";
@@ -45,7 +45,7 @@ export interface MenuProps<
     item: Item,
     index: number,
     props: { active: boolean; disabled: boolean; menuOpen: boolean },
-  ) => React.ReactNode;
+  ) => ReactElement;
 
   /** Used to render each item, unnecessary if `renderItem` or `renderWholeItem` is present */
   renderItemContent?: (
@@ -138,7 +138,7 @@ export function Menu<
                             active,
                             disabled,
                             menuOpen,
-                          }) ?? item}
+                          })}
                         </li>
                       )
                     }

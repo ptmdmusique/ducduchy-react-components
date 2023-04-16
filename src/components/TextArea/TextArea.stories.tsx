@@ -1,13 +1,14 @@
-import { Meta, Story } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { TextArea, TextAreaProps } from ".";
 import { Button } from "../Button";
-import { storyDisabledOption } from "../resources/story-common";
 import { StorybookCommonWithForm } from "../resources/StorybookCommonWithForm";
+import { storyDisabledOption } from "../resources/story-common";
 import "./TextArea.stories.scss";
 
 const meta: Meta<TextAreaProps> = {
   title: "Components/Form/Text Area",
+  // @ts-ignore
   component: TextArea,
   argTypes: {
     label: { type: "string" },
@@ -22,7 +23,7 @@ const meta: Meta<TextAreaProps> = {
 
 export default meta;
 
-const Template: Story<TextAreaProps> = ({ ref, ...args }) => (
+const Template: StoryFn<TextAreaProps> = ({ ...args }) => (
   <TextArea {...args} />
 );
 export const Default = Template.bind({});
@@ -51,7 +52,7 @@ WithCaption.args = {
 
 Default.args = {};
 
-export const WithUseFormSetValue: Story<TextAreaProps> = (args) => {
+export const WithUseFormSetValue: StoryFn<TextAreaProps> = (args) => {
   const methods = useForm<{ formValue: string }>();
   const { register, setValue, control } = methods;
 

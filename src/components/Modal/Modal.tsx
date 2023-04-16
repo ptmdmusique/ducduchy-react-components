@@ -1,7 +1,7 @@
 import { Dialog } from "@headlessui/react";
 import cx from "classnames";
 import { AnimatePresence, motion, Variants } from "framer-motion";
-import { FC, ReactNode, useMemo, useRef } from "react";
+import { PropsWithChildren, ReactNode, useMemo, useRef } from "react";
 import { useWindowSize } from "react-use";
 import { Icon, IconProps } from "../Icon";
 import {
@@ -34,7 +34,7 @@ export interface ModalProps {
   targetSize?: { width?: number; height?: number };
 }
 
-export const Modal: FC<ModalProps> = ({
+export const Modal = ({
   header,
   footer,
   isOpen,
@@ -52,7 +52,7 @@ export const Modal: FC<ModalProps> = ({
   animationType = "fade-down",
   animationAnchorElement,
   targetSize,
-}) => {
+}: PropsWithChildren<ModalProps>) => {
   // * Animation
   const { width: winWidth, height: winHeight } = useWindowSize();
   const modalVariants = useMemo<Variants>(() => {
