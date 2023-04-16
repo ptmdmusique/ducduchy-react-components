@@ -135,7 +135,7 @@
     "nanoid": "^3.3.4",
     "react-calendar": "^4.2.1",
     "react-colorful": "^5.5.1",
-    "react-date-picker": "^10.0.3",
+    "react-date-picker": "^8.4.0",
     "react-hook-form": "^7.23.0",
     "react-imask": "^6.4.2",
     "react-popper": "^2.3.0",

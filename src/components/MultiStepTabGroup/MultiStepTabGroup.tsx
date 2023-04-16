@@ -116,6 +116,9 @@ export const MultiStepTabGroup = forwardRef<
         getTabContent,
         getBubbleContent,
         onChange,
+        colorType,
+        contentPreset,
+        preventSelectIfSelected,
       ],
     );
 
