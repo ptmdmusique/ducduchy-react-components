@@ -11,6 +11,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Update dependencies!!! Notably `react` and `react-dom` to `18.x`
 - Drop support for react < 18
+- Update `storybook` to `7.x`
+
+### Fixed
+
+- Change `FC` to `PropsWithChildren<P>` to support `react` 18
 
 ## [1.7.0] - 2023-02-22
 
