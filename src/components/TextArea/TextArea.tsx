@@ -15,14 +15,12 @@ import TextareaAutosize, {
   TextareaAutosizeProps,
 } from "react-textarea-autosize";
 import { debounce } from "../../utils/lodash/debounce";
-import { OmitStrict } from "../../utils/types";
 import { FadeTransition } from "../animation/CustomTransition";
 import Icon, { IconProps } from "../Icon/Icon";
 import { BorderType, COMPONENT_PREFIX } from "../resources/common.data";
 import "./TextArea.scss";
 
-export interface TextAreaProps
-  extends OmitStrict<TextareaAutosizeProps, "label"> {
+export interface TextAreaProps extends TextareaAutosizeProps {
   borderType?: BorderType;
   caption?: ReactNode;
   captionIcon?: IconProps["icon"];
@@ -169,7 +167,6 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           <label htmlFor={myId.current}>{label}</label>
 
           <TextareaAutosize
-            resize="horizontal"
             {...textAreaProps}
             id={myId.current}
             // @ts-ignore
