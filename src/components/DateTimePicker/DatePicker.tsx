@@ -18,8 +18,8 @@ type ReactDatePickerProps = Parameters<typeof ReactDatePicker>[0];
 
 export type DatePickerProps<Form extends FieldValues = any> =
   PickerBaseProps<Form> &
-    ReactDatePickerProps & {
-      defaultValue?: string;
+    Omit<ReactDatePickerProps, "defaultValue"> & {
+      defaultValue?: string | Date | Date[];
       label?: string;
       formValidation?: FormValidationWithController<Form>;
       onChange?: (
