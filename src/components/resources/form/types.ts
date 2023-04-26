@@ -3,7 +3,7 @@ import {
   Control,
   FieldPath,
   FieldValues,
-  RegisterOptions
+  RegisterOptions,
 } from "react-hook-form";
 import { IconProps } from "../../Icon";
 

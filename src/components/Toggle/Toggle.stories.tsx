@@ -1,8 +1,8 @@
-import { Meta, Story } from "@storybook/react";
-import React, { useState } from "react";
+import { Meta, StoryFn } from "@storybook/react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Toggle } from ".";
-import { Button, ToggleProps } from "..";
+import { Button, ToggleProps, Tooltip } from "..";
 import { storyDisabledOption } from "../resources/story-common";
 
 const meta: Meta<ToggleProps> = {
@@ -23,7 +23,7 @@ const meta: Meta<ToggleProps> = {
 
 export default meta;
 
-const Template: Story<ToggleProps> = (args) => <Toggle {...args} />;
+const Template: StoryFn<ToggleProps> = (args) => <Toggle {...args} />;
 export const Default = Template.bind({});
 Default.args = {
   label: "My toggle",
@@ -35,7 +35,7 @@ Checkbox.args = {
   type: "checkbox",
 };
 
-const TemplateWithForm: Story<ToggleProps> = (args) => {
+const TemplateWithForm: StoryFn<ToggleProps> = (args) => {
   const [submittedValue, setSubmittedValue] = useState<{
     [key: string]: string;
   } | null>(null);
@@ -68,3 +68,36 @@ const TemplateWithForm: Story<ToggleProps> = (args) => {
 };
 
 export const WithForm = TemplateWithForm.bind({});
+
+export const WithRef: StoryFn<ToggleProps> = (args) => {
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  return (
+    <div id="root">
+      <code>
+        You can forward ref into the component for cool stuff like tooltip too!
+        Try to hover over the toggle below!
+      </code>
+
+      <Toggle
+        label="Toggle ref example"
+        type="checkbox"
+        ref={toggleRef}
+        className="mb-8 mt-16"
+      />
+      <Tooltip offset={[0, 10]} stylePreset="preset-1" refElement={toggleRef}>
+        <p>A tooltip for just the toggle ╰(*°▽°*)╯</p>
+      </Tooltip>
+
+      <Toggle label="Container ref example" containerRef={containerRef} />
+      <Tooltip
+        offset={[0, 10]}
+        stylePreset="preset-1"
+        refElement={containerRef}
+      >
+        <p>A tooltip for the whole container ╰(*°▽°*)╯</p>
+      </Tooltip>
+    </div>
+  );
+};
