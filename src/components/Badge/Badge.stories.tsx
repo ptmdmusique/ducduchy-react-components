@@ -1,5 +1,4 @@
-import { Meta, Story } from "@storybook/react";
-import React from "react";
+import { Meta, StoryFn } from "@storybook/react";
 import { Badge, BadgeProps } from ".";
 import {
   storyDisabledOption,
@@ -22,7 +21,7 @@ const meta: Meta<BadgeProps> = {
 
 export default meta;
 
-const Template: Story<BadgeProps> = (args) => (
+const Template: StoryFn<BadgeProps> = (args) => (
   <div className="canvas-container">
     <div className="title">
       <p className="title-text">Midterm Quiz</p>
@@ -42,7 +41,7 @@ const Template: Story<BadgeProps> = (args) => (
 export const Default = Template.bind({});
 Default.args = { text: "Math" };
 
-const StandaloneTemplate: Story<BadgeProps> = (args) => (
+const StandaloneTemplate: StoryFn<BadgeProps> = (args) => (
   <div className="standalone-badge-canvas-container">
     <Badge {...args} />
   </div>
