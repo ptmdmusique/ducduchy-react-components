@@ -1,0 +1,72 @@
+import cx from "classnames";
+import { forwardRef, HTMLProps, ReactNode } from "react";
+import { OmitStrict } from "../../utils/types";
+import { Icon, IconProps } from "../Icon";
+import { ColorType, COMPONENT_PREFIX } from "../resources/common.data";
+import "./Link.scss";
+
+export interface LinkProps
+  extends OmitStrict<HTMLProps<HTMLAnchorElement>, "ref"> {
+  colorType?: ColorType;
+  iconStart?: IconProps["icon"] | ReactNode;
+  /** Not necessary if ReactNode is provided as `iconStart` */
+  iconStartClassName?: string;
+  iconEnd?: IconProps["icon"] | ReactNode;
+  /** Not necessary if ReactNode is provided as `iconEnd` */
+  iconEndClassName?: string;
+}
+
+export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
+  (
+    {
+      iconStart,
+      iconStartClassName,
+      iconEnd,
+      iconEndClassName,
+      colorType = "primary",
+      children,
+      ...linkProps
+    },
+    ref,
+  ) => {
+    return (
+      <a
+        {...linkProps}
+        ref={ref}
+        className={cx(
+          `${COMPONENT_PREFIX}-link`,
+          `${COMPONENT_PREFIX}-link--${colorType}`,
+          linkProps.className,
+        )}
+      >
+        {iconStart &&
+          (Array.isArray(iconStart) ? (
+            <Icon
+              icon={iconStart}
+              className={cx(
+                `${COMPONENT_PREFIX}-link__icon--start`,
+                iconStartClassName,
+              )}
+            />
+          ) : (
+            iconStart
+          ))}
+
+        {children}
+
+        {iconEnd &&
+          (Array.isArray(iconEnd) ? (
+            <Icon
+              icon={iconEnd}
+              className={cx(
+                `${COMPONENT_PREFIX}-link__icon--end`,
+                iconEndClassName,
+              )}
+            />
+          ) : (
+            iconEnd
+          ))}
+      </a>
+    );
+  },
+);

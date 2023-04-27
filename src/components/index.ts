@@ -6,6 +6,7 @@ export * from "./DateTimePicker";
 export * from "./DurationPicker";
 export * from "./Icon";
 export * from "./Input";
+export * from "./Link";
 export * from "./Listbox";
 export * from "./MaskedInput";
 export * from "./Menu";
@@ -18,4 +19,3 @@ export * from "./TabGroup";
 export * from "./TextArea";
 export * from "./Toggle";
 export * from "./Tooltip";
-

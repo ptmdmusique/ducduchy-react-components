@@ -41,6 +41,7 @@
   @apply bg-skin-fill;
   @apply rounded-full;
   @apply h-6 w-11;
+  min-width: 2.75rem;
 
   > .knob {
     @apply transform translate-x-1;
