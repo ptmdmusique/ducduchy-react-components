@@ -1,0 +1,63 @@
+@import "../assets/styles/variable-common.scss";
+
+.dd-link {
+  @apply duration-500 ease-in-out;
+  @apply relative;
+  @apply w-fit;
+  @apply flex;
+
+  &:hover {
+    @apply cursor-pointer;
+
+    &::after {
+      @apply w-full;
+    }
+  }
+  &:active::after {
+    @apply w-full;
+    height: 2px;
+  }
+
+  &::before,
+  &::after {
+    @apply duration-200 ease-in-out;
+    @apply absolute left-0;
+    bottom: -1px;
+    height: 1px;
+    content: "";
+  }
+
+  &::before {
+    @apply w-full;
+  }
+  &::after {
+    @apply w-0;
+  }
+
+  @each $type in $color-types {
+    &.dd-link--#{$type} {
+      @apply text-skin-#{$type};
+
+      &::before,
+      &::after {
+        @apply bg-skin-#{$type};
+      }
+
+      &::before {
+        @apply bg-opacity-50;
+      }
+
+      &:focus {
+        @apply outline outline-skin-#{$type} outline-2 outline-offset-2;
+      }
+    }
+  }
+
+  > .dd-link__icon--start {
+    @apply mr-2;
+  }
+
+  > .dd-link__icon--end {
+    @apply ml-2;
+  }
+}
