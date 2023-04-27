@@ -26,24 +26,24 @@ export default meta;
 const Template: StoryFn<TextAreaProps> = ({ ...args }) => (
   <TextArea {...args} />
 );
-export const Default = Template.bind({});
+export const Default: typeof Template = Template.bind({});
 
-export const WithLabel = Template.bind({});
+export const WithLabel: typeof Template = Template.bind({});
 WithLabel.args = { label: "Hello Label!" };
 
-export const WithPlaceholder = Template.bind({});
+export const WithPlaceholder: typeof Template = Template.bind({});
 WithPlaceholder.args = { placeholder: "John Doe" };
 
-export const WithMinRows = Template.bind({});
+export const WithMinRows: typeof Template = Template.bind({});
 WithMinRows.args = { minRows: 5 };
 
-export const WithLabelAndPlaceholder = Template.bind({});
+export const WithLabelAndPlaceholder: typeof Template = Template.bind({});
 WithLabelAndPlaceholder.args = {
   label: "What a label",
   placeholder: "John Doe",
 };
 
-export const WithCaption = Template.bind({});
+export const WithCaption: typeof Template = Template.bind({});
 WithCaption.args = {
   label: "What a label",
   placeholder: "John Doe",

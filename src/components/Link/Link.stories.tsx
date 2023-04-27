@@ -23,7 +23,7 @@ const meta: Meta<LinkProps> = {
 export default meta;
 
 const Template: StoryFn<LinkProps> = (args) => <Link {...args} />;
-export const Default = Template.bind({});
+export const Default: typeof Template = Template.bind({});
 Default.args = {
   children: "A link for you!",
 };

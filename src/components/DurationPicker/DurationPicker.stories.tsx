@@ -1,11 +1,10 @@
-import { Meta, Story } from "@storybook/react";
-import dayjs from "dayjs";
-import { useMemo, useState } from "react";
+import { Meta, StoryFn } from "@storybook/react";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { DurationPicker, DurationPickerProps } from ".";
 import { Button } from "../Button";
-import { storyDisabledOption } from "../resources/story-common";
 import { StorybookCommonWithForm } from "../resources/StorybookCommonWithForm";
+import { storyDisabledOption } from "../resources/story-common";
 
 const meta: Meta<DurationPickerProps> = {
   title: "Components/Form/DurationPicker",
@@ -32,14 +31,14 @@ const meta: Meta<DurationPickerProps> = {
 
 export default meta;
 
-const Template: Story<DurationPickerProps> = (args) => (
+const Template: StoryFn<DurationPickerProps> = (args) => (
   <div className="mt-[20rem]">
     <DurationPicker {...args} label="A simple label" defaultValue={45240000} />
   </div>
 );
-export const Default = Template.bind({});
+export const Default: typeof Template = Template.bind({});
 
-const TemplateWithForm: Story<DurationPickerProps> = (args) => {
+const TemplateWithForm: StoryFn<DurationPickerProps> = (args) => {
   const methods = useForm<{ durationPicker: number }>();
   const [unmaskedValue, setUnmaskedValue] = useState<string>();
   const [maskedValue, setMaskedValue] = useState<string>();
@@ -69,12 +68,12 @@ const TemplateWithForm: Story<DurationPickerProps> = (args) => {
   );
 };
 
-export const WithForm = TemplateWithForm.bind({});
+export const WithForm: typeof TemplateWithForm = TemplateWithForm.bind({});
 WithForm.args = {
   label: "Meeting time",
 };
 
-export const WithControlledForm: Story<DurationPickerProps> = (args) => {
+export const WithControlledForm: StoryFn<DurationPickerProps> = (args) => {
   const methods = useForm<{ durationPicker: number }>({
     defaultValues: { durationPicker: 0 },
   });

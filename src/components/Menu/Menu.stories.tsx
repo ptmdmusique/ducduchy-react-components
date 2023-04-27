@@ -56,7 +56,7 @@ const Template: StoryFn<MenuData> = (args) => {
   );
 };
 
-export const Default = Template.bind({});
+export const Default: typeof Template = Template.bind({});
 Default.args = {
   menuItemList,
 };

@@ -1,5 +1,4 @@
-import { Meta, Story } from "@storybook/react";
-import React from "react";
+import { Meta, StoryFn } from "@storybook/react";
 import { Button, ButtonProps } from ".";
 import {
   storyDisabledOption,
@@ -24,13 +23,13 @@ const meta: Meta<ButtonProps> = {
 
 export default meta;
 
-const Template: Story<ButtonProps> = (args) => <Button {...args} />;
-export const Default = Template.bind({});
+const Template: StoryFn<ButtonProps> = (args) => <Button {...args} />;
+export const Default: typeof Template = Template.bind({});
 Default.args = {
   children: "I'm a button (*/ω＼*)",
 };
 
-export const Rounded = Template.bind({});
+export const Rounded: typeof Template = Template.bind({});
 Rounded.args = {
   isRounded: true,
   icon: ["fas", "heart"],

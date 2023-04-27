@@ -1,4 +1,4 @@
-import { Meta, Story } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { useEffect, useState } from "react";
 import { storyDisabledOption } from "../resources/story-common";
 import { Slider, SliderProps } from "./Slider";
@@ -24,7 +24,7 @@ export default meta;
 
 const DEFAULT_VALUE_LIST = [40, 50];
 
-const Template: Story<SliderProps> = (args) => {
+const Template: StoryFn<SliderProps> = (args) => {
   const [valueList, setValueList] = useState<number[]>(args.valueList);
   const onChange: SliderProps["onChange"] = (newValueList) => {
     setValueList(newValueList);
@@ -45,7 +45,7 @@ const Template: Story<SliderProps> = (args) => {
   );
 };
 
-export const Default = Template.bind({});
+export const Default: typeof Template = Template.bind({});
 Default.args = {
   valueList: DEFAULT_VALUE_LIST,
   min: 0,

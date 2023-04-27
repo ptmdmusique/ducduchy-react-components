@@ -1,4 +1,4 @@
-import { Meta, Story } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import React, { useState } from "react";
 import { Button } from "../Button";
 import { storyDisabledOption } from "../resources/story-common";
@@ -24,8 +24,8 @@ const meta: Meta<ModalProps> = {
 
 export default meta;
 
-const Template: Story<ModalProps> = (args) => <Modal {...args} />;
-export const Default = Template.bind({});
+const Template: StoryFn<ModalProps> = (args) => <Modal {...args} />;
+export const Default: typeof Template = Template.bind({});
 Default.args = {
   isOpen: true,
   header: "What a dope header 👌",
@@ -42,7 +42,7 @@ Default.args = {
   ),
 };
 
-export const WithFooter = Template.bind({});
+export const WithFooter: typeof Template = Template.bind({});
 WithFooter.args = {
   header: "What a dope header 👌",
   isOpen: true,
@@ -70,7 +70,7 @@ WithFooter.args = {
   ),
 };
 
-const TemplateWithCloseButton: Story<ModalProps> = (args) => {
+const TemplateWithCloseButton: StoryFn<ModalProps> = (args) => {
   const [isOpen, setIsOpen] = React.useState(true);
   return (
     <>
@@ -88,15 +88,17 @@ const TemplateWithCloseButton: Story<ModalProps> = (args) => {
     </>
   );
 };
-export const WithCloseButtonAndEvent = TemplateWithCloseButton.bind({});
+export const WithCloseButtonAndEvent: typeof TemplateWithCloseButton =
+  TemplateWithCloseButton.bind({});
 WithCloseButtonAndEvent.args = {
   header: "What a dope header 👌",
 };
 
-export const WithDetailOnCloseControl: Story<ModalProps> = (args) => {
+export const WithDetailOnCloseControl: StoryFn<ModalProps> = (args) => {
   const [isOpen, setIsOpen] = React.useState(true);
-  const [onCloseMessage, setOnCloseMessage] =
-    React.useState<string | null>(null);
+  const [onCloseMessage, setOnCloseMessage] = React.useState<string | null>(
+    null,
+  );
 
   return (
     <>
@@ -133,7 +135,7 @@ WithDetailOnCloseControl.args = {
   header: "What a dope header 👌",
 };
 
-export const WithMultipleModal: Story<ModalProps> = (args) => {
+export const WithMultipleModal: StoryFn<ModalProps> = (args) => {
   const [isFirstOpen, setIsFirstOpen] = useState(false);
   const [isSecondOpen, setIsSecondOpen] = useState(false);
   const [isFirstOpen2, setIsFirstOpen2] = useState(false);
@@ -262,7 +264,7 @@ export const WithMultipleModal: Story<ModalProps> = (args) => {
 };
 
 // TODO: fix this
-// const TemplateExpandFromEle: Story<ModalProps> = (args) => {
+// const TemplateExpandFromEle: StoryFn<ModalProps> = (args) => {
 //   const [isOpen, setIsOpen] = React.useState(false);
 //   const ref = useRef<HTMLDivElement>(null);
 

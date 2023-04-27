@@ -1,4 +1,4 @@
-import { Meta, Story } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { DatePicker, DatePickerProps } from ".";
 import { storyDisabledOption } from "../resources/story-common";
@@ -20,10 +20,10 @@ const meta: Meta<DatePickerProps> = {
 
 export default meta;
 
-const Template: Story<DatePickerProps> = (args) => <DatePicker {...args} />;
-export const Default = Template.bind({});
+const Template: StoryFn<DatePickerProps> = (args) => <DatePicker {...args} />;
+export const Default: typeof Template = Template.bind({});
 
-const TemplateWithForm: Story<DatePickerProps> = (args) => {
+const TemplateWithForm: StoryFn<DatePickerProps> = (args) => {
   const methods = useForm();
   return (
     <FormProvider {...methods}>
@@ -37,12 +37,12 @@ const TemplateWithForm: Story<DatePickerProps> = (args) => {
   );
 };
 
-export const WithForm = TemplateWithForm.bind({});
+export const WithForm: typeof TemplateWithForm = TemplateWithForm.bind({});
 WithForm.args = {
   label: "Date of Birth",
 };
 
-export const InlineDatePicker: Story<DatePickerProps> = (args) => {
+export const InlineDatePicker: StoryFn<DatePickerProps> = (args) => {
   const methods = useForm();
   return (
     <DatePicker
@@ -53,7 +53,7 @@ export const InlineDatePicker: Story<DatePickerProps> = (args) => {
   );
 };
 
-export const InlineDatePickerWithForm: Story<DatePickerProps> = (args) => {
+export const InlineDatePickerWithForm: StoryFn<DatePickerProps> = (args) => {
   const methods = useForm();
   return (
     <FormProvider {...methods}>

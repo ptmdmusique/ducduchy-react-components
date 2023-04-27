@@ -1,4 +1,4 @@
-import { Meta, Story } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { useEffect, useState } from "react";
 import { Button } from "../Button";
 import { Icon, IconProps } from "../Icon";
@@ -54,7 +54,7 @@ const contentList = [
   },
 ];
 
-const Template: Story<TabGroupProps> = (args) => (
+const Template: StoryFn<TabGroupProps> = (args) => (
   <TabGroup
     {...args}
     tabGroupProps={{ className: "text-skin-base ml-16" }}
@@ -69,9 +69,9 @@ const Template: Story<TabGroupProps> = (args) => (
     renderTabPanel={(index) => <div>{contentList[index].text}</div>}
   />
 );
-export const Default = Template.bind({});
+export const Default: typeof Template = Template.bind({});
 
-export const FullyStyled: Story<TabGroupProps> = (args) => (
+export const FullyStyled: StoryFn<TabGroupProps> = (args) => (
   <TabGroup
     {...args}
     tabGroupProps={{ className: "text-skin-base ml-16 bg-skin-top rounded-md" }}
@@ -93,7 +93,7 @@ export const FullyStyled: Story<TabGroupProps> = (args) => (
 const getIndex = (index: number, length: number) =>
   Math.max(0, Math.min(index, length - 1));
 
-export const ControlledIndex: Story<TabGroupProps> = (args) => {
+export const ControlledIndex: StoryFn<TabGroupProps> = (args) => {
   const [selectedIndex, setSelectedIndex] = useState(
     args.defaultSelectedIndex ?? 0,
   );

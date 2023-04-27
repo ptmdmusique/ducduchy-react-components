@@ -1,9 +1,9 @@
 import { Placement } from "@floating-ui/react-dom";
-import { Meta, Story } from "@storybook/react";
+import { Popover as LibPopover } from "@headlessui/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { Icon, IconProps } from "../Icon";
 import { storyDisabledOption } from "../resources/story-common";
 import { Popover, PopoverProps } from "./Popover";
-import { Popover as LibPopover } from "@headlessui/react";
 
 type PopoverData = PopoverProps & { placement: Placement };
 const placement = [
@@ -62,7 +62,7 @@ const IconWithText = ({
   );
 };
 
-const Template: Story<PopoverData> = (args) => {
+const Template: StoryFn<PopoverData> = (args) => {
   return (
     <div className="w-[40rem] h-[30rem] flex flex-col justify-center items-center">
       <p className="text-skin-base mb-12">
@@ -98,7 +98,7 @@ const Template: Story<PopoverData> = (args) => {
   );
 };
 
-export const Default = Template.bind({});
+export const Default: typeof Template = Template.bind({});
 
 const dataList = [
   {
@@ -129,7 +129,7 @@ const dataList = [
   },
 ] as const;
 
-const GroupTemplate: Story<PopoverData> = (args) => {
+const GroupTemplate: StoryFn<PopoverData> = (args) => {
   return (
     <div className="w-[40rem] h-[30rem] flex flex-col justify-center items-center">
       <p className="text-skin-base mb-12">
@@ -169,4 +169,4 @@ const GroupTemplate: Story<PopoverData> = (args) => {
   );
 };
 
-export const Group = GroupTemplate.bind({});
+export const Group: typeof GroupTemplate = GroupTemplate.bind({});

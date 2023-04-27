@@ -20,7 +20,7 @@ const meta: Meta<MaskedInputProps> = {
 
 export default meta;
 
-export const TelephoneNumber: StoryFn<MaskedInputProps> = (args) => {
+export const TelephoneNumber: StoryFn<MaskedInputProps> = () => {
   return (
     <div className="text-skin-base">
       <div className="mb-4">
@@ -50,7 +50,7 @@ export const TelephoneNumber: StoryFn<MaskedInputProps> = (args) => {
   );
 };
 
-export const WithForm: StoryFn<MaskedInputProps> = (args) => {
+export const WithForm: StoryFn<MaskedInputProps> = () => {
   const methods = useForm<{ phoneNumber: string }>();
   const { errors } = useFormState({ control: methods.control });
 

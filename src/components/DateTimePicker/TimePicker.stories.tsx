@@ -1,4 +1,4 @@
-import { Meta, Story } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { storyDisabledOption } from "../resources/story-common";
@@ -20,7 +20,7 @@ const meta: Meta<TimePickerProps> = {
 
 export default meta;
 
-const Template: Story<TimePickerProps> = (args) => (
+const Template: StoryFn<TimePickerProps> = (args) => (
   <div className="mt-[20rem]">
     <p>
       <strong>NOTE:</strong> Technically this is still a normal duration picker
@@ -33,9 +33,9 @@ const Template: Story<TimePickerProps> = (args) => (
     <TimePicker {...args} />
   </div>
 );
-export const Default = Template.bind({});
+export const Default: typeof Template = Template.bind({});
 
-const TemplateWithForm: Story<TimePickerProps> = (args) => {
+const TemplateWithForm: StoryFn<TimePickerProps> = (args) => {
   const methods = useForm<{ durationPicker: number }>();
   const [unmaskedValue, setUnmaskedValue] = useState<string>();
   const [maskedValue, setMaskedValue] = useState<string>();
@@ -73,7 +73,7 @@ const TemplateWithForm: Story<TimePickerProps> = (args) => {
   );
 };
 
-export const WithForm = TemplateWithForm.bind({});
+export const WithForm: typeof TemplateWithForm = TemplateWithForm.bind({});
 WithForm.args = {
   label: "Meeting time",
 };

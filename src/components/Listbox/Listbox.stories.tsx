@@ -1,4 +1,4 @@
-import { Meta, Story } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import {
@@ -39,23 +39,23 @@ const meta: Meta<ListboxData> = {
 
 export default meta;
 
-const Template: Story<ListboxData> = (args) => (
+const Template: StoryFn<ListboxData> = (args) => (
   <Listbox {...args} caption={"ASD"} state={"error"} />
 );
-export const Default = Template.bind({});
+export const Default: typeof Template = Template.bind({});
 Default.args = {
   label: "A label",
   optionList,
 };
 
-export const MultiValueListbox = Template.bind({});
+export const MultiValueListbox: typeof Template = Template.bind({});
 MultiValueListbox.args = {
   label: "A label",
   optionList,
   isMulti: true,
 };
 
-const TemplateWithForm: Story<ListboxData> = (args) => {
+const TemplateWithForm: StoryFn<ListboxData> = (args) => {
   const methods = useForm();
   return (
     <FormProvider {...methods}>
@@ -69,7 +69,7 @@ const TemplateWithForm: Story<ListboxData> = (args) => {
   );
 };
 
-export const WithForm = TemplateWithForm.bind({});
+export const WithForm: typeof TemplateWithForm = TemplateWithForm.bind({});
 WithForm.argTypes = {
   isMulti: { table: { disable: false } },
 };
@@ -117,15 +117,15 @@ const promiseOptions = (optionList?: ColourOption[]) => (inputValue: string) =>
     }, 1000);
   });
 
-export const AsyncWithDefaultTemplate: Story<ListboxData> = (args) => (
+export const AsyncWithDefaultTemplate: StoryFn<ListboxData> = (args) => (
   <AsyncListbox {...args} defaultOptions loadOptions={promiseOptions()} />
 );
 
-export const AsyncTemplate: Story<ListboxData> = (args) => (
+export const AsyncTemplate: StoryFn<ListboxData> = (args) => (
   <AsyncListbox {...args} loadOptions={promiseOptions()} />
 );
 
-export const AsyncMultiTemplate: Story<ListboxData> = (args) => (
+export const AsyncMultiTemplate: StoryFn<ListboxData> = (args) => (
   <AsyncListbox
     {...args}
     isMulti
@@ -134,7 +134,7 @@ export const AsyncMultiTemplate: Story<ListboxData> = (args) => (
   />
 );
 
-export const CreatableTemplate: Story<ListboxData> = (args) => {
+export const CreatableTemplate: StoryFn<ListboxData> = (args) => {
   const [optionList, setOptionList] = useState<ColourOption[]>(colourOptions);
   const handleNewOption = (newOption: string) => {
     setOptionList([
@@ -153,7 +153,7 @@ export const CreatableTemplate: Story<ListboxData> = (args) => {
   );
 };
 
-export const AsyncCreatableTemplate: Story<ListboxData> = (args) => {
+export const AsyncCreatableTemplate: StoryFn<ListboxData> = (args) => {
   const [optionList, setOptionList] = useState<ColourOption[]>(colourOptions);
   const handleNewOption = (newOption: string) => {
     setOptionList([

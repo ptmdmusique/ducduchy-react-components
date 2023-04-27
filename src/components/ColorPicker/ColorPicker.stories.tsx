@@ -1,4 +1,4 @@
-import { Meta, Story } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Button } from "../Button";
@@ -26,11 +26,11 @@ const meta: Meta<ColorPickerProps> = {
 
 export default meta;
 
-const Template: Story<ColorPickerProps> = (args) => <ColorPicker {...args} />;
-export const Default = Template.bind({});
+const Template: StoryFn<ColorPickerProps> = (args) => <ColorPicker {...args} />;
+export const Default: typeof Template = Template.bind({});
 Default.args = {};
 
-export const WithFreqUsedColor = Template.bind({});
+export const WithFreqUsedColor: typeof Template = Template.bind({});
 WithFreqUsedColor.args = {
   defaultValue: "#6bf388",
   frequentlyUsedColorList: [
@@ -42,7 +42,7 @@ WithFreqUsedColor.args = {
   ],
 };
 
-export const WithFreqUsedColorAndNoPicker = Template.bind({});
+export const WithFreqUsedColorAndNoPicker: typeof Template = Template.bind({});
 WithFreqUsedColorAndNoPicker.args = {
   hidePicker: true,
   defaultValue: "#6bf388",
@@ -55,7 +55,7 @@ WithFreqUsedColorAndNoPicker.args = {
   ],
 };
 
-export const WithForm: Story<ColorPickerProps> = (args) => {
+export const WithForm: StoryFn<ColorPickerProps> = (args) => {
   const methods = useForm<{ color: HEX }>();
 
   return (
@@ -78,7 +78,7 @@ const generateRandomHexColor = () => {
   return color;
 };
 
-export const WithControlledValue: Story<ColorPickerProps> = (args) => {
+export const WithControlledValue: StoryFn<ColorPickerProps> = (args) => {
   const [color, setColor] = useState<HEX>();
 
   return (

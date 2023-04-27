@@ -1,5 +1,4 @@
-import { Meta, Story } from "@storybook/react";
-import { useState } from "react";
+import { Meta, StoryFn } from "@storybook/react";
 import { useForm } from "react-hook-form";
 import { Input, InputProps } from ".";
 import { Button } from "../Button";
@@ -20,29 +19,29 @@ const meta: Meta<InputProps> = {
 
 export default meta;
 
-const Template: Story<InputProps> = (args) => <Input {...args} />;
-export const Default = Template.bind({});
+const Template: StoryFn<InputProps> = (args) => <Input {...args} />;
+export const Default: typeof Template = Template.bind({});
 
-export const WithLabel = Template.bind({});
+export const WithLabel: typeof Template = Template.bind({});
 WithLabel.args = { label: "Hello Label!" };
 
-export const WithPlaceholder = Template.bind({});
+export const WithPlaceholder: typeof Template = Template.bind({});
 WithPlaceholder.args = { placeholder: "John Doe" };
 
-export const WithLabelAndPlaceholder = Template.bind({});
+export const WithLabelAndPlaceholder: typeof Template = Template.bind({});
 WithLabelAndPlaceholder.args = {
   label: "What a label",
   placeholder: "John Doe",
 };
 
-export const WithCaption = Template.bind({});
+export const WithCaption: typeof Template = Template.bind({});
 WithCaption.args = {
   label: "What a label",
   placeholder: "John Doe",
   caption: <div className="input-stories-caption">Here is a caption</div>,
 };
 
-export const WithAdornments = Template.bind({});
+export const WithAdornments: typeof Template = Template.bind({});
 WithAdornments.args = {
   label: "What a label",
   placeholder: "John Doe",
@@ -59,7 +58,7 @@ WithAdornments.args = {
 
 Default.args = {};
 
-export const WithUseFormSetValue: Story<InputProps> = (args) => {
+export const WithUseFormSetValue: StoryFn<InputProps> = (args) => {
   const { register, setValue, control } = useForm<{ formValue: string }>();
 
   const generateRandomValue = () => {

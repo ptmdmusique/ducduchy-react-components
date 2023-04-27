@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { Meta, Story } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -36,9 +36,10 @@ const meta: Meta<DateTimePickerProps> = {
 
 export default meta;
 
-const Template: Story<DateTimePickerProps> = (args) => {
-  const [regularOnChangeValue, setRegularOnChangeValue] =
-    useState<Date | null>(null);
+const Template: StoryFn<DateTimePickerProps> = (args) => {
+  const [regularOnChangeValue, setRegularOnChangeValue] = useState<Date | null>(
+    null,
+  );
   const [onCloseValue, setOnCloseValue] = useState<Date | null>(null);
 
   return (
@@ -65,9 +66,9 @@ const Template: Story<DateTimePickerProps> = (args) => {
     </div>
   );
 };
-export const Default = Template.bind({});
+export const Default: typeof Template = Template.bind({});
 
-export const WithForm: Story<DateTimePickerProps> = (args) => {
+export const WithForm: StoryFn<DateTimePickerProps> = (args) => {
   const methods = useForm<{ dateTimePicker: string }>();
   return (
     <FormProvider {...methods}>
@@ -84,7 +85,7 @@ WithForm.args = {
   label: "Meeting time",
 };
 
-export const WithLocale: Story<DateTimePickerProps> = (args) => {
+export const WithLocale: StoryFn<DateTimePickerProps> = (args) => {
   const [locale, setLocale] = useState<"vi" | "en">("en");
 
   return (
@@ -106,7 +107,9 @@ export const WithLocale: Story<DateTimePickerProps> = (args) => {
 const randomDate = (start: Date, end: Date) =>
   new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
 
-export const WithReactHookFormSetValue: Story<DateTimePickerProps> = (args) => {
+export const WithReactHookFormSetValue: StoryFn<DateTimePickerProps> = (
+  args,
+) => {
   const methods = useForm<{ dateTimeISO: string | undefined }>({
     defaultValues: { dateTimeISO: new Date().toISOString() },
   });
@@ -146,7 +149,7 @@ WithReactHookFormSetValue.args = {
   dateFormat: "DD/MM/YYYY HH:mm",
 };
 
-export const WithDateConstraints: Story<DateTimePickerProps> = (args) => (
+export const WithDateConstraints: StoryFn<DateTimePickerProps> = (args) => (
   <DateTimePicker {...args} />
 );
 WithDateConstraints.args = {
@@ -160,7 +163,7 @@ const getTomorrowDate = (date: Date) => {
   return tomorrow;
 };
 
-export const WithSyncPicker: Story<DateTimePickerProps> = (args) => {
+export const WithSyncPicker: StoryFn<DateTimePickerProps> = (args) => {
   const [startDate, setStartDate] = useState<null | Date>(new Date());
   const [endDate, setEndDate] = useState<null | Date>(
     getTomorrowDate(new Date()),
@@ -196,7 +199,7 @@ export const WithSyncPicker: Story<DateTimePickerProps> = (args) => {
   );
 };
 
-export const WithModal: Story<DateTimePickerProps> = (args) => {
+export const WithModal: StoryFn<DateTimePickerProps> = (args) => {
   const [modalOpen, setModalOpen] = useState(false);
 
   return (

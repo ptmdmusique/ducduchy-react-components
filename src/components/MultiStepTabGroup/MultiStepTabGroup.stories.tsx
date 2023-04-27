@@ -1,4 +1,4 @@
-import { Meta, Story } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { useState } from "react";
 import { Button } from "../Button";
 import { IconProps } from "../Icon";
@@ -37,10 +37,7 @@ const contentList = [
   { text: "Favorite content" },
 ];
 
-const getIndex = (index: number, length: number) =>
-  Math.max(0, Math.min(index, length - 1));
-
-export const ControlledIndex: Story<MultiStepTabGroupProps> = (args) => {
+export const ControlledIndex: StoryFn<MultiStepTabGroupProps> = (args) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [nextIndex, setNextIndex] = useState<null | number>(null);
 

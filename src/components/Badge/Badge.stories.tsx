@@ -21,7 +21,7 @@ const meta: Meta<BadgeProps> = {
 
 export default meta;
 
-const Template: StoryFn<BadgeProps> = (args) => (
+export const Default: StoryFn<BadgeProps> = (args) => (
   <div className="canvas-container">
     <div className="title">
       <p className="title-text">Midterm Quiz</p>
@@ -38,17 +38,12 @@ const Template: StoryFn<BadgeProps> = (args) => (
   </div>
 );
 
-export const Default = Template.bind({});
 Default.args = { text: "Math" };
 
-const StandaloneTemplate: StoryFn<BadgeProps> = (args) => (
+export const Standalone: StoryFn<BadgeProps> = (args) => (
   <div className="standalone-badge-canvas-container">
     <Badge {...args} />
   </div>
 );
 
-// By passing using the Args format for exported stories, you can control the props for a component for reuse in a test
-// https://storybook.js.org/docs/react/workflows/unit-testing
-
-export const Standalone = StandaloneTemplate.bind({});
 Standalone.args = { text: "A smol badge" };

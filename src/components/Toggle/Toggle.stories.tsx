@@ -24,12 +24,12 @@ const meta: Meta<ToggleProps> = {
 export default meta;
 
 const Template: StoryFn<ToggleProps> = (args) => <Toggle {...args} />;
-export const Default = Template.bind({});
+export const Default: typeof Template = Template.bind({});
 Default.args = {
   label: "My toggle",
 };
 
-export const Checkbox = Template.bind({});
+export const Checkbox: typeof Template = Template.bind({});
 Checkbox.args = {
   label: "My checkbox",
   type: "checkbox",
@@ -67,9 +67,9 @@ const TemplateWithForm: StoryFn<ToggleProps> = (args) => {
   );
 };
 
-export const WithForm = TemplateWithForm.bind({});
+export const WithForm: typeof TemplateWithForm = TemplateWithForm.bind({});
 
-export const WithRef: StoryFn<ToggleProps> = (args) => {
+export const WithRef: StoryFn<ToggleProps> = () => {
   const toggleRef = useRef<HTMLButtonElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
