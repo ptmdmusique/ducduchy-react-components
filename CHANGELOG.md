@@ -11,11 +11,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - 💡 `Toggle`: support passing ref - #59
 - ⛓️ `Link`: add `Link` component - #55
-- 📻 `RadioGroup`: add min width - #54
 
 ### Changed
 
 - Switch to `pnpm` instead of `npm` for package management
+
+### Fixed
+
+- 📻 `RadioGroup`: add min width - #54
 
 ## [1.8.1] - 2023-04-15
 
