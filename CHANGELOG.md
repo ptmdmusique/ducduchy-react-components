@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - 💡 `Toggle`: support passing ref - #59
 - ⛓️ `Link`: add `Link` component - #55
+- 📻 `RadioGroup`: add min width - #54
 
 ### Changed
 
