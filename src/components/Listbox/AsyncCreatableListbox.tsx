@@ -55,9 +55,12 @@ export function AsyncCreatableListbox<
     <ListboxBase {...props}>
       {(formOnChange) => (
         <AsyncCreatableSelect<ListboxOption<Data>, IsMulti>
-          isOptionDisabled={() => (disabled ? true : false)}
           noOptionsMessage={listboxNoOptionMessage}
           {...selectProps}
+          isOptionDisabled={(option, selectValue) =>
+            selectProps.isOptionDisabled?.(option, selectValue) ??
+            (disabled ? true : false)
+          }
           isDisabled={disabled}
           className={getListboxClassName(borderType)}
           options={optionList}

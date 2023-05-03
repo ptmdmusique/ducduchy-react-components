@@ -45,6 +45,11 @@ module.exports = {
           active: withOpacity("--background-active"),
         },
       },
+      textColor: {
+        skin: {
+          disabled: withOpacity("--text-disabled"),
+        },
+      },
     },
   },
   variants: {

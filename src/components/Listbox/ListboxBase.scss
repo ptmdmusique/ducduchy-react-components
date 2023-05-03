@@ -123,6 +123,10 @@
             @apply bg-opacity-50;
           }
         }
+        .dd-listbox__option--is-disabled {
+          @apply cursor-not-allowed;
+          @apply text-skin-disabled;
+        }
 
         .dd-listbox__menu-notice--loading {
           @apply text-skin-base;

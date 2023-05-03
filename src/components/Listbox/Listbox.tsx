@@ -7,14 +7,14 @@ import Select, {
 } from "react-select";
 import { OmitStrict } from "../../utils/types";
 import { Icon } from "../Icon";
+import { ListboxBase, ListboxBaseProps } from "./ListboxBase";
 import {
+  ListboxOption,
   getListboxClassName,
+  listBoxOnChange,
   listboxInnerClassNamePrefix,
   listboxNoOptionMessage,
-  listBoxOnChange,
-  ListboxOption,
 } from "./common";
-import { ListboxBase, ListboxBaseProps } from "./ListboxBase";
 
 export type ListboxProps<
   Data,
@@ -55,9 +55,12 @@ export function Listbox<
     <ListboxBase {...props}>
       {(formOnChange) => (
         <Select<ListboxOption<Data>, IsMulti>
-          isOptionDisabled={() => (disabled ? true : false)}
           noOptionsMessage={listboxNoOptionMessage}
           {...selectProps}
+          isOptionDisabled={(option, selectValue) =>
+            selectProps.isOptionDisabled?.(option, selectValue) ??
+            (disabled ? true : false)
+          }
           isDisabled={disabled}
           className={getListboxClassName(borderType)}
           options={optionList}

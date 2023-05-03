@@ -38,6 +38,5 @@ export const initializeIconList = () => {
   ] as const;
 
   // Set up icon libraries
-  // @ts-ignore
   library.add(...iconList);
 };

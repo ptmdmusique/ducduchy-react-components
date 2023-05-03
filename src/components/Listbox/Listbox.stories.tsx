@@ -48,6 +48,17 @@ Default.args = {
   optionList,
 };
 
+export const WithDisabledOption: StoryFn<ListboxData> = (args) => (
+  <Listbox
+    {...args}
+    isOptionDisabled={(option) => option.value === "disabled"}
+    caption={"ASD"}
+    state={"error"}
+    optionList={[...optionList, { label: "⚠️ Disabled", value: "disabled" }]}
+    label="A wild label"
+  />
+);
+
 export const MultiValueListbox: typeof Template = Template.bind({});
 MultiValueListbox.args = {
   label: "A label",
