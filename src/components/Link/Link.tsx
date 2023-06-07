@@ -14,6 +14,8 @@ export interface LinkProps
   iconEnd?: IconProps["icon"] | ReactNode;
   /** Not necessary if ReactNode is provided as `iconEnd` */
   iconEndClassName?: string;
+  /** Should we hide underline by default and only show underline on hover/focus, etc */
+  hideUnderlineByDefault?: boolean;
 }
 
 export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
@@ -24,6 +26,7 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
       iconEnd,
       iconEndClassName,
       colorType = "primary",
+      hideUnderlineByDefault,
       children,
       ...linkProps
     },
@@ -36,6 +39,10 @@ export const Link = forwardRef<HTMLAnchorElement, LinkProps>(
         className={cx(
           `${COMPONENT_PREFIX}-link`,
           `${COMPONENT_PREFIX}-link--${colorType}`,
+          {
+            [`${COMPONENT_PREFIX}-link--show-underline`]:
+              !hideUnderlineByDefault,
+          },
           linkProps.className,
         )}
       >
