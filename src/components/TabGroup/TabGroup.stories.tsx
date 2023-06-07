@@ -102,7 +102,7 @@ export const ControlledIndex: StoryFn<TabGroupProps> = (args) => {
     setSelectedIndex(
       getIndex(args.defaultSelectedIndex ?? 0, panelList.length),
     );
-  }, [args.selectedIndex]);
+  }, [args.selectedIndex, args.defaultSelectedIndex]);
 
   return (
     <>

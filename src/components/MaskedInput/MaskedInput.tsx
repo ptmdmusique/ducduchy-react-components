@@ -51,7 +51,7 @@ export const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
           ref.current = inputRef.current;
         }
       }
-    }, [inputRef.current]);
+    }, [ref]);
 
     useImperativeHandle(
       handlerRef,

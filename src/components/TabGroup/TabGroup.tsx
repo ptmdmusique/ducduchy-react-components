@@ -4,6 +4,7 @@ import {
   ComponentProps,
   forwardRef,
   ReactElement,
+  useCallback,
   useEffect,
   useMemo,
   useRef,
@@ -75,22 +76,31 @@ export const TabGroup = forwardRef<HTMLDivElement, TabGroupProps>(
       getIndex(_selectedIndex ?? defaultSelectedIndex ?? 0, numberOfTabs),
     );
 
+    const calculateIndicatorInfo = useCallback(
+      (curSelectedIndex: number) => {
+        const tabList = tabListRef.current;
+        if (tabList && renderIndicator) {
+          // First spot is reserved for the indicator
+          const activeChild = tabList.children[curSelectedIndex + 1];
+          const { left: childLeft, width } =
+            activeChild.getBoundingClientRect();
+          const { left: listLeft } = tabList.getBoundingClientRect();
+          setIndicatorInfo({ left: childLeft - listLeft, width });
+        }
+      },
+      [renderIndicator],
+    );
+
     useEffect(() => {
       calculateIndicatorInfo(
         getIndex(_selectedIndex ?? defaultSelectedIndex ?? 0, numberOfTabs),
       );
-    }, []);
-
-    const calculateIndicatorInfo = (curSelectedIndex: number) => {
-      const tabList = tabListRef.current;
-      if (tabList && renderIndicator) {
-        // First spot is reserved for the indicator
-        const activeChild = tabList.children[curSelectedIndex + 1];
-        const { left: childLeft, width } = activeChild.getBoundingClientRect();
-        const { left: listLeft } = tabList.getBoundingClientRect();
-        setIndicatorInfo({ left: childLeft - listLeft, width });
-      }
-    };
+    }, [
+      calculateIndicatorInfo,
+      _selectedIndex,
+      defaultSelectedIndex,
+      numberOfTabs,
+    ]);
 
     useEffect(() => {
       if (_selectedIndex != null) {
@@ -98,7 +108,7 @@ export const TabGroup = forwardRef<HTMLDivElement, TabGroupProps>(
         setSelectedIndex(newIndex);
         calculateIndicatorInfo(newIndex);
       }
-    }, [_selectedIndex, numberOfTabs]);
+    }, [_selectedIndex, numberOfTabs, calculateIndicatorInfo]);
 
     const renderArr = useMemo<any[]>(
       () => Array.from<any>(Array(numberOfTabs)),

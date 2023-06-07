@@ -46,7 +46,7 @@ export function AsyncListbox<
   } = props;
 
   return (
-    <ListboxBase {...props}>
+    <ListboxBase state={state} {...props}>
       {(formOnChange) => (
         <AsyncSelect<ListboxOption<Data>, IsMulti>
           noOptionsMessage={listboxNoOptionMessage}

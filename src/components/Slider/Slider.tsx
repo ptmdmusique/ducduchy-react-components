@@ -87,7 +87,7 @@ export const Slider = forwardRef<Range, SliderProps>(
           maxPercent = (maxValue / max) * 100;
           return { trackLeft: minPercent, trackRight: maxPercent };
       }
-    }, [valueList, min, max]);
+    }, [valueList, max]);
 
     return (
       <div className={cx(BASE_CLASSNAME, className)}>

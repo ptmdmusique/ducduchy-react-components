@@ -62,7 +62,7 @@ const UseFormWatcher = ({
   const dataToWatch = useWatch({ name, control });
   useEffect(() => {
     onChange(dataToWatch);
-  }, [dataToWatch]);
+  }, [dataToWatch, onChange]);
 
   return null;
 };
@@ -99,7 +99,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           ref.current = inputRef.current;
         }
       }
-    }, [inputRef.current]);
+    }, [ref]);
 
     const debounceRef = useRef(
       debounce((event: ChangeEvent<HTMLInputElement>) => {
@@ -165,10 +165,12 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       return <div className={iconCN}>{adornment}</div>;
     };
 
-    const handleWatchValueChange = (value: any) => {
-      setHasContent(!!value || checkInputPropsHasContent());
-    };
-
+    const handleWatchValueChange = useCallback(
+      (value: any) => {
+        setHasContent(!!value || checkInputPropsHasContent());
+      },
+      [checkInputPropsHasContent],
+    );
     const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
       setHasContent(
         !!inputProps?.placeholder ||
@@ -188,7 +190,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       setTimeout(() => {
         setHasContent(checkInputPropsHasContent() || !!inputRef.current?.value);
       }, 1);
-    }, []);
+    }, [checkInputPropsHasContent]);
 
     useEffect(() => {
       const debouncer = debounceRef.current;

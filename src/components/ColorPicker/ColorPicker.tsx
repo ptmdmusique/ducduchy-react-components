@@ -114,7 +114,7 @@ export const ColorPicker = forwardRef<HTMLInputElement, ColorPickerProps>(
       if (inputRef.current) {
         inputRef.current.value = curColor ?? "";
       }
-    }, [inputRef.current, curColor]);
+    }, [curColor]);
 
     useEffect(() => {
       if (isFirstRender.current) {

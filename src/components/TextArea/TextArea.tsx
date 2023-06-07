@@ -53,7 +53,7 @@ const UseFormWatcher = ({
   const dataToWatch = useWatch({ name, control });
   useEffect(() => {
     onChange(dataToWatch);
-  }, [dataToWatch]);
+  }, [dataToWatch, onChange]);
 
   return null;
 };
@@ -87,7 +87,7 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           ref.current = inputRef.current;
         }
       }
-    }, [inputRef.current, ref]);
+    }, [ref]);
 
     const debounceRef = useRef(
       debounce((event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -115,9 +115,12 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       }
     }, [propHasContent]);
 
-    const handleWatchValueChange = (value: any) => {
-      setHasContent(!!value || checkInputPropsHasContent());
-    };
+    const handleWatchValueChange = useCallback(
+      (value: any) => {
+        setHasContent(!!value || checkInputPropsHasContent());
+      },
+      [checkInputPropsHasContent],
+    );
 
     const onInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
       setHasContent(

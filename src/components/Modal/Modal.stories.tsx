@@ -207,6 +207,7 @@ export const WithMultipleModal: StoryFn<ModalProps> = (args) => {
           <a
             href="https://www.w3.org/TR/wai-aria-1.1/#dialog"
             target="_blank"
+            rel="noreferrer"
             className="text-skin-info hover:underline"
           >
             W3 spec

@@ -253,7 +253,7 @@ export const DurationPicker = forwardRef<HTMLInputElement, DurationPickerProps>(
           ref.current = inputRef.current;
         }
       }
-    }, [inputRef.current, ref]);
+    }, [ref]);
 
     // Split value from defaultValue to avoid total controlled form
     const value = useMemo(

@@ -53,7 +53,7 @@ export const possibleDurationTypeList = [
   "minutes",
   "seconds",
 ] as const;
-export type PossibleDurationType = typeof possibleDurationTypeList[number];
+export type PossibleDurationType = (typeof possibleDurationTypeList)[number];
 
 export type Duration = Record<PossibleDurationType, number>;
 
