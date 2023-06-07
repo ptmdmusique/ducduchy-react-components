@@ -47,6 +47,7 @@ export const Default: Story<AlertBannerProps> = (args) => (
       <a
         href="https://esri.github.io/calcite-components/?path=/story/components-alert--title-message-link"
         target="_blank"
+        rel="noreferrer"
         className="text-skin-info font-medium hover:underline"
       >
         Calcite Alert

@@ -13,6 +13,7 @@
       @apply w-full;
     }
   }
+
   &:active::after {
     @apply w-full;
     height: 2px;
@@ -27,7 +28,7 @@
     content: "";
   }
 
-  &::before {
+  &.dd-link--show-underline::before {
     @apply w-full;
   }
   &::after {
@@ -53,11 +54,11 @@
     }
   }
 
-  > .dd-link__icon--start {
+  > .dd-link__icon--start:not(:only-child) {
     @apply mr-2;
   }
 
-  > .dd-link__icon--end {
+  > .dd-link__icon--end:not(:only-child) {
     @apply ml-2;
   }
 }

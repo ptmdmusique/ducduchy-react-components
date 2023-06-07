@@ -35,7 +35,7 @@ export const TimePicker = forwardRef<HTMLInputElement, DurationPickerProps>(
           props.onChange?.(
             unmaskedValue,
             // Strip the " " from the masked value to remove the workaround
-            props?.localeText == undefined ? maskedValue.trim() : maskedValue,
+            props?.localeText === undefined ? maskedValue.trim() : maskedValue,
             durationInMs,
           );
         }}

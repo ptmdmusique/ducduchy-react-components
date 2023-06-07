@@ -1,2 +1,1 @@
-export * from './MultiStepTabGroup';
-;
+export * from "./MultiStepTabGroup";

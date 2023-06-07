@@ -52,7 +52,7 @@ export function AsyncCreatableListbox<
   } = props;
 
   return (
-    <ListboxBase {...props}>
+    <ListboxBase state={state} {...props}>
       {(formOnChange) => (
         <AsyncCreatableSelect<ListboxOption<Data>, IsMulti>
           noOptionsMessage={listboxNoOptionMessage}

@@ -52,7 +52,7 @@ export function Listbox<
   } = props;
 
   return (
-    <ListboxBase {...props}>
+    <ListboxBase state={state} {...props}>
       {(formOnChange) => (
         <Select<ListboxOption<Data>, IsMulti>
           noOptionsMessage={listboxNoOptionMessage}

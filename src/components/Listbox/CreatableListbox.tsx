@@ -46,7 +46,7 @@ export function CreatableListbox<
   } = props;
 
   return (
-    <ListboxBase {...props}>
+    <ListboxBase state={state} {...props}>
       {(formOnChange) => (
         <CreatableSelect<ListboxOption<Data>, IsMulti>
           noOptionsMessage={listboxNoOptionMessage}
