@@ -12,6 +12,7 @@ export * from "./MaskedInput";
 export * from "./Menu";
 export * from "./Modal";
 export * from "./MultiStepTabGroup";
+export * from "./Paginate";
 export * from "./Popover";
 export * from "./RadioGroup";
 export * from "./Slider";
