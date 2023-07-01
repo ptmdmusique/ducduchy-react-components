@@ -1,8 +1,12 @@
 import { library } from "@fortawesome/fontawesome-svg-core";
+import { faAnglesLeft } from "@fortawesome/free-solid-svg-icons/faAnglesLeft";
+import { faAnglesRight } from "@fortawesome/free-solid-svg-icons/faAnglesRight";
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons/faCalendarAlt";
 import { faCat } from "@fortawesome/free-solid-svg-icons/faCat";
 import { faCheck } from "@fortawesome/free-solid-svg-icons/faCheck";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons/faChevronDown";
+import { faChevronLeft } from "@fortawesome/free-solid-svg-icons/faChevronLeft";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons/faChevronRight";
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons/faCircleCheck";
 import { faCircleInfo } from "@fortawesome/free-solid-svg-icons/faCircleInfo";
 import { faClock } from "@fortawesome/free-solid-svg-icons/faClock";
@@ -35,6 +39,11 @@ export const initializeIconList = () => {
     faTriangleExclamation,
     faCircleCheck,
     faCircleInfo,
+
+    faChevronLeft,
+    faChevronRight,
+    faAnglesLeft,
+    faAnglesRight,
   ] as const;
 
   // Set up icon libraries

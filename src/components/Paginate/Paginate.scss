@@ -1,0 +1,49 @@
+@import "../Button/Button.scss";
+@import "../assets/styles/variable-common.scss";
+
+.dd-paginate {
+  @apply text-skin-base;
+  @apply flex;
+
+  &__nav-cta,
+  &__page-link {
+    @apply p-2;
+  }
+
+  &__page {
+    @apply flex justify-center items-center;
+    @apply px-1;
+
+    > .dd-paginate__page-link {
+      @extend .dd-button;
+      @apply duration-100;
+      @apply h-8 w-8;
+      @apply p-2;
+
+      @each $type in $color-types {
+        &.dd-paginate__page-link--#{$type} {
+          @apply text-skin-#{$type};
+          &:hover:not(:disabled),
+          &:focus {
+            @apply bg-skin-#{$type} bg-opacity-5;
+          }
+          &:active {
+            @apply bg-skin-#{$type} bg-opacity-10;
+          }
+        }
+      }
+    }
+
+    &.selected {
+      > .dd-paginate__page-link {
+        @each $type in $color-types {
+          &.dd-paginate__page-link--#{$type},
+          &.dd-paginate__page-link--#{$type}:hover {
+            @apply text-skin-inverted;
+            @apply bg-skin-#{$type};
+          }
+        }
+      }
+    }
+  }
+}
