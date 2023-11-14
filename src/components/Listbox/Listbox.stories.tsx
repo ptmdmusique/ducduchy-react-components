@@ -48,6 +48,14 @@ Default.args = {
   optionList,
 };
 
+export const WithDisableInput: StoryFn<ListboxData> = (args) => (
+  <Listbox
+    {...args}
+    isSearchable={false}
+    optionList={[...optionList, { label: "⚠️ Disabled", value: "disabled" }]}
+  />
+);
+
 export const WithDisabledOption: StoryFn<ListboxData> = (args) => (
   <Listbox
     {...args}
