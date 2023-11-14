@@ -25,7 +25,7 @@
     "start": "dts watch",
     "storybook": "storybook dev -p 6006",
     "test": "dts test --passWithNoTests",
-    "deploy-storybook-only": "gh-pages -d storybook-static",
+    "deploy-storybook-only": "gh-pages -d storybook-static -r https://github.com/ptmdmusique/ducduchy-react-components",
     "deploy-storybook": "npm run build-storybook && npm run deploy-storybook-only",
     "deploy-publish": "npm publish & npm run deploy-storybook"
   },
