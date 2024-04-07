@@ -4,6 +4,7 @@ import { Input, InputProps } from ".";
 import { Button } from "../Button";
 import { storyIconOption } from "../resources/story-common";
 import "./Input.stories.scss";
+import { useState } from "react";
 
 const meta: Meta<InputProps> = {
   title: "Components/Form/Input",
@@ -94,6 +95,35 @@ export const WithUseFormSetValue: StoryFn<InputProps> = (args) => {
         <br />
         OR you can pass the `hasContent` prop to control the label float
         yourself
+      </p>
+    </div>
+  );
+};
+
+export const Controlled: StoryFn<InputProps> = (args) => {
+  const [curValue, setCurValue] = useState("Hello world!");
+
+  return (
+    <div>
+      <Input
+        {...args}
+        label="A controlled form"
+        value={curValue}
+        onChange={(event) => setCurValue(event.target.value)}
+      />
+
+      <p className="mt-4">
+        <strong>Current value:</strong> {curValue}
+      </p>
+
+      <p className="mt-8">
+        Note that this will break if you pass the <code>debounceParam</code>{" "}
+        prop because the value of the event will be lost after debounce time.
+      </p>
+      <p>
+        The reason is because the <code>event</code> object when debounce
+        finishes will use the current input value at that time which is the old
+        value
       </p>
     </div>
   );

@@ -178,7 +178,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           !!event.target.value,
       );
 
-      debounceRef.current(event);
+      if (debounceParam?.debounceTime) {
+        debounceRef.current(event);
+      } else {
+        inputProps?.onChange?.(event);
+      }
     };
 
     useEffect(() => {
