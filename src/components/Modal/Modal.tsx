@@ -1,6 +1,12 @@
 import { Dialog } from "@headlessui/react";
 import cx from "classnames";
-import { AnimatePresence, motion, Variants } from "framer-motion";
+import {
+  AnimatePresence,
+  motion,
+  Transition,
+  Variant,
+  Variants,
+} from "framer-motion";
 import { PropsWithChildren, ReactNode, useMemo, useRef } from "react";
 import { useWindowSize } from "react-use";
 import { Icon, IconProps } from "../Icon";
@@ -12,6 +18,8 @@ import { COMPONENT_PREFIX } from "../resources/common.data";
 import "./Modal.scss";
 
 type OnCloseTriggerdOn = "close-button-click" | "standard";
+type CustomAnimationVariant = Record<"hidden" | "visible", Variant>;
+
 export interface ModalProps {
   isOpen: boolean;
   header?: ReactNode;
@@ -29,7 +37,28 @@ export interface ModalProps {
 
   isFullscreen?: boolean;
 
-  animationType?: "fade-down" | "natural";
+  /**
+   * The type of animation to use when opening the modal
+   * - `fade-down`: The modal will fade in and slide down from the top
+   * - `natural`: The modal will expand from the center of the screen - NOTE: currently this is not working as expected
+   * - `CustomAnimationVariant`: Custom animation variants - when the modal is opened, the modal will animate from the `hidden` variant to the `visible` variant and vice versa when the modal is closed. Check [this doc](https://www.framer.com/motion/animation/#variants) for more information on how to create custom variants
+   */
+  animationType?: "fade-down" | "natural" | CustomAnimationVariant;
+  /**
+   * Animation transition. Check this [doc](https://www.framer.com/motion/animation/##transitions) for more information
+   */
+  transition?: Transition;
+
+  /**
+   * Animation for overlay
+   *
+   * Check [this doc](https://www.framer.com/motion/animation/#variants) for more information on how to create custom variants
+   */
+  overlayAnimation?: {
+    variants?: CustomAnimationVariant;
+    transition?: Transition;
+  };
+
   animationAnchorElement?: HTMLElement | null;
   targetSize?: { width?: number; height?: number };
 }
@@ -50,12 +79,18 @@ export const Modal = ({
   isFullscreen,
 
   animationType = "fade-down",
+  transition,
+  overlayAnimation,
   animationAnchorElement,
   targetSize,
 }: PropsWithChildren<ModalProps>) => {
   // * Animation
   const { width: winWidth, height: winHeight } = useWindowSize();
   const modalVariants = useMemo<Variants>(() => {
+    if (typeof animationType !== "string") {
+      return animationType;
+    }
+
     if (animationType === "fade-down") {
       return modalVariantMap.modal;
     }
@@ -102,7 +137,8 @@ export const Modal = ({
         >
           <motion.div
             className="overlay"
-            variants={modalVariantMap.overlay}
+            variants={overlayAnimation?.variants ?? modalVariantMap.overlay}
+            transition={overlayAnimation?.transition}
             initial="hidden"
             animate="visible"
             exit="hidden"
@@ -116,6 +152,7 @@ export const Modal = ({
             })}
             ref={containerRef}
             variants={modalVariants}
+            transition={transition}
             initial="hidden"
             animate="visible"
             exit="hidden"

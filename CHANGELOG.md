@@ -5,11 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.10.2] - 2024-05-15
+
+### Added
+
+- 💭 `Modal`: allow custom animation
+
+### Fixed
+
+- 🔘 `Button`: fix transparent background for outline button with `withBackground` prop on - [#68](https://github.com/ptmdmusique/ducduchy-react-components/issues/68)
+
 ## [1.10.1] - 2024-04-06
 
 ### Fixed
 
-- 📝 `Input`: don't make ` onChange`` go through debounce if  `debounceParam`` is not set
+- 📝 `Input`: don't make ` onChange` go through debounce if `debounceParam`` is not set
 
 ## [1.10.0] - 2023-06-30
 
