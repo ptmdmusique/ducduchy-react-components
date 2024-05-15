@@ -73,12 +73,22 @@
     @apply border-skin-secondary;
     @apply text-skin-secondary;
 
-    &:hover:not(:disabled),
-    &:focus {
-      @apply bg-skin-secondary bg-opacity-5;
+    &:not(.dd-button--with-background) {
+      &:hover:not(:disabled),
+      &:focus {
+        @apply bg-skin-secondary bg-opacity-5;
+      }
+      &:active {
+        @apply bg-skin-secondary bg-opacity-10;
+      }
     }
-    &:active {
-      @apply bg-skin-secondary bg-opacity-10;
+    &.dd-button--with-background {
+      &:hover:not(:disabled),
+      &:focus,
+      &:active {
+        @apply filter brightness-105;
+        @apply shadow-md;
+      }
     }
 
     @each $type in $color-types {
