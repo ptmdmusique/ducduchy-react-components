@@ -24,12 +24,23 @@ const meta: Meta<ModalProps> = {
 
 export default meta;
 
-const Template: StoryFn<ModalProps> = (args) => <Modal {...args} />;
-export const Default: typeof Template = Template.bind({});
+const Template: StoryFn<Partial<ModalProps> & { buttonText?: string }> = ({
+  buttonText,
+  ...args
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  return (
+    <>
+      <Modal {...args} isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <Button onClick={() => setIsOpen(true)}>
+        {buttonText ?? "Open Modal"}
+      </Button>
+    </>
+  );
+};
+export const Default = Template.bind({});
 Default.args = {
-  isOpen: true,
   header: "What a dope header 👌",
-  showCloseButton: false,
   // @ts-ignore
   children: (
     <div className="px-6 pb-4">
@@ -45,8 +56,6 @@ Default.args = {
 export const WithFooter: typeof Template = Template.bind({});
 WithFooter.args = {
   header: "What a dope header 👌",
-  isOpen: true,
-  showCloseButton: false,
   // @ts-ignore
   children: (
     <div className="px-6 pb-4">
@@ -68,30 +77,6 @@ WithFooter.args = {
       </Button>
     </div>
   ),
-};
-
-const TemplateWithCloseButton: StoryFn<ModalProps> = (args) => {
-  const [isOpen, setIsOpen] = React.useState(true);
-  return (
-    <>
-      <Modal {...args} isOpen={isOpen} onClose={() => setIsOpen(false)}>
-        <div className="px-6 pb-4">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. A omnis
-          nisi, voluptate rem eaque odit provident repudiandae veritatis nihil
-          facilis beatae, ea quibusdam error maxime. Et nihil nam delectus esse
-          aliquam, impedit rerum beatae? Natus officiis dolore quia, ratione
-          minus dolor voluptas tempora placeat iusto, nisi vitae ipsa magnam ad?
-        </div>
-      </Modal>
-
-      <Button onClick={() => setIsOpen(true)}>Open Modal</Button>
-    </>
-  );
-};
-export const WithCloseButtonAndEvent: typeof TemplateWithCloseButton =
-  TemplateWithCloseButton.bind({});
-WithCloseButtonAndEvent.args = {
-  header: "What a dope header 👌",
 };
 
 export const WithDetailOnCloseControl: StoryFn<ModalProps> = (args) => {
@@ -263,6 +248,46 @@ export const WithMultipleModal: StoryFn<ModalProps> = (args) => {
     </>
   );
 };
+
+export const CustomAnimation: StoryFn<ModalProps> = (args) => {
+  return (
+    <>
+      <Template
+        {...args}
+        buttonText="Open modal with bouncy animation "
+        animationType={{
+          hidden: { opacity: 0, scale: 0.4 },
+          visible: { opacity: 1, scale: 1.0 },
+        }}
+      />
+
+      <div className="mt-4">
+        <Template
+          {...args}
+          buttonText="Open modal with simple fade in animation "
+          animationType={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1 },
+          }}
+        />
+      </div>
+
+      <div className="mt-4">
+        <Template
+          {...args}
+          buttonText="Open modal with slide in from bottom animation and custom transition"
+          animationType={{
+            hidden: { opacity: 0, y: "100%" },
+            visible: { opacity: 1, y: 0 },
+          }}
+          transition={{ ease: "easeOut", duration: 2 }}
+          overlayAnimation={{ transition: { ease: "easeOut", duration: 2 } }}
+        />
+      </div>
+    </>
+  );
+};
+CustomAnimation.args = { header: "What a dope header 👌" };
 
 // TODO: fix this
 // const TemplateExpandFromEle: StoryFn<ModalProps> = (args) => {
