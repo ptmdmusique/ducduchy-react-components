@@ -38,7 +38,7 @@ const Template: StoryFn<Partial<ModalProps> & { buttonText?: string }> = ({
     </>
   );
 };
-export const Default = Template.bind({});
+export const Default: typeof Template = Template.bind({});
 Default.args = {
   header: "What a dope header 👌",
   // @ts-ignore
