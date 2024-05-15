@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- 🔘 `Button`: fix transparent background for outline button with `withBackground` prop on
+- 🔘 `Button`: fix transparent background for outline button with `withBackground` prop on - [#68](https://github.com/ptmdmusique/ducduchy-react-components/issues/68)
 
 ## [1.10.1] - 2024-04-06
 
