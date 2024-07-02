@@ -10,8 +10,8 @@ import {
 import type { Preview } from "@storybook/react";
 import React from "react";
 
-import "!style-loader!css-loader!sass-loader!../src/components/assets/styles/index.scss";
-import "!style-loader!css-loader!sass-loader!../src/components/assets/styles/theme.scss";
+import "../src/components/assets/styles/index.scss";
+import "../src/components/assets/styles/theme.scss";
 
 const preview: Preview = {
   parameters: {
@@ -46,6 +46,8 @@ const preview: Preview = {
       ),
     },
   },
+
+  tags: ["autodocs"],
 };
 
 export default preview;
