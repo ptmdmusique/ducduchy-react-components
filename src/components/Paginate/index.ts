@@ -1,1 +1,1 @@
-export * from "./Paginate";
+export { Paginate, type PaginateProps } from "./Paginate";

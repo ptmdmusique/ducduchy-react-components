@@ -142,15 +142,7 @@ export const Slider = forwardRef<Range, SliderProps>(
 );
 
 // --- Taken from react-range libs
-export interface ITrackBackground {
-  min: number;
-  max: number;
-  values: number[];
-  colors: string[];
-  direction?: Direction;
-  rtl?: boolean;
-}
-export interface RangeProps {
+interface RangeProps {
   values: number[];
   min: number;
   max: number;
@@ -166,23 +158,23 @@ export interface RangeProps {
   renderThumb: (params: IRenderThumbParams) => React.ReactNode;
   renderTrack: (params: IRenderTrackParams) => React.ReactNode;
 }
-export interface IRenderMarkParams {
+interface IRenderMarkParams {
   props: IMarkProps;
   index: number;
 }
-export interface IRenderThumbParams {
+interface IRenderThumbParams {
   props: IThumbProps;
   value: number;
   index: number;
   isDragged: boolean;
 }
-export interface IRenderTrackParams {
+interface IRenderTrackParams {
   props: ITrackProps;
   children: React.ReactNode;
   isDragged: boolean;
   disabled: boolean;
 }
-export interface IThumbProps {
+interface IThumbProps {
   key: number;
   style: React.CSSProperties;
   tabIndex?: number;
@@ -195,22 +187,19 @@ export interface IThumbProps {
   onKeyDown: (e: React.KeyboardEvent) => void;
   onKeyUp: (e: React.KeyboardEvent) => void;
 }
-export interface IMarkProps {
+interface IMarkProps {
   key: string;
   style: React.CSSProperties;
   ref: React.RefObject<any>;
 }
-export interface ITrackProps {
+interface ITrackProps {
   style: React.CSSProperties;
   ref: React.RefObject<any>;
   onMouseDown: (e: React.MouseEvent) => void;
   onTouchStart: (e: React.TouchEvent) => void;
 }
-export declare type TThumbOffsets = {
-  x: number;
-  y: number;
-}[];
-export declare enum Direction {
+
+enum Direction {
   Right = "to right",
   Left = "to left",
   Down = "to bottom",

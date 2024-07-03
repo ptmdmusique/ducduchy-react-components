@@ -1,4 +1,4 @@
-import { Meta, Story } from "@storybook/react";
+import { Meta, StoryFn } from "@storybook/react";
 import { Fragment } from "react";
 import { ColorType, colorTypeList } from "../resources/common.data";
 import {
@@ -40,7 +40,7 @@ const colorTypeToIcon = (colorType: ColorType) => {
   }
 };
 
-export const Default: Story<AlertBannerProps> = (args) => (
+export const Default: StoryFn<AlertBannerProps> = (args) => (
   <>
     <p className="text-base mb-8">
       Inspired by{" "}
@@ -72,7 +72,7 @@ Default.args = {
   description: "What a description",
 };
 
-export const NoIcon: Story<AlertBannerProps> = (args) => {
+export const NoIcon: StoryFn<AlertBannerProps> = () => {
   return (
     <div className="text-skin-base">
       <AlertBanner

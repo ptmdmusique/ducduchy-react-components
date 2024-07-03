@@ -7,7 +7,7 @@ import {
 
 const meta: Meta<ButtonProps> = {
   title: "Components/Button",
-  component: Button,
+  component: Button as React.FC<ButtonProps>,
   argTypes: {
     children: { control: { type: "text" } },
     icon: { ...storyIconOption },
