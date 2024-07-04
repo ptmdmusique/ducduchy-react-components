@@ -35,7 +35,9 @@ import { RefObject } from 'react';
 import { RegisterOptions } from 'react-hook-form';
 import { Tab } from '@headlessui/react';
 import { TextareaAutosizeProps } from 'react-textarea-autosize';
+import { Transition } from 'framer-motion';
 import { usePopper } from 'react-popper';
+import { Variant } from 'framer-motion';
 
 export declare const AlertBanner: ({ className, iconClassName, contentClassName, iconContainerClassName, colorType, header, description, icon, hasShadow, roundedCorner, borderPlacement, }: AlertBannerProps) => JSX_2.Element;
 
@@ -114,6 +116,8 @@ declare const colorTypeList: readonly ["primary", "secondary", "success", "dange
 export declare function CreatableListbox<Data, IsMulti extends boolean = false, Form extends FieldValues = any>(props: CreatableListboxProps<Data, IsMulti, Form>): JSX_2.Element;
 
 export declare type CreatableListboxProps<Data, IsMulti extends boolean = boolean, Form extends FieldValues = any> = OmitStrict<Partial<CreatableProps<ListboxOption<Data>, IsMulti, GroupBase<ListboxOption<Data>>>>, "onChange"> & ListboxBaseProps<Data, IsMulti, Form>;
+
+declare type CustomAnimationVariant = Record<"hidden" | "visible", Variant>;
 
 export declare function DatePicker<Form extends FieldValues>({ label, formValidation, onChange, defaultValue, isOpen, disabled, caption, captionIcon, state, calendarLeadingIcon, clearDateIcon, displayDateFormat, inline, ...datePickerProps }: DatePickerProps<Form>): JSX_2.Element;
 
@@ -363,7 +367,7 @@ export declare interface MenuProps<Item, T extends default_2.ElementType = "div"
     }) => default_2.ReactNode;
 }
 
-export declare const Modal: ({ header, footer, isOpen, children, onClose, showCloseButton, closeButtonIcon, className, headerClassName, bodyClassName, footerClassName, isFullscreen, animationType, animationAnchorElement, targetSize, }: PropsWithChildren<ModalProps>) => JSX_2.Element;
+export declare const Modal: ({ header, footer, isOpen, children, onClose, showCloseButton, closeButtonIcon, className, headerClassName, bodyClassName, footerClassName, isFullscreen, animationType, transition, overlayAnimation, animationAnchorElement, targetSize, }: PropsWithChildren<ModalProps>) => JSX_2.Element;
 
 export declare interface ModalProps {
     isOpen: boolean;
@@ -378,7 +382,26 @@ export declare interface ModalProps {
     bodyClassName?: string;
     footerClassName?: string;
     isFullscreen?: boolean;
-    animationType?: "fade-down" | "natural";
+    /**
+     * The type of animation to use when opening the modal
+     * - `fade-down`: The modal will fade in and slide down from the top
+     * - `natural`: The modal will expand from the center of the screen - NOTE: currently this is not working as expected
+     * - `CustomAnimationVariant`: Custom animation variants - when the modal is opened, the modal will animate from the `hidden` variant to the `visible` variant and vice versa when the modal is closed. Check [this doc](https://www.framer.com/motion/animation/#variants) for more information on how to create custom variants
+     */
+    animationType?: "fade-down" | "natural" | CustomAnimationVariant;
+    /**
+     * Animation transition. Check this [doc](https://www.framer.com/motion/animation/##transitions) for more information
+     */
+    transition?: Transition;
+    /**
+     * Animation for overlay
+     *
+     * Check [this doc](https://www.framer.com/motion/animation/#variants) for more information on how to create custom variants
+     */
+    overlayAnimation?: {
+        variants?: CustomAnimationVariant;
+        transition?: Transition;
+    };
     animationAnchorElement?: HTMLElement | null;
     targetSize?: {
         width?: number;
