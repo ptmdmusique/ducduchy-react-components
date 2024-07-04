@@ -1,1 +1,1 @@
-export * from "./AlertBanner";
+export { AlertBanner, type AlertBannerProps } from "./AlertBanner";

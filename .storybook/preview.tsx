@@ -1,4 +1,4 @@
-import { withThemeByDataAttribute } from "@storybook/addon-styling";
+import { withThemeByClassName } from '@storybook/addon-themes';
 import {
   Controls,
   Description,
@@ -10,8 +10,8 @@ import {
 import type { Preview } from "@storybook/react";
 import React from "react";
 
-import "!style-loader!css-loader!sass-loader!../src/components/assets/styles/index.scss";
-import "!style-loader!css-loader!sass-loader!../src/components/assets/styles/theme.scss";
+import "../src/components/assets/styles/index.scss";
+import "../src/components/assets/styles/theme.scss";
 
 const preview: Preview = {
   parameters: {
@@ -46,6 +46,8 @@ const preview: Preview = {
       ),
     },
   },
+
+  tags: ["autodocs"],
 };
 
 export default preview;
@@ -53,12 +55,11 @@ export default preview;
 // https://storybook.js.org/recipes/tailwindcss#add-a-theme-switcher-tool
 /* snipped for brevity */
 export const decorators = [
-  withThemeByDataAttribute({
+  withThemeByClassName({
     themes: {
       light: "theme-light",
       dark: "theme-dark",
     },
     defaultTheme: "light",
-    attributeName: "class",
   }),
 ];

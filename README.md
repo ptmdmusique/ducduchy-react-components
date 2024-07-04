@@ -10,7 +10,7 @@
 ### Installation
 
 1. Run `npm i ducduchy-react-components`
-2. To use style, add `import "ducduchy-react-components/dist/ducduchy-react-components.cjs.production.min.css";` in your app
+2. ~~To use style, add `import "ducduchy-react-components/dist/ducduchy-react-components.cjs.production.min.css";` in your app~~ That's it!
 
 ### Local development
 

@@ -1,6 +1,4 @@
 import { PropsWithChildren } from "react";
-import "./components/assets/styles/index.scss";
-import "./components/assets/styles/theme.scss";
 import { initializeIconList } from "./utils/iconInit";
 
 initializeIconList();

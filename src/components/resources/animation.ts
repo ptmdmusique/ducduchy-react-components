@@ -19,7 +19,7 @@ export const headlessTransitionData = {
   },
 };
 
-export const modalVariantMap: Record<"modal" | "overlay", Variants> = {
+export const modalVariantMap = {
   overlay: {
     hidden: { opacity: 0 },
     visible: { opacity: 1 },
@@ -28,7 +28,7 @@ export const modalVariantMap: Record<"modal" | "overlay", Variants> = {
     hidden: { y: "-100px", opacity: 0 },
     visible: { y: 0, opacity: 1 },
   },
-};
+} as const satisfies Record<"modal" | "overlay", Variants>;
 
 interface Center {
   x: number | string;

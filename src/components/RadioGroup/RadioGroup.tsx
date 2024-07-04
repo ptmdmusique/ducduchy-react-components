@@ -80,7 +80,7 @@ export function RadioGroup<
         checkOptionDisable?.(dataList[attemptDefaultIndex], attemptDefaultIndex)
       ) {
         attemptDefaultIndex = dataList.findIndex(
-          (entry, index) => !checkOptionDisable?.(entry, index) ?? true,
+          (entry, index) => !checkOptionDisable?.(entry, index),
         );
       }
 

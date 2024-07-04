@@ -1,1 +1,1 @@
-export * from "./TabGroup";
+export { TabGroup, type TabGroupProps } from "./TabGroup";

@@ -1,1 +1,1 @@
-export * from "./DurationPicker";
+export { DurationPicker, type DurationPickerProps } from "./DurationPicker";

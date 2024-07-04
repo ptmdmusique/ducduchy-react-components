@@ -1,1 +1,4 @@
-export * from "./MultiStepTabGroup";
+export {
+  MultiStepTabGroup,
+  type MultiStepTabGroupProps,
+} from "./MultiStepTabGroup";

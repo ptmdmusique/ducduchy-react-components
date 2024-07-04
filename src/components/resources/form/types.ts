@@ -13,7 +13,7 @@ export type OnBlur = FocusEventHandler<HTMLButtonElement>;
 export interface FormValidationWithController<T extends FieldValues> {
   control: Control<T>;
   name: FieldPath<T>;
-  rules?: RegisterOptions;
+  rules?: RegisterOptions<T>;
 }
 
 export type FormAdornment = ReactNode | IconProps["icon"];
