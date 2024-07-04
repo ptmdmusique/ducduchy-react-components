@@ -23,7 +23,7 @@ const meta: Meta<TextAreaProps> = {
 
 export default meta;
 
-const Template: StoryFn<TextAreaProps> = ({ ref: _, ...args }) => (
+const Template: StoryFn<TextAreaProps> = (args) => (
   <TextArea {...args} />
 );
 export const Default: typeof Template = Template.bind({});

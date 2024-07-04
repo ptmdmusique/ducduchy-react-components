@@ -5,12 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.1] - 2024-07-03
+
+### Fixed
+
+- Fix missing merge from `main`
+
 ## [2.0.0] - 2024-07-03
 
 ### Added
 
 - Migrate to Vite! 🚀
--
+- Bump storybook - [#70](https://github.com/ptmdmusique/ducduchy-react-components/issues/70)
+
+### Fixed
+
+- Duplicate Tailwind class on consumer app - [#71](https://github.com/ptmdmusique/ducduchy-react-components/issues/71)
+
 ## [1.10.2] - 2024-05-15
 
 ### Added

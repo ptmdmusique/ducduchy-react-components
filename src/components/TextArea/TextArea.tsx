@@ -19,10 +19,8 @@ import { FadeTransition } from "../animation/CustomTransition";
 import Icon, { IconProps } from "../Icon/Icon";
 import { BorderType, COMPONENT_PREFIX } from "../resources/common.data";
 import "./TextArea.scss";
-import { OmitStrict } from "../../utils/types";
 
-export interface TextAreaProps
-  extends OmitStrict<TextareaAutosizeProps, "label"> {
+export interface TextAreaProps extends TextareaAutosizeProps {
   borderType?: BorderType;
   caption?: ReactNode;
   captionIcon?: IconProps["icon"];
