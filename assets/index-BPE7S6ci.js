@@ -1,0 +1,5 @@
+import{g as f}from"./index-CTjT7uj6.js";const u=["success","danger","warning","info","neutral"],d=["primary","secondary",...u],m="dd",O="root",a={"✌":["fas","hand-peace"],"🐶":["fas","dog"],"🐱":["fas","cat"]},b={options:Object.keys(a),mapping:a,control:{type:"select",labels:Object.entries(a).reduce((e,[o,n])=>({...e,[o]:`${o} ${n[1]}`}),{})}},x={table:{disable:!0}};var i={exports:{}};/*!
+	Copyright (c) 2018 Jed Watson.
+	Licensed under the MIT License (MIT), see
+	http://jedwatson.github.io/classnames
+*/(function(e){(function(){var o={}.hasOwnProperty;function n(){for(var t="",s=0;s<arguments.length;s++){var r=arguments[s];r&&(t=c(t,p(r)))}return t}function p(t){if(typeof t=="string"||typeof t=="number")return t;if(typeof t!="object")return"";if(Array.isArray(t))return n.apply(null,t);if(t.toString!==Object.prototype.toString&&!t.toString.toString().includes("[native code]"))return t.toString();var s="";for(var r in t)o.call(t,r)&&t[r]&&(s=c(s,r));return s}function c(t,s){return s?t?t+" "+s:t+s:t}e.exports?(n.default=n,e.exports=n):window.classNames=n})()})(i);var l=i.exports;const v=f(l);export{m as C,O as R,x as a,d as b,v as c,b as s};
