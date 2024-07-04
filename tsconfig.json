@@ -1,11 +1,25 @@
 {
-  // see https://www.typescriptlang.org/tsconfig to better understand tsconfigs
-  "extends": "@tsconfig/create-react-app/tsconfig.json",
-  "include": ["src", "types"],
   "compilerOptions": {
-    "jsx": "react-jsx",
-    "paths": {
-      "@emotion/core": ["./src/@types/emotion-core-stub.d.ts"]
-    }
-  }
+    "composite": true,
+    "target": "esnext",
+    "module": "esnext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "useDefineForClassFields": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "declaration": true,
+    "declarationDir": "./types",
+    "emitDeclarationOnly": true,
+    "outDir": "./dist",
+
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "jsx": "react-jsx"
+  },
+  "include": ["src"]
 }

@@ -26,3 +26,7 @@ dist-ssr
 storybook-static/
 .cache
 .DS_Store
+
+types/
+vite.config.js
+vite.config.d.ts
