@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Fix missing merge from `main`
+- Fix missing merge from `main`, redeploy
 
 ## [2.0.0] - 2024-07-03
 
