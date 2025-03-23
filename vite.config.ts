@@ -15,7 +15,12 @@ export default defineConfig({
   build: {
     copyPublicDir: false,
     rollupOptions: {
-      external: ["react", "react/jsx-runtime", "tailwindcss"],
+      external: [
+        "react",
+        "react/jsx-runtime",
+        "react/jsx-dev-runtime",
+        "tailwindcss",
+      ],
       input: Object.fromEntries(
         glob
           .sync("src/**/*.{ts,tsx}", {
