@@ -1,4 +1,4 @@
-@import "../assets/styles/form-common.scss";
+@use "../assets/styles/form-common.scss" as *;
 
 .dd-text-area {
   > .text-area-container {

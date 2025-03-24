@@ -1,4 +1,4 @@
-@import "../assets/styles/variable-common.scss";
+@use "../assets/styles/variable-common.scss" as *;
 
 .dd-link {
   @apply duration-500 ease-in-out;

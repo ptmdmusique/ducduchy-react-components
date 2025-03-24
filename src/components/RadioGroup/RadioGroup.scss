@@ -1,4 +1,4 @@
-@import "../assets/styles/variable-common.scss";
+@use "../assets/styles/variable-common.scss" as *;
 
 .form-radio-group__radio {
   @apply flex justify-center items-center;
