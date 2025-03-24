@@ -11,9 +11,6 @@ importers:
       '@emotion/styled':
         specifier: ^11.14.0
         version: 11.14.0(@emotion/react@11.14.0(@types/react@19.0.12)(react@19.0.0))(@types/react@19.0.12)(react@19.0.0)
-      '@floating-ui/react-dom':
-        specifier: ^2.1.2
-        version: 2.1.2(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@fortawesome/fontawesome-svg-core':
         specifier: ^6.7.2
         version: 6.7.2

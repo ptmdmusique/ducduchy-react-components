@@ -86,7 +86,6 @@
   },
   "dependencies": {
     "@emotion/styled": "^11.14.0",
-    "@floating-ui/react-dom": "^2.1.2",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@fortawesome/react-fontawesome": "^0.2.2",

@@ -1,4 +1,11 @@
-import { Popover as LibPopover } from "@headlessui/react";
+import {
+  Popover as LibPopover,
+  PopoverProps as LibPopoverProps,
+  PopoverButton,
+  PopoverButtonProps,
+  PopoverPanel,
+  PopoverPanelProps,
+} from "@headlessui/react";
 import cx from "classnames";
 import React from "react";
 import { OmitStrict } from "../../utils/types";
@@ -28,21 +35,20 @@ export interface PopoverProps<
   popoverOpenerProps?: (OpenerProps extends ButtonProps
     ? OmitStrict<OpenerProps, "as">
     : OpenerProps) &
-    Parameters<typeof LibPopover.Button>[0];
+    PopoverButtonProps;
 
-  popoverPanelProps?: Parameters<typeof LibPopover.Panel>[0];
-
-  popperProps?: Partial<Parameters<typeof Popover>[0]>;
+  popoverPanelProps?: Partial<PopoverPanelProps>;
+  popperProps?: Partial<LibPopoverProps>;
 }
 
 // TODO: add ref access
 /**
  * TODO: improve this export
  *
- * To close popover manually, add a Popover.Button from @headlessui/react
+ * To close popover manually, add a PopoverButton from @headlessui/react
  * https://headlessui.dev/react/popover#closing-popovers-manually
  *
- * To group with other Popover, wrap the Popover in a Popover.Group from @headlessui/react
+ * To group with other Popover, wrap the Popover in a PopoverGroup from @headlessui/react
  * https://headlessui.dev/react/popover#grouping-related-popovers
  */
 export function Popover<
@@ -56,51 +62,44 @@ export function Popover<
   popperProps,
   children,
 }: PopoverProps<ContainerAs, OpenerProps>) {
-  return null;
-  // return (
-  //   // @ts-ignore
-  //   <LibPopover
-  //     as={popoverContainerAs ?? "div"}
-  //     {...popoverProps}
-  //     className={cx(`${COMPONENT_PREFIX}-popover`, popoverProps?.className)}
-  //   >
-  //     {({ open, close }) => (
-  //       // @ts-ignore
-  //       <Float
-  //         placement="bottom-start"
-  //         offset={8}
-  //         shift
-  //         flip
-  //         portal
-  //         enter="transition duration-200 ease-out"
-  //         enterFrom="opacity-0 -translate-y-1"
-  //         enterTo="opacity-100 translate-y-0"
-  //         leave="transition duration-150 ease-in"
-  //         leaveFrom="opacity-100 translate-y-0"
-  //         leaveTo="opacity-0 -translate-y-1"
-  //         {...popperProps}
-  //       >
-  //         <LibPopover.Button
-  //           as={Button}
-  //           {...popoverOpenerProps}
-  //           className={cx(
-  //             `${COMPONENT_PREFIX}-popover__opener`,
-  //             { [`${COMPONENT_PREFIX}-popover__opener--open`]: open },
-  //             popoverOpenerProps?.className,
-  //           )}
-  //         />
+  const anchorProps = popoverPanelProps?.anchor;
+  return (
+    <LibPopover
+      as={(popoverContainerAs as any) ?? "div"}
+      {...popoverProps}
+      className={cx(`${COMPONENT_PREFIX}-popover`, popoverProps?.className)}
+    >
+      {({ open, close }) => (
+        <>
+          <PopoverButton
+            as={Button}
+            {...popoverOpenerProps}
+            className={cx(
+              `${COMPONENT_PREFIX}-popover__opener`,
+              { [`${COMPONENT_PREFIX}-popover__opener--open`]: open },
+              popoverOpenerProps?.className,
+            )}
+          />
 
-  //         <LibPopover.Panel
-  //           {...popoverPanelProps}
-  //           className={cx(
-  //             `${COMPONENT_PREFIX}-popover__panel`,
-  //             popoverPanelProps?.className,
-  //           )}
-  //         >
-  //           {typeof children === "function" ? children(open, close) : children}
-  //         </LibPopover.Panel>
-  //       </Float>
-  //     )}
-  //   </LibPopover>
-  // );
+          <PopoverPanel
+            transition
+            {...popoverPanelProps}
+            anchor={
+              typeof anchorProps === "string" ||
+              typeof anchorProps === "boolean"
+                ? anchorProps
+                : { to: "bottom start", gap: 8, ...anchorProps }
+            }
+            className={cx(
+              "transition duration-150 ease-out data-[closed]:scale-95 data-[closed]:opacity-0",
+              `${COMPONENT_PREFIX}-popover__panel`,
+              popoverPanelProps?.className,
+            )}
+          >
+            {typeof children === "function" ? children(open, close) : children}
+          </PopoverPanel>
+        </>
+      )}
+    </LibPopover>
+  );
 }
