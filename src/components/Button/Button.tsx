@@ -1,6 +1,6 @@
 import cx from "classnames";
 import React, { forwardRef } from "react";
-import Icon, { IconProps } from "../Icon/Icon";
+import { Icon, type IconProps } from "../Icon/Icon";
 import {
   BorderType,
   ColorType,

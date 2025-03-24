@@ -1,4 +1,4 @@
-import { withThemeByClassName } from '@storybook/addon-themes';
+import { withThemeByClassName } from "@storybook/addon-themes";
 import {
   Controls,
   Description,
@@ -12,6 +12,9 @@ import React from "react";
 
 import "../src/components/assets/styles/index.scss";
 import "../src/components/assets/styles/theme.scss";
+import { initializeIconList } from "../src/utils/iconInit";
+
+initializeIconList();
 
 const preview: Preview = {
   parameters: {

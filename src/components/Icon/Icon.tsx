@@ -1,4 +1,4 @@
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { IconPrefix, IconProp } from "@fortawesome/fontawesome-svg-core";
 import {
   FontAwesomeIcon,
   FontAwesomeIconProps,
@@ -9,7 +9,7 @@ import { OmitStrict } from "../../utils/types";
 import { COMPONENT_PREFIX } from "../resources/common.data";
 
 export interface IconProps {
-  icon: ["fas" | "far" | "fal" | "fat" | "fad" | "fab", string];
+  icon: [IconPrefix, string]; // TODO: find a way to use IconName
   className?: string;
 
   WrapperType?: "div" | "span";
@@ -26,5 +26,3 @@ export const Icon = forwardRef<
     <FontAwesomeIcon {...faProps} icon={icon as IconProp} />
   </WrapperType>
 ));
-
-export default Icon;

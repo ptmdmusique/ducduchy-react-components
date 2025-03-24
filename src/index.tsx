@@ -1,7 +1,4 @@
 import { PropsWithChildren } from "react";
-import { initializeIconList } from "./utils/iconInit";
-
-initializeIconList();
 
 export * from "./components";
 

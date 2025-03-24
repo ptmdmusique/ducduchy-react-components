@@ -15,7 +15,7 @@ import { Control, useWatch } from "react-hook-form";
 import { debounce } from "../../utils/lodash/debounce";
 import { FadeTransition } from "../animation/CustomTransition";
 import { Button } from "../Button";
-import Icon, { IconProps } from "../Icon/Icon";
+import { Icon, type IconProps } from "../Icon/Icon";
 import { BorderType, COMPONENT_PREFIX } from "../resources/common.data";
 import { FormAdornment } from "../resources/form/types";
 import "./Input.scss";

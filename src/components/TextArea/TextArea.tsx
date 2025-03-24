@@ -16,7 +16,7 @@ import TextareaAutosize, {
 } from "react-textarea-autosize";
 import { debounce } from "../../utils/lodash/debounce";
 import { FadeTransition } from "../animation/CustomTransition";
-import Icon, { IconProps } from "../Icon/Icon";
+import { Icon, type IconProps } from "../Icon/Icon";
 import { BorderType, COMPONENT_PREFIX } from "../resources/common.data";
 import "./TextArea.scss";
 
