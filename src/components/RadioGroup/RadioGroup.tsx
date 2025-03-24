@@ -1,4 +1,8 @@
-import { RadioGroup as HeadlessRadioGroup } from "@headlessui/react";
+import {
+  Description,
+  RadioGroup as HeadlessRadioGroup,
+  Radio,
+} from "@headlessui/react";
 import cx from "classnames";
 import { ReactElement, ReactNode, useEffect, useMemo, useState } from "react";
 import { Controller, FieldValues } from "react-hook-form";
@@ -155,7 +159,7 @@ export function RadioGroup<
         {dataList.map((data, index) => {
           const isDisabled = checkOptionDisable?.(data, index);
           return (
-            <HeadlessRadioGroup.Option
+            <Radio
               value={getValue(data)}
               key={index}
               className={cx(
@@ -166,8 +170,14 @@ export function RadioGroup<
               )}
               disabled={isDisabled}
             >
-              {({ checked, active, disabled }) => {
-                const option = { data, index, checked, active, disabled };
+              {({ checked, focus, disabled }) => {
+                const option = {
+                  data,
+                  index,
+                  checked,
+                  active: focus,
+                  disabled,
+                };
                 return (
                   renderOption?.(option) ?? (
                     <>
@@ -178,7 +188,7 @@ export function RadioGroup<
                           "form-radio-group__radio",
                           `form-radio-group__radio--${colorType}`,
                           { "form-radio-group__radio--checked": checked },
-                          { "form-radio-group__radio--active": active },
+                          { "form-radio-group__radio--active": focus },
                           { "form-radio-group__radio--disabled": disabled },
                         )}
                       >
@@ -188,15 +198,13 @@ export function RadioGroup<
                       {!leftLabel && renderRadioLabel(getLabel?.(option))}
 
                       {getDescription && (
-                        <HeadlessRadioGroup.Description>
-                          {getDescription(option)}
-                        </HeadlessRadioGroup.Description>
+                        <Description>{getDescription(option)}</Description>
                       )}
                     </>
                   )
                 );
               }}
-            </HeadlessRadioGroup.Option>
+            </Radio>
           );
         })}
       </HeadlessRadioGroup>
