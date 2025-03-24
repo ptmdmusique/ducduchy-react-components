@@ -1,3 +1,5 @@
+@use "sass:string";
+
 $theme-light: (
   --text-base: "rgb(17, 42, 70)",
   --text-primary: "rgb(9, 61, 116)",
@@ -47,12 +49,12 @@ $theme-dark: (
 /// @param {String} $replace ('') - New value
 /// @return {String} - Updated string
 @function str-replace($string, $search, $replace: "") {
-  $index: str-index($string, $search);
+  $index: string.index($string, $search);
 
   @if $index {
-    @return str-slice($string, 1, $index - 1) + $replace +
+    @return string.slice($string, 1, $index - 1) + $replace +
       str-replace(
-        str-slice($string, $index + str-length($search)),
+        string.slice($string, $index + string.length($search)),
         $search,
         $replace
       );
@@ -62,7 +64,9 @@ $theme-dark: (
 }
 
 @function get-color-value($color) {
-  @return #{unquote(str-replace(str-replace($color, "rgb(", ""), ")", ""))};
+  @return #{string.unquote(
+      str-replace(str-replace($color, "rgb(", ""), ")", "")
+    )};
 }
 
 @mixin extract-color-map($map) {
