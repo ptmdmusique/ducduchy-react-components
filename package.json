@@ -113,6 +113,7 @@
     "react-select": "^5.10.1",
     "react-textarea-autosize": "^8.5.8",
     "react-use": "^17.6.0",
-    "rollup-plugin-sass": "^1.15.2"
+    "rollup-plugin-sass": "^1.15.2",
+    "vite-plugin-checker": "^0.9.1"
   }
 }
