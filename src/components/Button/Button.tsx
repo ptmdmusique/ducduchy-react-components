@@ -1,5 +1,5 @@
 import cx from "classnames";
-import React, { forwardRef } from "react";
+import React, { Ref } from "react";
 import { Icon, type IconProps } from "../Icon/Icon";
 import {
   BorderType,
@@ -19,66 +19,62 @@ export interface ButtonProps extends React.HTMLProps<HTMLButtonElement> {
   isRounded?: boolean;
   withBackground?: boolean;
   loadingIcon?: IconProps["icon"];
-  ref?: React.ForwardedRef<HTMLButtonElement>;
+  ref?: Ref<HTMLButtonElement>;
   useFocusStyle?: boolean;
 }
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  (
+export const Button = ({
+  borderType = "fill",
+  icon,
+  colorType = "secondary",
+  iconPlacement = "left",
+  iconClassName,
+  isLoading,
+  isRounded,
+  withBackground,
+  loadingIcon,
+  useFocusStyle,
+  ref,
+  ...buttonProps
+}: ButtonProps) => {
+  const _iconClassName = cx(
+    `fa-fw ${COMPONENT_PREFIX}-button-icon`,
     {
-      borderType = "fill",
-      icon,
-      colorType = "normal",
-      iconPlacement = "left",
-      iconClassName,
-      isLoading,
-      isRounded,
-      withBackground,
-      loadingIcon,
-      useFocusStyle,
-      ...buttonProps
+      [`${COMPONENT_PREFIX}-button-icon--with-children--${iconPlacement}`]:
+        !!buttonProps.children,
     },
-    ref,
-  ) => {
-    const _iconClassName = cx(
-      `fa-fw ${COMPONENT_PREFIX}-button-icon`,
-      {
-        [`${COMPONENT_PREFIX}-button-icon--with-children--${iconPlacement}`]:
-          !!buttonProps.children,
-      },
-      iconClassName,
-    );
+    iconClassName,
+  );
 
-    return (
-      <button
-        {...buttonProps}
-        ref={ref}
-        className={cx(
-          `${COMPONENT_PREFIX}-button`,
-          `${COMPONENT_PREFIX}-button--${borderType}`,
-          `${COMPONENT_PREFIX}-button--${colorType}`,
-          {
-            [`${COMPONENT_PREFIX}-button--rounded`]: isRounded,
-            [`${COMPONENT_PREFIX}-button--with-background`]: withBackground,
-            [`${COMPONENT_PREFIX}-button--use-focus-style`]: useFocusStyle,
-          },
-          buttonProps.className,
-        )}
-      >
-        {iconPlacement === "right" && buttonProps.children}
+  return (
+    <button
+      {...buttonProps}
+      ref={ref}
+      className={cx(
+        `${COMPONENT_PREFIX}-button`,
+        `${COMPONENT_PREFIX}-button--${borderType}`,
+        `${COMPONENT_PREFIX}-button--${colorType}`,
+        {
+          [`${COMPONENT_PREFIX}-button--rounded`]: isRounded,
+          [`${COMPONENT_PREFIX}-button--with-background`]: withBackground,
+          [`${COMPONENT_PREFIX}-button--use-focus-style`]: useFocusStyle,
+        },
+        buttonProps.className,
+      )}
+    >
+      {iconPlacement === "right" && buttonProps.children}
 
-        {isLoading ? (
-          <Icon
-            icon={loadingIcon ?? ["fas", "spinner"]}
-            className={_iconClassName}
-            spin
-          />
-        ) : (
-          icon && <Icon icon={icon} className={_iconClassName} />
-        )}
+      {isLoading ? (
+        <Icon
+          icon={loadingIcon ?? ["fas", "spinner"]}
+          className={_iconClassName}
+          spin
+        />
+      ) : (
+        icon && <Icon icon={icon} className={_iconClassName} />
+      )}
 
-        {iconPlacement === "left" && buttonProps.children}
-      </button>
-    );
-  },
-);
+      {iconPlacement === "left" && buttonProps.children}
+    </button>
+  );
+};

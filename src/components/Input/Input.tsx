@@ -2,9 +2,9 @@ import cx from "classnames";
 import { nanoid } from "nanoid";
 import {
   ChangeEvent,
-  forwardRef,
   InputHTMLAttributes,
   ReactNode,
+  Ref,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -40,6 +40,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   };
 
   formControl?: Control<any>;
+  ref?: Ref<HTMLInputElement>;
 }
 
 const checkIsIcon = (prop: FormAdornment): prop is IconProps["icon"] => {
@@ -67,199 +68,195 @@ const UseFormWatcher = ({
   return null;
 };
 
-export const Input = forwardRef<HTMLInputElement, InputProps>(
-  (
-    {
-      borderType = "outline",
-      caption,
-      captionIcon,
-      state,
-      label,
-      leadingAdornment,
-      leadingAdornmentOnClick,
-      trailingAdornment,
-      trailingAdornmentOnClick,
-      hasContent: propHasContent,
-      debounceParam,
-      className,
-      formControl,
-      ...inputProps
-    },
-    ref,
-  ) => {
-    const myId = useRef(inputProps?.id ?? `input---${nanoid()}`);
-    const hasError = state === "error";
+export const Input = ({
+  borderType = "outline",
+  caption,
+  captionIcon,
+  state,
+  label,
+  leadingAdornment,
+  leadingAdornmentOnClick,
+  trailingAdornment,
+  trailingAdornmentOnClick,
+  hasContent: propHasContent,
+  debounceParam,
+  className,
+  formControl,
+  ref,
+  ...inputProps
+}: InputProps) => {
+  const myId = useRef(inputProps?.id ?? `input---${nanoid()}`);
+  const hasError = state === "error";
 
-    const inputRef = useRef<HTMLInputElement>(null);
-    useEffect(() => {
-      if (ref) {
-        if (typeof ref === "function") {
-          ref(inputRef.current);
-        } else {
-          ref.current = inputRef.current;
-        }
-      }
-    }, [ref]);
-
-    const debounceRef = useRef(
-      debounce((event: ChangeEvent<HTMLInputElement>) => {
-        inputProps?.onChange?.(event);
-      }, debounceParam?.debounceTime ?? 0),
-    );
-
-    const [hasContent, setHasContent] = useState(propHasContent ?? false);
-    const checkInputPropsHasContent = useCallback(
-      () =>
-        !!propHasContent ||
-        !!inputProps?.value ||
-        !!inputProps?.defaultValue ||
-        !!inputProps?.placeholder,
-      [
-        inputProps?.value,
-        inputProps?.placeholder,
-        inputProps?.defaultValue,
-        propHasContent,
-      ],
-    );
-    useEffect(() => {
-      if (propHasContent != null) {
-        setHasContent(propHasContent);
-      }
-    }, [propHasContent]);
-
-    const renderAdornment = (adornment?: FormAdornment, left = false) => {
-      if (!adornment) {
-        return null;
-      }
-
-      const iconCN = cx("fa-fw adornment-icon", {
-        "adornment-icon--left": left,
-      });
-
-      let onClick = trailingAdornmentOnClick;
-      if (left) {
-        onClick = leadingAdornmentOnClick;
-      }
-
-      if (checkIsIcon(adornment)) {
-        return onClick ? (
-          <div
-            className={cx("adornment-wrapper", {
-              "adornment-wrapper--left": left,
-            })}
-          >
-            <Button
-              className="adornment-button"
-              borderType="plain"
-              type="button"
-              onClick={onClick}
-              iconClassName="fa-fw adornment-icon"
-              icon={adornment}
-            />
-          </div>
-        ) : (
-          <Icon icon={adornment} className={iconCN} />
-        );
-      }
-
-      return <div className={iconCN}>{adornment}</div>;
-    };
-
-    const handleWatchValueChange = useCallback(
-      (value: any) => {
-        setHasContent(!!value || checkInputPropsHasContent());
-      },
-      [checkInputPropsHasContent],
-    );
-    const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-      setHasContent(
-        !!inputProps?.placeholder ||
-          checkInputPropsHasContent() ||
-          !!event.target.value,
-      );
-
-      if (debounceParam?.debounceTime) {
-        debounceRef.current(event);
+  const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (ref) {
+      if (typeof ref === "function") {
+        ref(inputRef.current);
       } else {
-        inputProps?.onChange?.(event);
+        ref.current = inputRef.current;
+      }
+    }
+  }, [ref]);
+
+  const debounceRef = useRef(
+    debounce((event: ChangeEvent<HTMLInputElement>) => {
+      inputProps?.onChange?.(event);
+    }, debounceParam?.debounceTime ?? 0),
+  );
+
+  const [hasContent, setHasContent] = useState(propHasContent ?? false);
+  const checkInputPropsHasContent = useCallback(
+    () =>
+      !!propHasContent ||
+      !!inputProps?.value ||
+      !!inputProps?.defaultValue ||
+      !!inputProps?.placeholder,
+    [
+      inputProps?.value,
+      inputProps?.placeholder,
+      inputProps?.defaultValue,
+      propHasContent,
+    ],
+  );
+  useEffect(() => {
+    if (propHasContent != null) {
+      setHasContent(propHasContent);
+    }
+  }, [propHasContent]);
+
+  const renderAdornment = (adornment?: FormAdornment, left = false) => {
+    if (!adornment) {
+      return null;
+    }
+
+    const iconCN = cx("fa-fw adornment-icon", {
+      "adornment-icon--left": left,
+    });
+
+    let onClick = trailingAdornmentOnClick;
+    if (left) {
+      onClick = leadingAdornmentOnClick;
+    }
+
+    if (checkIsIcon(adornment)) {
+      return onClick ? (
+        <div
+          className={cx("adornment-wrapper", {
+            "adornment-wrapper--left": left,
+          })}
+        >
+          <Button
+            className="adornment-button"
+            borderType="plain"
+            type="button"
+            onClick={onClick}
+            iconClassName="fa-fw adornment-icon"
+            icon={adornment}
+          />
+        </div>
+      ) : (
+        <Icon icon={adornment} className={iconCN} />
+      );
+    }
+
+    return <div className={iconCN}>{adornment}</div>;
+  };
+
+  const handleWatchValueChange = useCallback(
+    (value: any) => {
+      setHasContent(!!value || checkInputPropsHasContent());
+    },
+    [checkInputPropsHasContent],
+  );
+  const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setHasContent(
+      !!inputProps?.placeholder ||
+        checkInputPropsHasContent() ||
+        !!event.target.value,
+    );
+
+    if (debounceParam?.debounceTime) {
+      debounceRef.current(event);
+    } else {
+      inputProps?.onChange?.(event);
+    }
+  };
+
+  useEffect(() => {
+    setHasContent(checkInputPropsHasContent());
+  }, [checkInputPropsHasContent]);
+
+  useLayoutEffect(() => {
+    // ! Workaround for auto-filling and manually setting input's `value`
+    setTimeout(() => {
+      setHasContent(checkInputPropsHasContent() || !!inputRef.current?.value);
+    }, 1);
+  }, [checkInputPropsHasContent]);
+
+  useEffect(() => {
+    const debouncer = debounceRef.current;
+    return () => {
+      if (debounceParam) {
+        if (debounceParam.flushOnUnmount) {
+          debouncer.flush();
+        } else {
+          debouncer.cancel();
+        }
       }
     };
+  }, [debounceParam]);
 
-    useEffect(() => {
-      setHasContent(checkInputPropsHasContent());
-    }, [checkInputPropsHasContent]);
+  return (
+    <div className={cx(`${COMPONENT_PREFIX}-input`, className)}>
+      <div
+        className={cx(
+          "input-container",
+          `input-container--${borderType}`,
+          { "input-container--error": hasError },
+          { "input-container--has-content": hasContent },
+          { "input-container--with-leading-icon": leadingAdornment },
+          { "input-container--with-trailing-icon": trailingAdornment },
+          { "input-container--read-only": inputProps?.readOnly },
+        )}
+      >
+        {renderAdornment(leadingAdornment, true)}
 
-    useLayoutEffect(() => {
-      // ! Workaround for auto-filling and manually setting input's `value`
-      setTimeout(() => {
-        setHasContent(checkInputPropsHasContent() || !!inputRef.current?.value);
-      }, 1);
-    }, [checkInputPropsHasContent]);
+        <label htmlFor={myId.current}>{label}</label>
 
-    useEffect(() => {
-      const debouncer = debounceRef.current;
-      return () => {
-        if (debounceParam) {
-          if (debounceParam.flushOnUnmount) {
-            debouncer.flush();
-          } else {
-            debouncer.cancel();
-          }
-        }
-      };
-    }, [debounceParam]);
+        <input
+          {...inputProps}
+          id={myId.current}
+          ref={inputRef}
+          onChange={onInputChange}
+        />
 
-    return (
-      <div className={cx(`${COMPONENT_PREFIX}-input`, className)}>
-        <div
-          className={cx(
-            "input-container",
-            `input-container--${borderType}`,
-            { "input-container--error": hasError },
-            { "input-container--has-content": hasContent },
-            { "input-container--with-leading-icon": leadingAdornment },
-            { "input-container--with-trailing-icon": trailingAdornment },
-            { "input-container--read-only": inputProps?.readOnly },
-          )}
-        >
-          {renderAdornment(leadingAdornment, true)}
+        {renderAdornment(trailingAdornment)}
 
-          <label htmlFor={myId.current}>{label}</label>
-
-          <input
-            {...inputProps}
-            id={myId.current}
-            ref={inputRef}
-            onChange={onInputChange}
+        {formControl && (
+          <UseFormWatcher
+            control={formControl}
+            name={inputProps.name ?? ""}
+            onChange={handleWatchValueChange}
           />
+        )}
+      </div>
 
-          {renderAdornment(trailingAdornment)}
-
-          {formControl && (
-            <UseFormWatcher
-              control={formControl}
-              name={inputProps.name ?? ""}
-              onChange={handleWatchValueChange}
+      <FadeTransition show={!!caption}>
+        <div
+          className={cx("caption-container", {
+            "caption-container--error": hasError,
+          })}
+        >
+          {(hasError || captionIcon) && (
+            <Icon
+              icon={captionIcon || ["far", "info-circle"]}
+              className="fa-fw icon"
             />
           )}
+          {caption}
         </div>
-
-        <FadeTransition show={!!caption}>
-          <div
-            className={cx("caption-container", {
-              "caption-container--error": hasError,
-            })}
-          >
-            {(hasError || captionIcon) && (
-              <Icon
-                icon={captionIcon || ["far", "info-circle"]}
-                className="fa-fw icon"
-              />
-            )}
-            {caption}
-          </div>
-        </FadeTransition>
-      </div>
-    );
-  },
-);
+      </FadeTransition>
+    </div>
+  );
+};

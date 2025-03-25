@@ -27,6 +27,7 @@ const Template: StoryFn<ButtonProps> = (args) => <Button {...args} />;
 export const Default: typeof Template = Template.bind({});
 Default.args = {
   children: "I'm a button (*/ω＼*)",
+  onClick: () => console.log("Button clicked"),
 };
 
 export const Rounded: typeof Template = Template.bind({});

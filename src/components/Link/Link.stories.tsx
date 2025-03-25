@@ -26,4 +26,6 @@ const Template: StoryFn<LinkProps> = (args) => <Link {...args} />;
 export const Default: typeof Template = Template.bind({});
 Default.args = {
   children: "A link for you!",
+  href: "https://www.google.com",
+  target: "_blank",
 };
