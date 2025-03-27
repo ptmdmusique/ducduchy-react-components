@@ -1,5 +1,5 @@
-@import "../Button/Button.scss";
-@import "../assets/styles/variable-common.scss";
+@use "../Button/Button.scss" as *;
+@use "../assets/styles/variable-common.scss" as *;
 
 .dd-paginate {
   @apply text-skin-base;

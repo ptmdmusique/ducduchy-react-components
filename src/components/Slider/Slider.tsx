@@ -1,5 +1,5 @@
 import cx from "classnames";
-import React, { forwardRef, useMemo } from "react";
+import React, { Ref, useMemo } from "react";
 import { Range } from "react-range";
 import { OmitStrict } from "../../utils/types";
 import { COMPONENT_PREFIX } from "../resources/common.data";
@@ -32,6 +32,8 @@ export type SliderProps = OmitStrict<
   renderTrack?: RangeProps["renderTrack"];
   renderThumb?: RangeProps["renderThumb"];
   renderThumbValue?: (value: number) => React.ReactNode;
+
+  ref?: Ref<Range>;
 };
 
 const BASE_CLASSNAME = `${COMPONENT_PREFIX}-slider` as const;
@@ -45,101 +47,98 @@ const BASE_CLASSNAME = `${COMPONENT_PREFIX}-slider` as const;
  * @param onChange {(values: number[]) => void} A callback function that is called when the value of the slider changes.
  * TODO: Support rtl and vertical
  */
-export const Slider = forwardRef<Range, SliderProps>(
-  (
-    {
-      className,
-      useDefaultMark,
-      valueList,
-      min,
-      max,
-      renderThumbValue,
-      ...sliderProps
-    },
-    ref,
-  ) => {
-    const { trackLeft, trackRight } = useMemo<{
-      trackLeft: number;
-      trackRight: number;
-    }>(() => {
-      let minPercent: number;
-      let maxPercent: number;
+export const Slider = ({
+  className,
+  useDefaultMark,
+  valueList,
+  min,
+  max,
+  renderThumbValue,
+  ref,
+  ...sliderProps
+}: SliderProps) => {
+  const { trackLeft, trackRight } = useMemo<{
+    trackLeft: number;
+    trackRight: number;
+  }>(() => {
+    let minPercent: number;
+    let maxPercent: number;
 
-      switch (valueList.length) {
-        case 0:
-          return { trackLeft: 0, trackRight: 100 };
-        case 1:
-          maxPercent = (valueList[0] / max) * 100;
-          return { trackLeft: 0, trackRight: maxPercent };
-        default:
-          let minValue = valueList[0];
-          let maxValue = valueList[0];
-          valueList.forEach((value) => {
-            if (value < minValue) {
-              minValue = value;
-            }
-            if (value > maxValue) {
-              maxValue = value;
-            }
-          });
-
-          minPercent = (minValue / max) * 100;
-          maxPercent = (maxValue / max) * 100;
-          return { trackLeft: minPercent, trackRight: maxPercent };
-      }
-    }, [valueList, max]);
-
-    return (
-      <div className={cx(BASE_CLASSNAME, className)}>
-        <Range
-          ref={ref}
-          renderTrack={({ disabled, props, children }) => (
-            <div
-              {...props}
-              className={cx(`${BASE_CLASSNAME}__track`, {
-                [`${BASE_CLASSNAME}__track--disabled`]: disabled,
-              })}
-            >
-              <div
-                className={cx(`${BASE_CLASSNAME}__highlighted-part`, {
-                  [`${BASE_CLASSNAME}__highlighted-part--disabled`]: disabled,
-                })}
-                style={{
-                  left: `${trackLeft}%`,
-                  width: `${trackRight - trackLeft}%`,
-                }}
-              />
-              {children}
-            </div>
-          )}
-          renderThumb={({ props, value }) => (
-            <div
-              {...props}
-              className={cx(`${BASE_CLASSNAME}__thumb`, {
-                [`${BASE_CLASSNAME}__thumb--disabled`]: sliderProps?.disabled,
-              })}
-            >
-              {renderThumbValue?.(value) ?? (
-                <p className="thumb__value">{value}</p>
-              )}
-            </div>
-          )}
-          renderMark={
-            useDefaultMark
-              ? ({ props }) => (
-                  <div {...props} className={`${BASE_CLASSNAME}__mark`} />
-                )
-              : undefined
+    switch (valueList.length) {
+      case 0:
+        return { trackLeft: 0, trackRight: 100 };
+      case 1:
+        maxPercent = (valueList[0] / max) * 100;
+        return { trackLeft: 0, trackRight: maxPercent };
+      default:
+        let minValue = valueList[0];
+        let maxValue = valueList[0];
+        valueList.forEach((value) => {
+          if (value < minValue) {
+            minValue = value;
           }
-          {...sliderProps}
-          min={min}
-          max={max}
-          values={valueList}
-        />
-      </div>
-    );
-  },
-);
+          if (value > maxValue) {
+            maxValue = value;
+          }
+        });
+
+        minPercent = (minValue / max) * 100;
+        maxPercent = (maxValue / max) * 100;
+        return { trackLeft: minPercent, trackRight: maxPercent };
+    }
+  }, [valueList, max]);
+
+  return (
+    <div className={cx(BASE_CLASSNAME, className)}>
+      <Range
+        ref={ref}
+        renderTrack={({ disabled, props, children }) => (
+          <div
+            {...props}
+            className={cx(`${BASE_CLASSNAME}__track`, {
+              [`${BASE_CLASSNAME}__track--disabled`]: disabled,
+            })}
+          >
+            <div
+              className={cx(`${BASE_CLASSNAME}__highlighted-part`, {
+                [`${BASE_CLASSNAME}__highlighted-part--disabled`]: disabled,
+              })}
+              style={{
+                left: `${trackLeft}%`,
+                width: `${trackRight - trackLeft}%`,
+              }}
+            />
+            {children}
+          </div>
+        )}
+        renderThumb={({ props, value }) => (
+          <div
+            {...props}
+            key={props.key}
+            className={cx(`${BASE_CLASSNAME}__thumb`, {
+              [`${BASE_CLASSNAME}__thumb--disabled`]: sliderProps?.disabled,
+            })}
+          >
+            {renderThumbValue?.(value) ?? (
+              <p className="thumb__value">{value}</p>
+            )}
+          </div>
+        )}
+        renderMark={
+          useDefaultMark
+            ? ({ props }) => (
+                <div {...props} className={`${BASE_CLASSNAME}__mark`} />
+              )
+            : undefined
+        }
+        {...sliderProps}
+        min={min}
+        max={max}
+        values={valueList}
+      />
+    </div>
+  );
+};
 
 // --- Taken from react-range libs
 interface RangeProps {

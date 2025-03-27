@@ -2,8 +2,8 @@ import cx from "classnames";
 import { nanoid } from "nanoid";
 import {
   ChangeEvent,
-  forwardRef,
   ReactNode,
+  Ref,
   useCallback,
   useEffect,
   useLayoutEffect,
@@ -16,7 +16,7 @@ import TextareaAutosize, {
 } from "react-textarea-autosize";
 import { debounce } from "../../utils/lodash/debounce";
 import { FadeTransition } from "../animation/CustomTransition";
-import Icon, { IconProps } from "../Icon/Icon";
+import { Icon, type IconProps } from "../Icon/Icon";
 import { BorderType, COMPONENT_PREFIX } from "../resources/common.data";
 import "./TextArea.scss";
 
@@ -39,6 +39,8 @@ export interface TextAreaProps extends TextareaAutosizeProps {
 
   // Textarea specific
   resize?: React.CSSProperties["resize"];
+
+  ref?: Ref<HTMLTextAreaElement>;
 }
 
 const UseFormWatcher = ({
@@ -58,151 +60,147 @@ const UseFormWatcher = ({
   return null;
 };
 
-export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  (
-    {
-      borderType = "outline",
-      caption,
-      captionIcon,
-      state,
-      label,
-      hasContent: propHasContent,
-      debounceParam,
-      className,
-      formControl,
-      resize = "both",
-      ...textAreaProps
+export const TextArea = ({
+  borderType = "outline",
+  caption,
+  captionIcon,
+  state,
+  label,
+  hasContent: propHasContent,
+  debounceParam,
+  className,
+  formControl,
+  resize = "both",
+  ref,
+  ...textAreaProps
+}: TextAreaProps) => {
+  const myId = useRef(textAreaProps?.id ?? `input---${nanoid()}`);
+  const hasError = state === "error";
+
+  const inputRef = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    if (ref) {
+      if (typeof ref === "function") {
+        ref(inputRef.current);
+      } else {
+        ref.current = inputRef.current;
+      }
+    }
+  }, [ref]);
+
+  const debounceRef = useRef(
+    debounce((event: ChangeEvent<HTMLTextAreaElement>) => {
+      textAreaProps?.onChange?.(event);
+    }, debounceParam?.debounceTime ?? 0),
+  );
+
+  const [hasContent, setHasContent] = useState(propHasContent ?? false);
+  const checkInputPropsHasContent = useCallback(
+    () =>
+      !!propHasContent ||
+      !!textAreaProps?.value ||
+      !!textAreaProps?.defaultValue ||
+      !!textAreaProps?.placeholder,
+    [
+      textAreaProps?.value,
+      textAreaProps?.placeholder,
+      textAreaProps?.defaultValue,
+      propHasContent,
+    ],
+  );
+  useEffect(() => {
+    if (propHasContent != null) {
+      setHasContent(propHasContent);
+    }
+  }, [propHasContent]);
+
+  const handleWatchValueChange = useCallback(
+    (value: any) => {
+      setHasContent(!!value || checkInputPropsHasContent());
     },
-    ref,
-  ) => {
-    const myId = useRef(textAreaProps?.id ?? `input---${nanoid()}`);
-    const hasError = state === "error";
+    [checkInputPropsHasContent],
+  );
 
-    const inputRef = useRef<HTMLTextAreaElement>(null);
-    useEffect(() => {
-      if (ref) {
-        if (typeof ref === "function") {
-          ref(inputRef.current);
+  const onInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setHasContent(
+      !!textAreaProps?.placeholder ||
+        checkInputPropsHasContent() ||
+        !!event.target.value,
+    );
+
+    debounceRef.current(event);
+  };
+
+  useEffect(() => {
+    setHasContent(checkInputPropsHasContent());
+  }, [checkInputPropsHasContent]);
+
+  useLayoutEffect(() => {
+    // ! Workaround for auto-filling and manually setting input's `value`
+    setTimeout(() => {
+      setHasContent(checkInputPropsHasContent() || !!inputRef.current?.value);
+    }, 1);
+  }, [checkInputPropsHasContent]);
+
+  useEffect(() => {
+    const debouncer = debounceRef.current;
+    return () => {
+      if (debounceParam) {
+        if (debounceParam.flushOnUnmount) {
+          debouncer.flush();
         } else {
-          ref.current = inputRef.current;
+          debouncer.cancel();
         }
       }
-    }, [ref]);
-
-    const debounceRef = useRef(
-      debounce((event: ChangeEvent<HTMLTextAreaElement>) => {
-        textAreaProps?.onChange?.(event);
-      }, debounceParam?.debounceTime ?? 0),
-    );
-
-    const [hasContent, setHasContent] = useState(propHasContent ?? false);
-    const checkInputPropsHasContent = useCallback(
-      () =>
-        !!propHasContent ||
-        !!textAreaProps?.value ||
-        !!textAreaProps?.defaultValue ||
-        !!textAreaProps?.placeholder,
-      [
-        textAreaProps?.value,
-        textAreaProps?.placeholder,
-        textAreaProps?.defaultValue,
-        propHasContent,
-      ],
-    );
-    useEffect(() => {
-      if (propHasContent != null) {
-        setHasContent(propHasContent);
-      }
-    }, [propHasContent]);
-
-    const handleWatchValueChange = useCallback(
-      (value: any) => {
-        setHasContent(!!value || checkInputPropsHasContent());
-      },
-      [checkInputPropsHasContent],
-    );
-
-    const onInputChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-      setHasContent(
-        !!textAreaProps?.placeholder ||
-          checkInputPropsHasContent() ||
-          !!event.target.value,
-      );
-
-      debounceRef.current(event);
     };
+  }, [debounceParam]);
 
-    useEffect(() => {
-      setHasContent(checkInputPropsHasContent());
-    }, [checkInputPropsHasContent]);
+  return (
+    <div className={cx(`${COMPONENT_PREFIX}-text-area`, className)}>
+      <div
+        className={cx(
+          "text-area-container",
+          `text-area-container--${borderType}`,
+          { "text-area-container--error": hasError },
+          { "text-area-container--has-content": hasContent },
+          { "text-area-container--read-only": textAreaProps?.readOnly },
+        )}
+      >
+        <label htmlFor={myId.current}>{label}</label>
 
-    useLayoutEffect(() => {
-      // ! Workaround for auto-filling and manually setting input's `value`
-      setTimeout(() => {
-        setHasContent(checkInputPropsHasContent() || !!inputRef.current?.value);
-      }, 1);
-    }, [checkInputPropsHasContent]);
+        <TextareaAutosize
+          {...textAreaProps}
+          id={myId.current}
+          // @ts-ignore
+          ref={inputRef}
+          onChange={onInputChange}
+          style={{ resize }}
+        />
 
-    useEffect(() => {
-      const debouncer = debounceRef.current;
-      return () => {
-        if (debounceParam) {
-          if (debounceParam.flushOnUnmount) {
-            debouncer.flush();
-          } else {
-            debouncer.cancel();
-          }
-        }
-      };
-    }, [debounceParam]);
-
-    return (
-      <div className={cx(`${COMPONENT_PREFIX}-text-area`, className)}>
-        <div
-          className={cx(
-            "text-area-container",
-            `text-area-container--${borderType}`,
-            { "text-area-container--error": hasError },
-            { "text-area-container--has-content": hasContent },
-            { "text-area-container--read-only": textAreaProps?.readOnly },
-          )}
-        >
-          <label htmlFor={myId.current}>{label}</label>
-
-          <TextareaAutosize
-            {...textAreaProps}
-            id={myId.current}
-            // @ts-ignore
-            ref={inputRef}
-            onChange={onInputChange}
-            style={{ resize }}
+        {formControl && (
+          <UseFormWatcher
+            control={formControl}
+            name={textAreaProps.name ?? ""}
+            onChange={handleWatchValueChange}
           />
+        )}
+      </div>
 
-          {formControl && (
-            <UseFormWatcher
-              control={formControl}
-              name={textAreaProps.name ?? ""}
-              onChange={handleWatchValueChange}
+      <FadeTransition show={!!caption}>
+        <div
+          className={cx("caption-container", {
+            "caption-container--error": hasError,
+          })}
+        >
+          {(hasError || captionIcon) && (
+            <Icon
+              icon={captionIcon || ["far", "info-circle"]}
+              className="fa-fw icon"
             />
           )}
+          {caption}
         </div>
-
-        <FadeTransition show={!!caption}>
-          <div
-            className={cx("caption-container", {
-              "caption-container--error": hasError,
-            })}
-          >
-            {(hasError || captionIcon) && (
-              <Icon
-                icon={captionIcon || ["far", "info-circle"]}
-                className="fa-fw icon"
-              />
-            )}
-            {caption}
-          </div>
-        </FadeTransition>
-      </div>
-    );
-  },
-);
+      </FadeTransition>
+    </div>
+  );
+};

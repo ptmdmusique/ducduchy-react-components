@@ -1,24 +1,23 @@
-import { Placement } from "@floating-ui/react-dom";
-import { Popover as LibPopover } from "@headlessui/react";
+import {
+  Popover as LibPopover,
+  PopoverPanelProps as LibPopoverPanelProps,
+  PopoverGroup,
+} from "@headlessui/react";
 import { Meta, StoryFn } from "@storybook/react";
 import { Icon, IconProps } from "../Icon";
 import { storyDisabledOption } from "../resources/story-common";
 import { Popover, PopoverProps } from "./Popover";
 
-type PopoverData = PopoverProps & { placement: Placement };
-const placement = [
-  "top-start",
-  "top",
-  "top-end",
-  "right-start",
-  "right",
-  "right-end",
-  "bottom-start",
+type PopoverData = PopoverProps & {
+  anchor: LibPopoverPanelProps["anchor"];
+};
+
+const anchor = [
+  "bottom start",
   "bottom",
-  "bottom-end",
-  "left-start",
-  "left",
-  "left-end",
+  "bottom end",
+  "top start",
+  "top",
 ] as const;
 
 const meta: Meta<PopoverData> = {
@@ -31,12 +30,12 @@ const meta: Meta<PopoverData> = {
     popoverPanelProps: storyDisabledOption,
     popperProps: storyDisabledOption,
     children: storyDisabledOption,
-    placement: {
-      options: placement,
-      mapping: placement.reduce((acc, cur) => ({ ...acc, [cur]: cur }), {}),
+    anchor: {
+      options: anchor,
+      mapping: anchor.reduce((acc, cur) => ({ ...acc, [cur]: cur }), {}),
       control: {
         type: "select",
-        labels: placement.reduce((acc, cur) => ({ ...acc, [cur]: cur }), {}),
+        labels: anchor.reduce((acc, cur) => ({ ...acc, [cur]: cur }), {}),
       },
     },
   },
@@ -73,7 +72,7 @@ const Template: StoryFn<PopoverData> = (args) => {
         <Popover
           {...args}
           popoverOpenerProps={{ children: "Click me!" }}
-          popperProps={{ placement: args.placement }}
+          popoverPanelProps={{ anchor: args.anchor }}
         >
           <div className="divide-y divide-skin-disabled">
             <div>
@@ -136,7 +135,7 @@ const GroupTemplate: StoryFn<PopoverData> = (args) => {
         Notice how Popover doesn't close when tabbing other Opener
       </p>
 
-      <LibPopover.Group className="flex border border-skin-base border-opacity-40 divide-x divide-skin-disabled rounded-lg">
+      <PopoverGroup className="flex border border-skin-base border-opacity-40 divide-x divide-skin-disabled rounded-lg">
         {dataList.map((data, index) => (
           <Popover
             {...args}
@@ -146,7 +145,7 @@ const GroupTemplate: StoryFn<PopoverData> = (args) => {
               borderType: "plain",
               className: "!rounded-none",
             }}
-            popperProps={{ placement: args.placement }}
+            popoverPanelProps={{ anchor: args.anchor }}
           >
             <div className="divide-y divide-skin-disabled">
               {data.contentList.map((content, index) => (
@@ -164,7 +163,7 @@ const GroupTemplate: StoryFn<PopoverData> = (args) => {
             </div>
           </Popover>
         ))}
-      </LibPopover.Group>
+      </PopoverGroup>
     </div>
   );
 };

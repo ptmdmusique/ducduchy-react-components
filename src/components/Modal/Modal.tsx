@@ -1,4 +1,4 @@
-import { Dialog } from "@headlessui/react";
+import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import cx from "classnames";
 import {
   AnimatePresence,
@@ -17,7 +17,7 @@ import {
 import { COMPONENT_PREFIX } from "../resources/common.data";
 import "./Modal.scss";
 
-type OnCloseTriggerdOn = "close-button-click" | "standard";
+type OnCloseTriggeredOn = "close-button-click" | "standard";
 type CustomAnimationVariant = Record<"hidden" | "visible", Variant>;
 
 export interface ModalProps {
@@ -25,7 +25,7 @@ export interface ModalProps {
   header?: ReactNode;
   footer?: ReactNode;
   /** Use for more fine-grained control on when to trigger the close */
-  onClose?: (triggeredOn: OnCloseTriggerdOn) => void;
+  onClose?: (triggeredOn: OnCloseTriggeredOn) => void;
 
   showCloseButton?: boolean;
   closeButtonIcon?: IconProps["icon"];
@@ -44,10 +44,6 @@ export interface ModalProps {
    * - `CustomAnimationVariant`: Custom animation variants - when the modal is opened, the modal will animate from the `hidden` variant to the `visible` variant and vice versa when the modal is closed. Check [this doc](https://www.framer.com/motion/animation/#variants) for more information on how to create custom variants
    */
   animationType?: "fade-down" | "natural" | CustomAnimationVariant;
-  /**
-   * Animation transition. Check this [doc](https://www.framer.com/motion/animation/##transitions) for more information
-   */
-  transition?: Transition;
 
   /**
    * Animation for overlay
@@ -79,7 +75,6 @@ export const Modal = ({
   isFullscreen,
 
   animationType = "fade-down",
-  transition,
   overlayAnimation,
   animationAnchorElement,
   targetSize,
@@ -125,6 +120,7 @@ export const Modal = ({
       {isOpen && (
         <Dialog
           static
+          // @ts-ignore
           className={cx(`${COMPONENT_PREFIX}-modal`, className)}
           open={isOpen}
           onClose={() => {
@@ -136,6 +132,7 @@ export const Modal = ({
           as={motion.div}
         >
           <motion.div
+            // @ts-ignore
             className="overlay"
             variants={overlayAnimation?.variants ?? modalVariantMap.overlay}
             transition={overlayAnimation?.transition}
@@ -145,22 +142,22 @@ export const Modal = ({
             aria-hidden="true"
           />
 
-          <Dialog.Panel
+          <DialogPanel
             as={motion.div}
+            // @ts-ignore
             className={cx("modal-content", {
               "modal-content--fullscreen": isFullscreen,
             })}
             ref={containerRef}
             variants={modalVariants}
-            transition={transition}
             initial="hidden"
             animate="visible"
             exit="hidden"
           >
             {header && (
-              <Dialog.Title className={cx("modal-header", headerClassName)}>
+              <DialogTitle className={cx("modal-header", headerClassName)}>
                 {header}
-              </Dialog.Title>
+              </DialogTitle>
             )}
 
             <div className={cx("modal-body", bodyClassName)}>{children}</div>
@@ -183,7 +180,7 @@ export const Modal = ({
                 <Icon icon={closeButtonIcon} className="fa-fw" />
               </button>
             )}
-          </Dialog.Panel>
+          </DialogPanel>
         </Dialog>
       )}
     </AnimatePresence>

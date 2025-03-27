@@ -1,4 +1,4 @@
-@import "../assets/styles/variable-common.scss";
+@use "../assets/styles/variable-common.scss" as *;
 
 .dd-multi-step-tab-group {
   > .dd-multi-step-tab-group__tab-list {

@@ -280,8 +280,7 @@ export const CustomAnimation: StoryFn<ModalProps> = (args) => {
             hidden: { opacity: 0, y: "100%" },
             visible: { opacity: 1, y: 0 },
           }}
-          transition={{ ease: "easeOut", duration: 2 }}
-          overlayAnimation={{ transition: { ease: "easeOut", duration: 2 } }}
+          overlayAnimation={{ transition: { ease: "easeOut", duration: 0.5 } }}
         />
       </div>
     </>

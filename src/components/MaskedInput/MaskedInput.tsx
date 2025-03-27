@@ -1,6 +1,6 @@
 import cx from "classnames";
 import IMask from "imask";
-import { forwardRef, Ref, useEffect, useImperativeHandle, useRef } from "react";
+import { Ref, useEffect, useImperativeHandle, useRef } from "react";
 import { OmitStrict } from "../../utils/types";
 import { Input, InputProps } from "../Input";
 import { COMPONENT_PREFIX } from "../resources/common.data";
@@ -15,59 +15,64 @@ export type MaskedInputProps = OmitStrict<InputProps, "onChange" | "nonce"> & {
   onChange?: (unmaskedValue: string, maskedValue: string) => void;
 
   handlerRef?: Ref<MaskedInputHandle>;
+  ref?: Ref<HTMLInputElement>;
 };
 
-export const MaskedInput = forwardRef<HTMLInputElement, MaskedInputProps>(
-  ({ maskOptions, onChange, handlerRef, ...inputProps }, ref) => {
-    // Use useRef to prevent re-rendering of the component whenever `maskOptions` changes.
-    const opts = useRef(maskOptions);
-    const inputRef = useRef<HTMLInputElement | null>(null);
-    const iMaskRef = useRef<IMask.InputMask<IMask.AnyMaskedOptions>>();
+export const MaskedInput = ({
+  maskOptions,
+  onChange,
+  handlerRef,
+  ref,
+  ...inputProps
+}: MaskedInputProps) => {
+  // Use useRef to prevent re-rendering of the component whenever `maskOptions` changes.
+  const opts = useRef(maskOptions);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const iMaskRef = useRef<IMask.InputMask<IMask.AnyMaskedOptions>>(null);
 
-    useEffect(() => {
-      if (inputRef.current) {
-        const iMask = IMask(inputRef.current, opts.current);
-        iMask.on("accept", () => {
-          onChange?.(iMask.unmaskedValue, iMask.value);
-        });
+  useEffect(() => {
+    if (inputRef.current) {
+      const iMask = IMask(inputRef.current, opts.current);
+      iMask.on("accept", () => {
+        onChange?.(iMask.unmaskedValue, iMask.value);
+      });
 
-        iMaskRef.current = iMask;
+      iMaskRef.current = iMask;
 
-        return () => {
-          iMask.destroy();
-        };
+      return () => {
+        iMask.destroy();
+      };
+    }
+  }, [onChange]);
+
+  useEffect(() => {
+    iMaskRef.current?.updateValue();
+  }, [inputProps.value, inputProps.defaultValue]);
+
+  useEffect(() => {
+    if (ref) {
+      if (typeof ref === "function") {
+        ref(inputRef.current);
+      } else {
+        ref.current = inputRef.current;
       }
-    }, [onChange]);
+    }
+  }, [ref]);
 
-    useEffect(() => {
-      iMaskRef.current?.updateValue();
-    }, [inputProps.value, inputProps.defaultValue]);
+  useImperativeHandle(
+    handlerRef,
+    () => ({
+      setValue: (newVal) =>
+        iMaskRef.current && (iMaskRef.current.value = newVal),
+    }),
+    [],
+  );
 
-    useEffect(() => {
-      if (ref) {
-        if (typeof ref === "function") {
-          ref(inputRef.current);
-        } else {
-          ref.current = inputRef.current;
-        }
-      }
-    }, [ref]);
-
-    useImperativeHandle(
-      handlerRef,
-      () => ({
-        setValue: (newVal) =>
-          iMaskRef.current && (iMaskRef.current.value = newVal),
-      }),
-      [],
-    );
-
-    return (
-      <Input
-        {...inputProps}
-        className={cx(`${COMPONENT_PREFIX}-masked-input`, inputProps.className)}
-        ref={inputRef}
-      />
-    );
-  },
-);
+  return (
+    <Input
+      {...inputProps}
+      className={cx(`${COMPONENT_PREFIX}-masked-input`, inputProps.className)}
+      ref={inputRef}
+    />
+  );
+};

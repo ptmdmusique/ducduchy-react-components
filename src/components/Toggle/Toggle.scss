@@ -1,4 +1,4 @@
-@import "../assets/styles/variable-common.scss";
+@use "../assets/styles/variable-common.scss" as *;
 
 .dd-toggle-checkbox {
   @apply relative flex items-center justify-center;

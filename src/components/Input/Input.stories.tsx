@@ -1,10 +1,11 @@
 import { Meta, StoryFn } from "@storybook/react";
-import { useForm } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { Input, InputProps } from ".";
 import { Button } from "../Button";
 import { storyIconOption } from "../resources/story-common";
 import "./Input.stories.scss";
 import { useState } from "react";
+import { StorybookCommonWithForm } from "../resources/StorybookCommonWithForm";
 
 const meta: Meta<InputProps> = {
   title: "Components/Form/Input",
@@ -126,5 +127,17 @@ export const Controlled: StoryFn<InputProps> = (args) => {
         value
       </p>
     </div>
+  );
+};
+
+export const WithForm: StoryFn<InputProps> = (args) => {
+  const methods = useForm<{ formValue: string }>();
+
+  return (
+    <FormProvider {...methods}>
+      <StorybookCommonWithForm>
+        <Input {...args} {...methods.register("formValue")} />
+      </StorybookCommonWithForm>
+    </FormProvider>
   );
 };

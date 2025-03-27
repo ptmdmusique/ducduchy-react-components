@@ -9,6 +9,7 @@ export const StorybookCommonWithForm = ({ children }: PropsWithChildren) => {
   const { handleSubmit } = useFormContext();
 
   const onSubmit = handleSubmit((data) => {
+    console.log("submitted:", data);
     setSubmittedValue(data);
   });
 

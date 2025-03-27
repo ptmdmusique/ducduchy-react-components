@@ -1,5 +1,5 @@
 import cx from "classnames";
-import Icon, { IconProps } from "../Icon/Icon";
+import { Icon, type IconProps } from "../Icon/Icon";
 import { ColorType, COMPONENT_PREFIX } from "../resources/common.data";
 import "./Badge.scss";
 
