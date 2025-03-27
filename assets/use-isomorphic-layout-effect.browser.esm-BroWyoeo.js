@@ -1,1 +1,0 @@
-import{r as i}from"./index-CTjT7uj6.js";function f(t,o){if(t==null)return{};var e={};for(var r in t)if({}.hasOwnProperty.call(t,r)){if(o.indexOf(r)>=0)continue;e[r]=t[r]}return e}var n=i.useLayoutEffect;export{f as _,n as i};

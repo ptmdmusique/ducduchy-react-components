@@ -1,0 +1,16 @@
+import{j as e}from"./jsx-runtime-D_zvdyIk.js";import{c as n,C as t,s as o,a as y}from"./index-KpAVk5lk.js";import{I as q}from"./Icon-DLP5P1Ct.js";import"./index-BCtMShv3.js";import"./index-CvPWi8JN.js";const i=({icon:a,text:g,colorType:f="info",type:v="filled",iconClassName:N,className:x})=>e.jsxs("div",{className:n(`${t}-badge`,`${t}-badge--${f}`,`${t}-badge--${v}`,x),children:[a&&e.jsx(q,{icon:a,className:n("fa-fw",N)}),e.jsx("p",{children:g})]});try{i.displayName="Badge",i.__docgenInfo={description:"",displayName:"Badge",props:{colorType:{defaultValue:{value:"info"},description:"",name:"colorType",required:!1,type:{name:"enum",value:[{value:'"primary"'},{value:'"secondary"'},{value:'"success"'},{value:'"danger"'},{value:'"warning"'},{value:'"info"'},{value:'"neutral"'}]}},className:{defaultValue:null,description:"",name:"className",required:!1,type:{name:"string"}},type:{defaultValue:{value:"filled"},description:"",name:"type",required:!1,type:{name:"enum",value:[{value:'"outline"'},{value:'"filled"'}]}},icon:{defaultValue:null,description:"",name:"icon",required:!1,type:{name:"[IconPrefix, string]"}},iconClassName:{defaultValue:null,description:"",name:"iconClassName",required:!1,type:{name:"string"}},text:{defaultValue:null,description:"",name:"text",required:!1,type:{name:"string"}}}}}catch{}const B={title:"Components/Badge",component:i,argTypes:{icon:{...y},className:o,iconClassName:o},parameters:{controls:{expanded:!0}}},s=a=>e.jsxs("div",{className:"canvas-container",children:[e.jsxs("div",{className:"title",children:[e.jsx("p",{className:"title-text",children:"Midterm Quiz"}),e.jsx(i,{...a})]}),e.jsx("p",{className:"desc",children:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod quisquam quo in! Consectetur dolor sint ab atque asperiores, eligendi esse dolore magni, harum odit dolorum inventore facilis autem aspernatur vero blanditiis fugiat? Nemo pariatur eius ut, eos mollitia voluptate dicta illo fuga id quo et beatae asperiores animi qui praesentium."})]});s.args={text:"Math"};const r=a=>e.jsx("div",{className:"standalone-badge-canvas-container",children:e.jsx(i,{...a})});r.args={text:"A smol badge"};var l,d,u;s.parameters={...s.parameters,docs:{...(l=s.parameters)==null?void 0:l.docs,source:{originalSource:`args => <div className="canvas-container">\r
+    <div className="title">\r
+      <p className="title-text">Midterm Quiz</p>\r
+      <Badge {...args} />\r
+    </div>\r
+\r
+    <p className="desc">\r
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod quisquam quo\r
+      in! Consectetur dolor sint ab atque asperiores, eligendi esse dolore\r
+      magni, harum odit dolorum inventore facilis autem aspernatur vero\r
+      blanditiis fugiat? Nemo pariatur eius ut, eos mollitia voluptate dicta\r
+      illo fuga id quo et beatae asperiores animi qui praesentium.\r
+    </p>\r
+  </div>`,...(u=(d=s.parameters)==null?void 0:d.docs)==null?void 0:u.source}}};var c,m,p;r.parameters={...r.parameters,docs:{...(c=r.parameters)==null?void 0:c.docs,source:{originalSource:`args => <div className="standalone-badge-canvas-container">\r
+    <Badge {...args} />\r
+  </div>`,...(p=(m=r.parameters)==null?void 0:m.docs)==null?void 0:p.source}}};const I=["Default","Standalone"];export{s as Default,r as Standalone,I as __namedExportsOrder,B as default};

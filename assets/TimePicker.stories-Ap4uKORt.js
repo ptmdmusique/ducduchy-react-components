@@ -1,0 +1,42 @@
+import{j as e}from"./jsx-runtime-D_zvdyIk.js";import{r as d}from"./index-BCtMShv3.js";import{u as T,F as N}from"./index.esm--LincS5R.js";import{c as I,C as q,s as m}from"./index-KpAVk5lk.js";import{S as C}from"./StorybookCommonWithForm-AWrnt9pC.js";import{d as P}from"./date-ChEv5BYL.js";import{D as M}from"./DurationPicker-ui7fKQaA.js";import"./Button-Dw10h_TB.js";import"./Icon-DLP5P1Ct.js";import"./index-CvPWi8JN.js";import"./MaskedInput-CAuCWOAw.js";import"./Input-De98kYoY.js";import"./index.browser-OxPLOBIU.js";import"./debounce-D2cU03he.js";import"./CustomTransition-CSHLgCWl.js";import"./animation-CUZBsLrg.js";import"./use-sync-refs-CZ2KMCOF.js";import"./use-is-mounted-suvdIMg-.js";import"./use-server-handoff-complete-C8_JXbTh.js";import"./Popover-ChzGn0PM.js";import"./useFocusRing-D4bu8X2q.js";import"./use-resolve-button-type-DNd3Xgnw.js";import"./keyboard-tlvg-gRs.js";import"./floating-B_I44q2N.js";import"./floating-ui.dom-CmL5ukrp.js";import"./index-BqCLlfdy.js";import"./index-D-fs5e6L.js";import"./use-tab-direction-IrkWQ0ly.js";import"./hidden-CkFg_2Sb.js";import"./portal-BDPEH6C3.js";import"./focus-management-Bh_oGY5B.js";import"./bugs-DpEN4NTH.js";const O={hours:":",minutes:" "},s=a=>e.jsx(M,{separatedBySpace:!1,...a,className:I(`${q}-time-picker`,a.className),localeText:{...O,...a.localeText},dropdownItemProps:{...a.dropdownItemProps,minDuration:0,maxDuration:864e5,interval:9e5,inclusiveEnd:!1,formatItem:(n,r)=>P().startOf("day").add(r,"ms").format("hh:mm a")},onChange:(n,r,l)=>{var o;(o=a.onChange)==null||o.call(a,n,(a==null?void 0:a.localeText)===void 0?r.trim():r,l)}});try{s.displayName="TimePicker",s.__docgenInfo={description:"",displayName:"TimePicker",props:{localeText:{defaultValue:null,description:"",name:"localeText",required:!1,type:{name:"{ days?: string; hours?: string; minutes?: string | undefined; seconds?: string | undefined; } | undefined"}},doDisabled:{defaultValue:null,description:"Do we NOT use day/hour/minute/second?",name:"doDisabled",required:!1,type:{name:"{ days?: boolean; hours?: boolean; minutes?: boolean | undefined; seconds?: boolean | undefined; } | undefined"}},onChange:{defaultValue:null,description:"Use 3rd parameter to get duration in milliseconds",name:"onChange",required:!1,type:{name:"((unmaskedValue: string, maskedValue: string, durationInMs: number) => void)"}},value:{defaultValue:null,description:"",name:"value",required:!1,type:{name:"number"}},defaultValue:{defaultValue:null,description:"",name:"defaultValue",required:!1,type:{name:"number"}},closeOnClick:{defaultValue:null,description:"Should we close the popover on item click",name:"closeOnClick",required:!1,type:{name:"boolean"}},closeOnFocus:{defaultValue:null,description:"Should we close the popover on item focus",name:"closeOnFocus",required:!1,type:{name:"boolean"}},separatedBySpace:{defaultValue:null,description:"",name:"separatedBySpace",required:!1,type:{name:"boolean"}},dropdownItemProps:{defaultValue:null,description:"",name:"dropdownItemProps",required:!1,type:{name:"{ minDuration?: number; maxDuration?: number; interval?: number | undefined; inclusiveEnd?: boolean | undefined; formatItem?: ((duration: Duration, durationInMs: number) => ReactNode) | undefined; isItemValid?: ((durationInMs: number) => boolean) | undefined; } | undefined"}},ref:{defaultValue:null,description:"",name:"ref",required:!1,type:{name:"Ref<HTMLInputElement>"}},borderType:{defaultValue:null,description:"",name:"borderType",required:!1,type:{name:"enum",value:[{value:'"fill"'},{value:'"outline"'},{value:'"plain"'}]}},caption:{defaultValue:null,description:"",name:"caption",required:!1,type:{name:"ReactNode"}},captionIcon:{defaultValue:null,description:"",name:"captionIcon",required:!1,type:{name:"[IconPrefix, string]"}},state:{defaultValue:null,description:"",name:"state",required:!1,type:{name:"enum",value:[{value:'"normal"'},{value:'"error"'}]}},label:{defaultValue:null,description:"",name:"label",required:!1,type:{name:"ReactNode"}},leadingAdornment:{defaultValue:null,description:"",name:"leadingAdornment",required:!1,type:{name:"FormAdornment"}},leadingAdornmentOnClick:{defaultValue:null,description:"",name:"leadingAdornmentOnClick",required:!1,type:{name:"(() => void)"}},trailingAdornment:{defaultValue:null,description:"",name:"trailingAdornment",required:!1,type:{name:"FormAdornment"}},trailingAdornmentOnClick:{defaultValue:null,description:"",name:"trailingAdornmentOnClick",required:!1,type:{name:"(() => void)"}},hasContent:{defaultValue:null,description:"",name:"hasContent",required:!1,type:{name:"boolean"}},debounceParam:{defaultValue:null,description:"",name:"debounceParam",required:!1,type:{name:"{ debounceTime: number; flushOnUnmount?: boolean; }"}},formControl:{defaultValue:null,description:"",name:"formControl",required:!1,type:{name:"Control<any>"}},maskOptions:{defaultValue:null,description:"",name:"maskOptions",required:!1,type:{name:"AnyMaskedOptions"}},handlerRef:{defaultValue:null,description:"",name:"handlerRef",required:!1,type:{name:"Ref<MaskedInputHandle>"}}}}}catch{}const ue={title:"Components/Form/TimePicker",component:s,argTypes:{className:m,onChange:m,caption:m},parameters:{controls:{expanded:!0}}},j=a=>e.jsxs("div",{className:"mt-[20rem]",children:[e.jsxs("p",{children:[e.jsx("strong",{children:"NOTE:"})," Technically this is still a normal duration picker but masked as a time of date picker."]}),e.jsx("p",{className:"mb-12",children:"Thus, only the masked and unmasked value are different"}),e.jsx(s,{...a})]}),i=j.bind({}),S=a=>{const n=T(),[r,l]=d.useState(),[o,y]=d.useState(),[V,g]=d.useState();return e.jsxs(N,{...n,children:[e.jsxs("p",{children:[e.jsx("strong",{children:"NOTE:"})," Technically this is still a normal duration picker but masked as a time of date picker."]}),e.jsx("p",{className:"mb-12",children:"Thus, only the masked and unmasked value are different"}),e.jsxs(C,{children:[e.jsxs("div",{className:"flex flex-col mb-8",children:[e.jsxs("code",{className:"text-skin-base",children:["Unmasked value ",r]}),e.jsxs("code",{className:"text-skin-base",children:["Masked value ",o]}),e.jsxs("code",{className:"text-skin-base",children:["Duration in MS ",V]})]}),e.jsx(s,{...a,...n.register("durationPicker"),onChange:(x,v,u)=>{n.setValue("durationPicker",u),l(x),y(v),g(u)}})]})]})},t=S.bind({});t.args={label:"Meeting time"};var c,p,f;i.parameters={...i.parameters,docs:{...(c=i.parameters)==null?void 0:c.docs,source:{originalSource:`args => <div className="mt-[20rem]">\r
+    <p>\r
+      <strong>NOTE:</strong> Technically this is still a normal duration picker\r
+      but masked as a time of date picker.\r
+    </p>\r
+    <p className="mb-12">\r
+      Thus, only the masked and unmasked value are different\r
+    </p>\r
+\r
+    <TimePicker {...args} />\r
+  </div>`,...(f=(p=i.parameters)==null?void 0:p.docs)==null?void 0:f.source}}};var k,h,b;t.parameters={...t.parameters,docs:{...(k=t.parameters)==null?void 0:k.docs,source:{originalSource:`args => {
+  const methods = useForm<{
+    durationPicker: number;
+  }>();
+  const [unmaskedValue, setUnmaskedValue] = useState<string>();
+  const [maskedValue, setMaskedValue] = useState<string>();
+  const [durationInMs, setDurationInMs] = useState<number>();
+  return <FormProvider {...methods}>\r
+      <p>\r
+        <strong>NOTE:</strong> Technically this is still a normal duration\r
+        picker but masked as a time of date picker.\r
+      </p>\r
+      <p className="mb-12">\r
+        Thus, only the masked and unmasked value are different\r
+      </p>\r
+\r
+      <StorybookCommonWithForm>\r
+        <div className="flex flex-col mb-8">\r
+          <code className="text-skin-base">Unmasked value {unmaskedValue}</code>\r
+          <code className="text-skin-base">Masked value {maskedValue}</code>\r
+          <code className="text-skin-base">Duration in MS {durationInMs}</code>\r
+        </div>\r
+\r
+        <TimePicker {...args} {...methods.register("durationPicker")} onChange={(unmaskedValue, maskedValue, durationInMs) => {
+        methods.setValue("durationPicker", durationInMs);
+        setUnmaskedValue(unmaskedValue);
+        setMaskedValue(maskedValue);
+        setDurationInMs(durationInMs);
+      }} />\r
+      </StorybookCommonWithForm>\r
+    </FormProvider>;
+}`,...(b=(h=t.parameters)==null?void 0:h.docs)==null?void 0:b.source}}};const ce=["Default","WithForm"];export{i as Default,t as WithForm,ce as __namedExportsOrder,ue as default};

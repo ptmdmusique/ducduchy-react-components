@@ -19,7 +19,7 @@ import { GroupBase } from 'react-select';
 import { HTMLAttributes } from 'react';
 import { HTMLProps } from 'react';
 import { InputHTMLAttributes } from 'react';
-import { JSX as JSX_2 } from 'react/jsx-runtime';
+import { JSX } from 'react/jsx-runtime';
 import { Menu as Menu_2 } from '@headlessui/react';
 import { Popover as Popover_2 } from '@headlessui/react';
 import { Props } from 'react-select';
@@ -39,7 +39,7 @@ import { Transition } from 'framer-motion';
 import { usePopper } from 'react-popper';
 import { Variant } from 'framer-motion';
 
-export declare const AlertBanner: ({ className, iconClassName, contentClassName, iconContainerClassName, colorType, header, description, icon, hasShadow, roundedCorner, borderPlacement, }: AlertBannerProps) => JSX_2.Element;
+export declare const AlertBanner: ({ className, iconClassName, contentClassName, iconContainerClassName, colorType, header, description, icon, hasShadow, roundedCorner, borderPlacement, }: AlertBannerProps) => JSX.Element;
 
 export declare interface AlertBannerProps {
     className?: string;
@@ -57,15 +57,15 @@ export declare interface AlertBannerProps {
     borderPlacement?: BorderPlacement;
 }
 
-export declare function AsyncCreatableListbox<Data, IsMulti extends boolean = false, Form extends FieldValues = any>(props: AsyncCreatableListboxProps<Data, IsMulti, Form>): JSX_2.Element;
+export declare function AsyncCreatableListbox<Data, IsMulti extends boolean = false, Form extends FieldValues = any>(props: AsyncCreatableListboxProps<Data, IsMulti, Form>): JSX.Element;
 
 export declare type AsyncCreatableListboxProps<Data, IsMulti extends boolean = boolean, Form extends FieldValues = any> = OmitStrict<Partial<AsyncCreatableProps<ListboxOption<Data>, IsMulti, GroupBase<ListboxOption<Data>>>>, "onChange"> & ListboxBaseProps<Data, IsMulti, Form>;
 
-export declare function AsyncListbox<Data, IsMulti extends boolean = false, Form extends FieldValues = any>(props: AsyncListboxProps<Data, IsMulti, Form>): JSX_2.Element;
+export declare function AsyncListbox<Data, IsMulti extends boolean = false, Form extends FieldValues = any>(props: AsyncListboxProps<Data, IsMulti, Form>): JSX.Element;
 
 export declare type AsyncListboxProps<Data, IsMulti extends boolean = boolean, Form extends FieldValues = any> = OmitStrict<Partial<AsyncProps<ListboxOption<Data>, IsMulti, GroupBase<ListboxOption<Data>>>>, "onChange"> & ListboxBaseProps<Data, IsMulti, Form>;
 
-export declare const Badge: ({ icon, text, colorType, type, iconClassName, className, }: BadgeProps) => JSX_2.Element;
+export declare const Badge: ({ icon, text, colorType, type, iconClassName, className, }: BadgeProps) => JSX.Element;
 
 export declare interface BadgeProps {
     colorType?: ColorType;
@@ -113,13 +113,13 @@ declare type ColorType = (typeof colorTypeList)[number];
 
 declare const colorTypeList: readonly ["primary", "secondary", "success", "danger", "warning", "info", "neutral"];
 
-export declare function CreatableListbox<Data, IsMulti extends boolean = false, Form extends FieldValues = any>(props: CreatableListboxProps<Data, IsMulti, Form>): JSX_2.Element;
+export declare function CreatableListbox<Data, IsMulti extends boolean = false, Form extends FieldValues = any>(props: CreatableListboxProps<Data, IsMulti, Form>): JSX.Element;
 
 export declare type CreatableListboxProps<Data, IsMulti extends boolean = boolean, Form extends FieldValues = any> = OmitStrict<Partial<CreatableProps<ListboxOption<Data>, IsMulti, GroupBase<ListboxOption<Data>>>>, "onChange"> & ListboxBaseProps<Data, IsMulti, Form>;
 
 declare type CustomAnimationVariant = Record<"hidden" | "visible", Variant>;
 
-export declare function DatePicker<Form extends FieldValues>({ label, formValidation, onChange, defaultValue, isOpen, disabled, caption, captionIcon, state, calendarLeadingIcon, clearDateIcon, displayDateFormat, inline, ...datePickerProps }: DatePickerProps<Form>): JSX_2.Element;
+export declare function DatePicker<Form extends FieldValues>({ label, formValidation, onChange, defaultValue, isOpen, disabled, caption, captionIcon, state, calendarLeadingIcon, clearDateIcon, displayDateFormat, inline, ...datePickerProps }: DatePickerProps<Form>): JSX.Element;
 
 export declare type DatePickerProps<Form extends FieldValues = any> = PickerBaseProps<Form> & Omit<ReactDatePickerProps, "defaultValue"> & {
     defaultValue?: string | Date | Date[];
@@ -178,7 +178,7 @@ declare type Event_2 = keyof HTMLElementEventMap;
 
 declare type ExtractProps<T> = T extends ComponentType<infer P> ? P : T;
 
-export declare const FadeTransition: ({ show, children, className, as, }: TransitionProp) => JSX_2.Element;
+export declare const FadeTransition: ({ show, children, className, as, }: TransitionProp) => JSX.Element;
 
 declare type FormAdornment = ReactNode | IconProps["icon"];
 
@@ -285,7 +285,7 @@ export declare interface LinkProps extends OmitStrict<HTMLProps<HTMLAnchorElemen
     hideUnderlineByDefault?: boolean;
 }
 
-export declare function Listbox<Data, IsMulti extends boolean = false, Form extends FieldValues = any>(props: ListboxProps<Data, IsMulti, Form>): JSX_2.Element;
+export declare function Listbox<Data, IsMulti extends boolean = false, Form extends FieldValues = any>(props: ListboxProps<Data, IsMulti, Form>): JSX.Element;
 
 declare interface ListboxBaseProps<Data, IsMulti extends boolean = boolean, Form extends FieldValues = any> {
     className?: string;
@@ -332,7 +332,7 @@ export declare type MaskedInputProps = OmitStrict<InputProps, "onChange" | "nonc
 };
 
 /** Note, the menu dropdown is relative to the outer container */
-export declare function Menu<Item, ContainerAs extends default_2.ElementType, OpenerProps extends object = ButtonProps>({ onItemChosen, menuContainerAs, menuProps, menuItemsProps, useDivider, renderCustomMenuOpener, menuOpenerProps, itemContainerOnRightSide, menuItemList, renderWholeItem, renderItem, renderItemContent, }: MenuProps<Item, ContainerAs, OpenerProps>): JSX_2.Element;
+export declare function Menu<Item, ContainerAs extends default_2.ElementType, OpenerProps extends object = ButtonProps>({ onItemChosen, menuContainerAs, menuProps, menuItemsProps, useDivider, renderCustomMenuOpener, menuOpenerProps, itemContainerOnRightSide, menuItemList, renderWholeItem, renderItem, renderItemContent, }: MenuProps<Item, ContainerAs, OpenerProps>): JSX.Element;
 
 export declare interface MenuProps<Item, T extends default_2.ElementType = "div", OpenerProps extends object = ButtonProps> {
     onItemChosen?: (item: Item, index: number) => void;
@@ -367,7 +367,7 @@ export declare interface MenuProps<Item, T extends default_2.ElementType = "div"
     }) => default_2.ReactNode;
 }
 
-export declare const Modal: ({ header, footer, isOpen, children, onClose, showCloseButton, closeButtonIcon, className, headerClassName, bodyClassName, footerClassName, isFullscreen, animationType, transition, overlayAnimation, animationAnchorElement, targetSize, }: PropsWithChildren<ModalProps>) => JSX_2.Element;
+export declare const Modal: ({ header, footer, isOpen, children, onClose, showCloseButton, closeButtonIcon, className, headerClassName, bodyClassName, footerClassName, isFullscreen, animationType, transition, overlayAnimation, animationAnchorElement, targetSize, }: PropsWithChildren<ModalProps>) => JSX.Element;
 
 export declare interface ModalProps {
     isOpen: boolean;
@@ -438,7 +438,7 @@ declare type OpenOn = Partial<Record<Event_2, boolean>>;
 
 declare type OptionType<D> = D | GroupBase<D>;
 
-export declare const Paginate: ({ className, nextLabelIcon, nextLabelButtonProps, previousLabelIcon, previousLabelButtonProps, nextLabel, previousLabel, pageClassName, colorType, pageLinkClassName, breakClassName, breakLinkClassName, ...reactPaginateProps }: PaginateProps) => JSX_2.Element;
+export declare const Paginate: ({ className, nextLabelIcon, nextLabelButtonProps, previousLabelIcon, previousLabelButtonProps, nextLabel, previousLabel, pageClassName, colorType, pageLinkClassName, breakClassName, breakLinkClassName, ...reactPaginateProps }: PaginateProps) => JSX.Element;
 
 export declare interface PaginateProps extends ReactPaginateProps {
     /** Use nextLabel if you want to override the component completely */
@@ -474,7 +474,7 @@ declare interface PickerBaseProps<Form extends FieldValues = any> {
  * To group with other Popover, wrap the Popover in a Popover.Group from @headlessui/react
  * https://headlessui.dev/react/popover#grouping-related-popovers
  */
-export declare function Popover<ContainerAs extends default_2.ElementType = "div", OpenerProps extends object = ButtonProps>({ popoverContainerAs, popoverProps, popoverOpenerProps, popoverPanelProps, popperProps, children, }: PopoverProps<ContainerAs, OpenerProps>): JSX_2.Element;
+export declare function Popover<ContainerAs extends default_2.ElementType = "div", OpenerProps extends object = ButtonProps>({ popoverContainerAs, popoverProps, popoverOpenerProps, popoverPanelProps, popperProps, children, }: PopoverProps<ContainerAs, OpenerProps>): JSX.Element;
 
 export declare interface PopoverProps<T extends default_2.ElementType = "div", OpenerProps extends object = ButtonProps> {
     popoverContainerAs?: T;
@@ -489,7 +489,7 @@ declare type PossibleDurationType = (typeof possibleDurationTypeList)[number];
 
 declare const possibleDurationTypeList: readonly ["days", "hours", "minutes", "seconds"];
 
-export declare function RadioGroup<Data, Value extends ValueType, FormFields extends FieldValues = any>({ className, itemClassName, itemClassNameGetter, dataList, getValue, radioGroupLabel, defaultSelectedIndex, selectedIndex, disabled, renderOption, onChange, checkOptionDisable, getLabel, getDescription, leftLabel, formValidation, colorType, }: RadioGroupProps<Data, Value, FormFields>): JSX_2.Element;
+export declare function RadioGroup<Data, Value extends ValueType, FormFields extends FieldValues = any>({ className, itemClassName, itemClassNameGetter, dataList, getValue, radioGroupLabel, defaultSelectedIndex, selectedIndex, disabled, renderOption, onChange, checkOptionDisable, getLabel, getDescription, leftLabel, formValidation, colorType, }: RadioGroupProps<Data, Value, FormFields>): JSX.Element;
 
 export declare interface RadioGroupProps<Data = unknown[], Value extends ValueType = any, FormFields extends FieldValues = any> {
     className?: string;
@@ -632,7 +632,7 @@ export declare interface ToggleProps<FormFields extends FieldValues = any> exten
     containerRef?: ForwardedRef<HTMLDivElement>;
 }
 
-export declare const Tooltip: ({ containerId, refElement, openOn, isOpen: _isOpen, defaultOpen, popoverOption, children, stylePreset, className, offset, zIndex, inModal, }: PropsWithChildren<TooltipProps>) => JSX_2.Element;
+export declare const Tooltip: ({ containerId, refElement, openOn, isOpen: _isOpen, defaultOpen, popoverOption, children, stylePreset, className, offset, zIndex, inModal, }: PropsWithChildren<TooltipProps>) => JSX.Element;
 
 export declare interface TooltipProps {
     containerId?: string;
